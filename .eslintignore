@@ -1,0 +1,4 @@
+# Dont lint compiled code
+/dist/
+/coverage/
+/server.js
