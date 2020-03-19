@@ -1,10 +1,5 @@
 // import React from 'react'
 // import {waitFor} from '@testing-library/react'
-//
-// import question, {
-//   watchRequestRandomAnswer,
-// } from '../../stores/question/question'
-// import AppContainer from './AppContainer'
 
 describe('App', () => {
   describe('Sync Spec Example', () => {

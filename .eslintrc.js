@@ -18,9 +18,6 @@ module.exports = {
     'jest': true,
     'cypress/globals': true,
   },
-  globals: {
-    setupRenderWithReduxAndSaga: 'readonly',
-  },
   settings: {
     react: {
       version: 'detect',
@@ -62,6 +59,5 @@ module.exports = {
     ],
     'max-nested-callbacks': ['warn', {max: 5}],
     'max-params': ['warn', {max: 3}],
-    'react/prop-types': ['warn'],
   },
 }
