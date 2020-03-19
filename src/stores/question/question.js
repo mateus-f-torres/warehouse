@@ -1,6 +1,4 @@
 import {call, put, takeLatest} from 'redux-saga/effects'
-import request from '../../utils/request'
-import {RANDOM_ANSWER} from '../../utils/urls'
 
 // NOTE: action types
 const ANSWER_YES = 'barefoot/answer/ANSWER_YES'
@@ -36,10 +34,12 @@ function changeAnswerToNo() {
   return {yes: false, no: true}
 }
 
+const FAKE_REQUEST = function() {}
+const FAKE_URL = function() {}
 // NOTE: async saga workers
 export function* requestRandomAnswer() {
   try {
-    const res = yield call(request, RANDOM_ANSWER)
+    const res = yield call(FAKE_REQUEST, FAKE_URL)
     res.answer == 'yes'
       ? yield put({type: ANSWER_YES})
       : yield put({type: ANSWER_NO})
