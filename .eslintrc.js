@@ -59,5 +59,6 @@ module.exports = {
     ],
     'max-nested-callbacks': ['warn', {max: 5}],
     'max-params': ['warn', {max: 3}],
+    'react/prop-types': ['off'],
   },
 }
