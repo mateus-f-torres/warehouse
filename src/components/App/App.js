@@ -1,32 +1,18 @@
 import React from 'react'
 import Login from '../../pages/Login/Login'
 import Products from '../../pages/Products/Products'
+import useUserInfo from '../../hooks/useUserInfo/useUserInfo'
 import './App.css'
 
-function App(props) {
-  const [userInfo, setUserInfo] = React.useState({})
-
-  React.useEffect(() => {
-    if (localStorage.getItem('username')) {
-      setUserInfo({
-        username: localStorage.getItem('username'),
-        company: localStorage.getItem('company'),
-      })
-    }
-  }, [])
-
-  function loginUser([username, company]) {
-    localStorage.setItem('username', username)
-    localStorage.setItem('company', company)
-    setUserInfo({username, company})
-  }
+function App() {
+  const [userInfo, setUserInfo] = useUserInfo()
 
   return (
     <div className="container">
       {!userInfo.username ? (
-        <Login handleLogin={loginUser} />
+        <Login onLogin={setUserInfo} />
       ) : (
-        <Products username={userInfo.username} company={userInfo.company} />
+        <Products user={userInfo} />
       )}
     </div>
   )

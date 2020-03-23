@@ -4,7 +4,7 @@ function Login(props) {
   function handleSubmit(e) {
     e.preventDefault()
     const {username, company} = e.target
-    props.handleLogin([username.value, company.value])
+    props.onLogin([username.value, company.value])
   }
 
   return (
