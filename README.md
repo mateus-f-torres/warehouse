@@ -14,6 +14,7 @@ Create from scratch (no CRA here) and in constant improvement as my knowledge gr
 
 ## Credit
 Made by [Mateus F Torres](https://github.com/mateus-f-torres)    
+Cypress LocalStorage workaround by [Christian Kolb](https://blog.liplex.de/keep-local-storage-in-cypress/)
 
 ## License
 [MIT License](./LICENSE)
