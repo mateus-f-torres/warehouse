@@ -34,12 +34,31 @@ function Products(props) {
     }
   }
 
+  const [userIsAddingProduct, toggleUserIsAddingProduct] = React.useState(false)
+
+  function handleNewProductSubmission(e) {
+    e.preventDefault()
+    const {product, stock, price} = e.target
+    console.log(product.value, stock.value, price.value)
+    toggleUserIsAddingProduct(!userIsAddingProduct)
+  }
+
   return (
     <div>
       <p>{`Olá ${props.username}`}</p>
       <p>{`da empresa ${props.company}`}</p>
       <input placeholder="Buscar" onChange={handleSearch} />
-      <button>Adicionar novo produto</button>
+      <button onClick={() => toggleUserIsAddingProduct(!userIsAddingProduct)}>
+        Adicionar novo produto
+      </button>
+      {userIsAddingProduct && (
+        <form onSubmit={handleNewProductSubmission}>
+          <input type="text" placeholder="Nome do Produto" name="product" />
+          <input type="text" placeholder="Quantidade em Estoque" name="stock" />
+          <input type="text" placeholder="Preço Unitário" name="price" />
+          <button type="submit">Criar</button>
+        </form>
+      )}
       <ProductList list={filteredList} />
     </div>
   )

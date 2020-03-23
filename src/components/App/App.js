@@ -6,7 +6,7 @@ import './App.css'
 function App(props) {
   const [userInfo, setUserInfo] = React.useState({})
 
-  React.useEffect(() => {
+  React.useLayoutEffect(() => {
     if (localStorage.getItem('username')) {
       setUserInfo({
         username: localStorage.getItem('username'),
