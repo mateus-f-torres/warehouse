@@ -1,7 +1,7 @@
 import React from 'react'
 import Login from '../../pages/Login/Login'
-import './App.css'
 import Products from '../../pages/Products/Products'
+import './App.css'
 
 function App(props) {
   const [userInfo, setUserInfo] = React.useState({})
