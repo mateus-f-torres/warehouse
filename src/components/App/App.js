@@ -4,35 +4,29 @@ import './App.css'
 import Products from '../../pages/Products/Products'
 
 function App(props) {
-  const [userIsLoggedIn, setUserLoginStatus] = React.useState(false)
-  const [company, setCompany] = React.useState('')
-  const [user, setUser] = React.useState('')
+  const [userInfo, setUserInfo] = React.useState({})
 
-  React.useLayoutEffect(() => {
-    if (localStorage.getItem('user')) {
-      setCompany(localStorage.getItem('company'))
-      setUser(localStorage.getItem('user'))
-
-      setUserLoginStatus(true)
+  React.useEffect(() => {
+    if (localStorage.getItem('username')) {
+      setUserInfo({
+        username: localStorage.getItem('username'),
+        company: localStorage.getItem('company'),
+      })
     }
   }, [])
 
-  function loginUser([newUser, newCompany]) {
-    setUser(newUser)
-    setCompany(newCompany)
-
-    localStorage.setItem('user', newUser)
-    localStorage.setItem('company', newCompany)
-
-    setUserLoginStatus(true)
+  function loginUser([username, company]) {
+    localStorage.setItem('username', username)
+    localStorage.setItem('company', company)
+    setUserInfo({username, company})
   }
 
   return (
     <div className="container">
-      {!userIsLoggedIn ? (
+      {!userInfo.username ? (
         <Login handleLogin={loginUser} />
       ) : (
-        <Products user={user} company={company} />
+        <Products username={userInfo.username} company={userInfo.company} />
       )}
     </div>
   )
