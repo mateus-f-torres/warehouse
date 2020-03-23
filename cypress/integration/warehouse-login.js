@@ -1,4 +1,4 @@
-describe('Login Page', function() {
+describe('Warehouse Login', function() {
   before(() => cy.clearLocalStorageCache())
 
   describe('for new users', function() {
@@ -16,7 +16,6 @@ describe('Login Page', function() {
 
       cy.findByText('Olá Mateus').should('exist')
       cy.findByText('da empresa Po.N,T.E').should('exist')
-      // cy.findByText('lista de produtos').should('exist')
     })
   })
 
@@ -28,7 +27,6 @@ describe('Login Page', function() {
 
       cy.findByText('Olá Mateus').should('exist')
       cy.findByText('da empresa Po.N,T.E').should('exist')
-      // cy.findByText('lista de produtos').should('exist')
     })
   })
 
@@ -40,9 +38,4 @@ describe('Login Page', function() {
       cy.findByText('Warehouse').should('exist')
     })
   })
-
-  // it('should allow a user to search for a specifically named product')
-  // it('should allow a user to add a new product')
-  // it('should allow a user to reorder the list by dragging a product')
-  // it('should keep a product list state even after a page refresh')
 })

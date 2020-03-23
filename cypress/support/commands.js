@@ -20,3 +20,10 @@ Cypress.Commands.add('clearLocalStorageCache', () => {
   localStorage.clear()
   LOCAL_STORAGE_MEMORY = {}
 })
+
+Cypress.Commands.add('warehouseLogin', function() {
+  cy.visit('/')
+  cy.findByPlaceholderText('Usuário').type('Mateus')
+  cy.findByPlaceholderText('Empresa').type('Po.N,T.E')
+  cy.findByText('Entrar').click()
+})
