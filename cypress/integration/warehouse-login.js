@@ -1,4 +1,4 @@
-describe('Login Page', function() {
+describe('Warehouse Login', function() {
   before(() => cy.clearLocalStorageCache())
 
   describe('for new users', function() {
