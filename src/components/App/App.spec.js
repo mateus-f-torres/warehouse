@@ -27,20 +27,6 @@ describe('Search Field', function() {
 //  3 - show error on wrong input value
 //  4 - show error on 0 stock value
 //  7 - reuse deleted IDs
-describe('New Product Form', function() {
-  // NOTE: unit
-  it('should NOT allow an unnamed product creation', function() {})
-  it('should NOT allow a repeated product creation', function() {})
-  it('should NOT allow a numeric-only named product creation', function() {})
-  it('should NOT allow a zero or negative stock product creation', function() {})
-  it('should NOT allow a non-numeric stock product creation', function() {})
-  it('should NOT allow a zero or negative price product creation', function() {})
-  it('should NOT allow a non-numeric price product creation', function() {})
-
-  // NOTE: integration
-  it('should add a new product to the list when created', function() {})
-  it('should reuse any vacant ID when inserting a new product in the list', function() {})
-})
 
 // NOTE:
 //  1 - changes should be locally saved (page refresh wont reset list)
