@@ -1,5 +1,6 @@
 import React from 'react'
 import ProductList from '../../organisms/ProductList/ProductList'
+import useDatabase from '../../hooks/useDatabase'
 
 const MOCK_PRODUCT_LIST = [
   {id: 1, name: 'Wine', stock: 4, price: 47.99},
@@ -19,6 +20,8 @@ function normalizeString(str) {
 
 function Products(props) {
   const [filteredList, changeFilteredList] = React.useState(MOCK_PRODUCT_LIST)
+  const database = useDatabase()
+
   function handleSearch(e) {
     const input = e.target.value.trim()
     if (input) {
@@ -38,9 +41,23 @@ function Products(props) {
 
   function handleNewProductSubmission(e) {
     e.preventDefault()
-    const {product, stock, price} = e.target
-    console.log(product.value, stock.value, price.value)
+    const {
+      product: {value: product},
+      stock: {value: stock},
+      price: {value: price},
+    } = e.target
+    addNewProductToList({product, stock, price})
     toggleUserIsAddingProduct(!userIsAddingProduct)
+  }
+
+  function addNewProductToList({product, stock, price}) {
+    console.log(database.getAllProducts())
+    database.addProduct({
+      stock,
+      price,
+      name: product,
+      id: 10,
+    })
   }
 
   return (
@@ -54,8 +71,17 @@ function Products(props) {
       {userIsAddingProduct && (
         <form onSubmit={handleNewProductSubmission}>
           <input type="text" placeholder="Nome do Produto" name="product" />
-          <input type="text" placeholder="Quantidade em Estoque" name="stock" />
-          <input type="text" placeholder="Preço Unitário" name="price" />
+          <input
+            type="number"
+            placeholder="Quantidade em Estoque"
+            name="stock"
+          />
+          <input
+            type="number"
+            step="0.01"
+            placeholder="Preço Unitário"
+            name="price"
+          />
           <button type="submit">Criar</button>
         </form>
       )}
