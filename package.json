@@ -16,7 +16,8 @@
     "build": "NODE_ENV=production webpack --config webpack.config.js",
     "format": "prettier --write \"{src,cypress}/**/*.js\"",
     "lint": "eslint \"{src,cypress}/**/*.js\" --fix",
-    "test": "cypress open"
+    "test": "cypress run",
+    "test:cypress": "cypress open"
   },
   "dependencies": {
     "normalize.css": "^8.0.1",
