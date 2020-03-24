@@ -15,7 +15,6 @@ module.exports = {
     'es6': true,
     'node': true,
     'worker': true,
-    'jest': true,
     'cypress/globals': true,
   },
   settings: {
