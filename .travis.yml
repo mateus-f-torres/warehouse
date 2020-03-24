@@ -4,7 +4,10 @@ node_js:
   - "10.13.0"
 install:
   - yarn install
-  - yarn add --dev codecov
+  - yarn cypress verify
+  - yarn add --dev wait-on
 script:
   - yarn lint
-  - yarn test --coverage && codecov
+  - yarn start && wait-on http://localhost:8080
+  - yarn test
+  - kill $(jobs -p) || true
