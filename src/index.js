@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 
 import './index.css'
-import App from './components/App/App'
+import App from './containers/App/App'
 
 const root = document.getElementById('root')
 

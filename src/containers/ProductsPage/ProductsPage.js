@@ -1,5 +1,5 @@
 import React from 'react'
-import ProductList from '../../organisms/ProductList/ProductList'
+import ProductList from '../../components/ProductList'
 import useDatabase from '../../hooks/useDatabase'
 
 const MOCK_PRODUCT_LIST = [
@@ -18,7 +18,7 @@ function normalizeString(str) {
   return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
 }
 
-function Products(props) {
+function ProductsPage(props) {
   const [filteredList, changeFilteredList] = React.useState(MOCK_PRODUCT_LIST)
   const database = useDatabase()
 
@@ -62,8 +62,8 @@ function Products(props) {
 
   return (
     <div>
-      <p>{`Olá ${props.user.username}`}</p>
-      <p>{`da empresa ${props.user.company}`}</p>
+      <p>{`Olá ${props.userInfo.username}`}</p>
+      <p>{`da empresa ${props.userInfo.company}`}</p>
       <input placeholder="Buscar" onChange={handleSearch} />
       <button onClick={() => toggleUserIsAddingProduct(!userIsAddingProduct)}>
         Adicionar novo produto
@@ -90,4 +90,4 @@ function Products(props) {
   )
 }
 
-export default Products
+export default ProductsPage

@@ -1,25 +1,23 @@
 import React from 'react'
 import {
-  userInfoReducer,
   defaultUserInfo,
+  userInfoReducer,
   readUserInfo,
   writeUserInfo,
-} from './userInfoReducer'
+} from '../reducers/userInfoReducer'
 
 function useUserInfo() {
   const [state, dispatch] = React.useReducer(userInfoReducer, defaultUserInfo)
 
   React.useLayoutEffect(() => {
-    if (localStorage.getItem('username')) {
-      dispatch(readUserInfo())
-    }
+    dispatch(readUserInfo())
   }, [])
 
-  function setUserInfo(info) {
+  function createNewUser(info) {
     dispatch(writeUserInfo(info))
   }
 
-  return [state, setUserInfo]
+  return [state, createNewUser]
 }
 
 export default useUserInfo

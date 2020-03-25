@@ -1,6 +1,6 @@
 import React from 'react'
 
-function Login(props) {
+function LoginPage(props) {
   function handleSubmit(e) {
     e.preventDefault()
     const {username, company} = e.target
@@ -32,4 +32,4 @@ function Login(props) {
   )
 }
 
-export default Login
+export default LoginPage
