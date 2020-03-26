@@ -1,4 +1,6 @@
 import React from 'react'
+import './Login.css'
+import bannerImg from '../../assets/images/banner.svg'
 
 function Login(props) {
   function handleSubmit(e) {
@@ -8,25 +10,33 @@ function Login(props) {
   }
 
   return (
-    <div>
-      <h1>Warehouse</h1>
-      <img src="" alt="alt-test" />
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="login-user">Usuário</label>
+    <div className="login">
+      <h1 className="login-title">Warehouse</h1>
+      <img className="login-img" src={bannerImg} alt="hi" />
+      <form className="login-form" onSubmit={handleSubmit}>
+        <label className="login-label" htmlFor="login-user">
+          Usuário
+        </label>
         <input
+          className="login-input"
           id="login-user"
           name="username"
           type="text"
           placeholder="Usuário"
         />
-        <label htmlFor="login-company">Empresa</label>
+        <label className="login-label" htmlFor="login-company">
+          Empresa
+        </label>
         <input
+          className="login-input"
           id="login-company"
           name="company"
           type="text"
           placeholder="Empresa"
         />
-        <button type="submit">Entrar</button>
+        <button className="login-btn" type="submit">
+          Entrar
+        </button>
       </form>
     </div>
   )
