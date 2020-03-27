@@ -1,5 +1,11 @@
+const MOCK_USER = {
+  username: 'MOCK_USERNAME',
+  company: 'MOCK_COMPANY',
+}
+
+// TODO: precisa limpar o IndexedDB antes do teste
 describe('Warehouse', function() {
-  before(() => cy.warehouseLogin())
+  before(() => cy.loginWith(MOCK_USER))
 
   describe('allows a user to add a new product to the list', function() {
     beforeEach(() => cy.findByText('Adicionar novo produto').click())
@@ -12,8 +18,12 @@ describe('Warehouse', function() {
     }
 
     it('should add a new product to the list when created', function() {
-      addNewProduct({name: 'Bacon', stock: 4, price: 12.99})
+      addNewProduct({name: 'Bacon', stock: '4', price: '12,99'})
       cy.findByText('Bacon').should('exist')
+    })
+    it('should NOT allow a repeated product creation', function() {
+      addNewProduct({name: 'Bacon', stock: '4', price: '12,99'})
+      cy.findByText('produto já existente').should('exist')
     })
 
     // NOTE: esse teste vale mais no DELETE
@@ -23,7 +33,6 @@ describe('Warehouse', function() {
 
     // NOTE: product name
     it('should NOT allow an unnamed product creation', function() {})
-    it('should NOT allow a repeated product creation', function() {})
     it('should NOT allow a numeric-only named product creation', function() {})
     // NOTE: stock number
     it('should NOT allow a zero or negative stock product creation', function() {})
@@ -32,5 +41,7 @@ describe('Warehouse', function() {
     // NOTE: price value
     it('should NOT allow a zero or negative price product creation', function() {})
     it('should NOT allow a non-numeric price product creation', function() {})
+    // NOTE: refresh
+    it('should save newly created items locally', function() {})
   })
 })
