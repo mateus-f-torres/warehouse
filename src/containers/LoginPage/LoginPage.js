@@ -14,16 +14,18 @@ function LoginPage(props) {
       <form onSubmit={handleSubmit}>
         <label htmlFor="login-user">Usuário</label>
         <input
+          required
+          type="text"
           id="login-user"
           name="username"
-          type="text"
           placeholder="Usuário"
         />
         <label htmlFor="login-company">Empresa</label>
         <input
+          required
+          type="text"
           id="login-company"
           name="company"
-          type="text"
           placeholder="Empresa"
         />
         <button type="submit">Entrar</button>
