@@ -22,18 +22,26 @@ function useDatabase() {
     // onSuccess getAll and dispatch
     request.onsuccess = (event) => {
       database.current = event.target.result
-      const getAllRequest = database.current
-        .transaction(['products'], 'readwrite')
-        .objectStore('products')
-        .getAll()
-      getAllRequest.onerror = () => {
-        console.log('could not getAll')
-      }
-      getAllRequest.onsuccess = (getAllEvent) => {
-        dispatch(getAllItems(getAllEvent.target.result))
+      if (localStorage.getItem('username')) {
+        getAllProducts()
+      } else {
+        clearAllProducts()
       }
     }
   }, [])
+
+  function getAllProducts() {
+    const request = database.current
+      .transaction(['products'])
+      .objectStore('products')
+      .getAll()
+    request.onerror = () => {
+      console.log('could not getAll')
+    }
+    request.onsuccess = (e) => {
+      dispatch(getAllItems(e.target.result))
+    }
+  }
 
   function addProduct(product) {
     // NOTE: handle errors elsewhere
@@ -102,10 +110,10 @@ function useDatabase() {
       .objectStore('products')
       .clear()
     request.onerror = () => {
-      console.log('product NOT added')
+      console.log('database NOT cleared')
     }
-    request.onsuccess = () => {
-      console.log('product added')
+    request.onsuccess = (e) => {
+      console.log('database cleared', e.target.result)
     }
   }
 
@@ -120,6 +128,7 @@ function useDatabase() {
     updateProduct,
     reOrder,
     clearAllProducts,
+    getAllProducts,
   }
 }
 

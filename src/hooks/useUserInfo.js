@@ -2,22 +2,34 @@ import React from 'react'
 import {
   defaultUserInfo,
   userInfoReducer,
-  readUserInfo,
-  writeUserInfo,
+  loadUser,
 } from '../reducers/userInfoReducer'
 
-function useUserInfo() {
+const USERNAME_KEY = 'username'
+const COMPANY_KEY = 'company'
+
+function useUserInfo(database) {
   const [state, dispatch] = React.useReducer(userInfoReducer, defaultUserInfo)
 
   React.useLayoutEffect(() => {
-    dispatch(readUserInfo())
+    if (localStorage.getItem(USERNAME_KEY)) {
+      const username = localStorage.getItem(USERNAME_KEY)
+      const company = localStorage.getItem(COMPANY_KEY)
+      dispatch(loadUser([username, company]))
+    }
   }, [])
 
-  function createNewUser(info) {
-    dispatch(writeUserInfo(info))
+  function createNewUser([username, company]) {
+    localStorage.setItem(USERNAME_KEY, username)
+    localStorage.setItem(COMPANY_KEY, company)
+    dispatch(loadUser([username, company]))
   }
 
-  return [state, createNewUser]
+  return {
+    username: state.username,
+    company: state.company,
+    createNewUser,
+  }
 }
 
 export default useUserInfo

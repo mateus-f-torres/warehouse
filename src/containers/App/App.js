@@ -6,24 +6,19 @@ import useDatabase from '../../hooks/useDatabase'
 import './App.css'
 
 function App() {
-  const [userInfo, createNewUser] = useUserInfo()
+  const user = useUserInfo()
   const database = useDatabase()
-
-  function initializeNewUser(user) {
-    database.clearAllProducts()
-    createNewUser(user)
-  }
 
   return (
     <div className="container">
-      {!userInfo.username ? (
-        <LoginPage onLogin={initializeNewUser} />
+      {!user.username ? (
+        <LoginPage onLogin={user.createNewUser} />
       ) : (
         <ProductsPage
           list={database.list}
           sort={database.sort}
-          company={userInfo.company}
-          username={userInfo.username}
+          company={user.company}
+          username={user.username}
           reOrder={database.reOrder}
           addProduct={database.addProduct}
           updateProduct={database.updateProduct}

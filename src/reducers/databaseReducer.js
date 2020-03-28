@@ -41,6 +41,7 @@ function getAllItemsFromDatabase(items) {
     productList.push(item)
   })
 
+  // BUG: falta o sort
   return {
     ceilIndex,
     productList,

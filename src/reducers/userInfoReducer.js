@@ -3,49 +3,24 @@ export const defaultUserInfo = {
   company: '',
 }
 
-const USERNAME_KEY = 'username'
-const COMPANY_KEY = 'company'
-
-const READ_USER_INFO = 'warehouse/userInfo-info/READ_USER_INFO'
-const WRITE_USER_INFO = 'warehouse/userInfo-info/WRITE_USER_INFO'
+const LOAD_USER = 'warehouse/userInfo-info/LOAD_USER'
 
 export function userInfoReducer(state, action) {
   switch (action.type) {
-    case READ_USER_INFO:
-      return readUserInfoFromLocalStorage()
-    case WRITE_USER_INFO:
-      return writeUserInfoToLocalStorage(action.payload)
+    case LOAD_USER:
+      return loadUserFromLocalStorage(action.payload)
     default:
       return state
   }
 }
 
-function readUserInfoFromLocalStorage() {
-  if (localStorage.getItem(USERNAME_KEY)) {
-    return {
-      username: localStorage.getItem(USERNAME_KEY),
-      company: localStorage.getItem(COMPANY_KEY),
-    }
-  } else {
-    return defaultUserInfo
-  }
-}
-
-function writeUserInfoToLocalStorage([username, company]) {
-  localStorage.setItem(USERNAME_KEY, username)
-  localStorage.setItem(COMPANY_KEY, company)
+function loadUserFromLocalStorage([username, company]) {
   return {username, company}
 }
 
-export function readUserInfo() {
+export function loadUser(user) {
   return {
-    type: READ_USER_INFO,
-  }
-}
-
-export function writeUserInfo(userInfo) {
-  return {
-    type: WRITE_USER_INFO,
-    payload: userInfo,
+    type: LOAD_USER,
+    payload: user,
   }
 }
