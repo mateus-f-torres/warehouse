@@ -38,25 +38,64 @@ function ProductForm(props) {
   function validateProductName(e) {
     const input = e.target
     const name = input.value
-    if (props.checkForRepeatedProduct(name)) {
-      input.setCustomValidity('produto já existente')
-      input.checkValidity()
-    } else {
-      input.setCustomValidity('')
-      input.checkValidity()
+    switch (true) {
+      case name.trim() === '':
+        input.setCustomValidity('produto precisa de um nome')
+        input.checkValidity()
+        break
+
+      case props.checkForRepeatedProduct(name):
+        input.setCustomValidity('produto já existente')
+        input.checkValidity()
+        break
+
+      default:
+        input.setCustomValidity('')
+        input.checkValidity()
+        break
     }
   }
 
   function validateProductStock(e) {
     const input = e.target
-    // const stock = input.value
-    input.checkValidity()
+    const stock = input.value
+    switch (true) {
+      case input.validity.patternMismatch:
+        input.setCustomValidity('quantidade precisa ser numerica')
+        input.checkValidity()
+        break
+
+      case convertToNumber(stock) <= 0:
+        input.setCustomValidity('quantidade em estoque não pode ser 0')
+        input.checkValidity()
+        break
+
+      default:
+        input.setCustomValidity('')
+        input.checkValidity()
+        break
+    }
   }
 
   function validateProductPrice(e) {
     const input = e.target
-    // const price = input.value
-    input.checkValidity()
+    const price = input.value
+    switch (true) {
+      case input.validity.patternMismatch:
+        input.setCustomValidity('valor unitário precisa ser numerico')
+        input.checkValidity()
+        break
+
+      case convertToNumber(price) <= 0:
+        input.setCustomValidity('valor unitário não pode ser 0')
+        input.checkValidity()
+        break
+
+      default:
+        input.setCustomValidity('')
+        input.checkValidity()
+        break
+    }
   }
 
   const formClass = 'form'.concat(errorsVisible ? ` -validate` : '')
@@ -101,10 +140,13 @@ function ProductForm(props) {
         pattern="\d+(?:\.\d{3})*(,\d{1,2})?"
         type="text"
         name="price"
-        error={errors.price}
         placeholder="Preço Unitário"
         validation={validateProductPrice}
+        error={errors.price}
       />
+      <button type="button" onClick={props.closeModal}>
+        Cancelar
+      </button>
       <button type="submit">Criar</button>
     </form>
   )
@@ -114,6 +156,7 @@ function SuperInput(props) {
   return (
     <label>
       <input
+        autoComplete="off"
         required={props.required}
         pattern={props.pattern}
         type={props.type}

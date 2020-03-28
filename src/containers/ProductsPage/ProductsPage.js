@@ -41,6 +41,7 @@ function ProductsPage(props) {
       </button>
       {userIsAddingProduct && (
         <ProductForm
+          closeModal={() => toggleUserIsAddingProduct(false)}
           checkForRepeatedProduct={repeatedProductCheck}
           onSubmission={handleNewProductSubmission}
         />
