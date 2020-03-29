@@ -15,11 +15,7 @@ module.exports = {
     'es6': true,
     'node': true,
     'worker': true,
-    'jest': true,
     'cypress/globals': true,
-  },
-  globals: {
-    setupRenderWithReduxAndSaga: 'readonly',
   },
   settings: {
     react: {
@@ -62,6 +58,6 @@ module.exports = {
     ],
     'max-nested-callbacks': ['warn', {max: 5}],
     'max-params': ['warn', {max: 3}],
-    'react/prop-types': ['warn'],
+    'react/prop-types': ['off'],
   },
 }
