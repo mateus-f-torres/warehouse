@@ -22,11 +22,7 @@ function useDatabase() {
     // onSuccess getAll and dispatch
     request.onsuccess = (event) => {
       database.current = event.target.result
-      if (localStorage.getItem('username')) {
-        getAllProducts()
-      } else {
-        clearAllProducts()
-      }
+      getAllProducts()
     }
   }, [])
 

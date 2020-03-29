@@ -33,8 +33,8 @@ function ProductsPage(props) {
 
   return (
     <div>
-      <p>{`Olá ${props.username}`}</p>
-      <p>{`da empresa ${props.company}`}</p>
+      <p>Hello World</p>
+      <p>brought to you by Mateus F Torres</p>
       <input placeholder="Buscar" onChange={handleSearch} />
       <button onClick={() => toggleUserIsAddingProduct(!userIsAddingProduct)}>
         Adicionar novo produto
