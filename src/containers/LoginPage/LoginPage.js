@@ -1,5 +1,5 @@
 import React from 'react'
-import './Login.css'
+import './LoginPage.css'
 import bannerImg from '../../assets/images/banner.svg'
 
 function LoginPage(props) {
