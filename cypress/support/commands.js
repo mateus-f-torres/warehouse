@@ -1,7 +1,5 @@
 import '@testing-library/cypress/add-commands'
 
-// Cypress LocalStorage workaround by Christian Kolb
-// https://blog.liplex.de/keep-local-storage-in-cypress/
 let LOCAL_STORAGE_MEMORY = {}
 
 Cypress.Commands.add('saveLocalStorageCache', () => {
@@ -21,9 +19,19 @@ Cypress.Commands.add('clearLocalStorageCache', () => {
   LOCAL_STORAGE_MEMORY = {}
 })
 
-Cypress.Commands.add('warehouseLogin', function() {
+Cypress.Commands.add('loginWith', function(MOCK_USER) {
   cy.visit('/')
-  cy.findByPlaceholderText('Usuário').type('Mateus')
-  cy.findByPlaceholderText('Empresa').type('Po.N,T.E')
+  cy.findByPlaceholderText('Usuário').type(MOCK_USER.username)
+  cy.findByPlaceholderText('Empresa').type(MOCK_USER.company)
   cy.findByText('Entrar').click()
+})
+
+Cypress.Commands.add('populateProductListWith', function(MOCK_LIST) {
+  MOCK_LIST.forEach((item) => {
+    cy.findByText('Adicionar novo produto').click()
+    cy.findByPlaceholderText('Nome do Produto').type(item.name)
+    cy.findByPlaceholderText('Quantidade em Estoque').type(item.stock)
+    cy.findByPlaceholderText('Preço Unitário').type(item.price)
+    cy.findByText('Criar').click()
+  })
 })
