@@ -1,6 +1,6 @@
 import React from 'react'
 import ProductListItem from './ProductListItem'
-import {normalizeString} from '../containers/ProductsPage/ProductsPage'
+import {normalizeString} from '../containers/App/App'
 
 function ProductListBody(props) {
   const visibleList = props.list.filter(
