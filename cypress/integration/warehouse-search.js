@@ -1,5 +1,26 @@
+const MOCK_USER = {
+  username: 'MOCK_USERNAME',
+  company: 'MOCK_COMPANY',
+}
+
+const MOCK_PRODUCT_LIST = [
+  {name: 'Wine', stock: '4', price: '47,99'},
+  {name: 'Butterscotch', stock: '2', price: '22,39'},
+  {name: 'Coconut Butter', stock: '5', price: '6,19'},
+  {name: 'Egg Roll', stock: '3', price: '2,99'},
+  {name: 'Eggplant', stock: '4', price: '4,29'},
+  {name: 'Mamão', stock: '2', price: '3,49'},
+  {name: 'Café em pó', stock: '2', price: '15,47'},
+  {name: 'Caroço de mamão', stock: '87', price: '0,07'},
+  {name: 'Filtro de café', stock: '2', price: '3,99'},
+]
+
 describe('Warehouse', function() {
-  before(() => cy.warehouseLogin())
+  before(() => {
+    cy.loginWith(MOCK_USER)
+    cy.populateProductListWith(MOCK_PRODUCT_LIST)
+  })
+
   afterEach(() => {
     cy.findByPlaceholderText('Buscar').clear()
   })

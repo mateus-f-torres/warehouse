@@ -1,6 +1,6 @@
 import React from 'react'
 
-function Login(props) {
+function LoginPage(props) {
   function handleSubmit(e) {
     e.preventDefault()
     const {username, company} = e.target
@@ -14,16 +14,18 @@ function Login(props) {
       <form onSubmit={handleSubmit}>
         <label htmlFor="login-user">Usuário</label>
         <input
+          required
+          type="text"
           id="login-user"
           name="username"
-          type="text"
           placeholder="Usuário"
         />
         <label htmlFor="login-company">Empresa</label>
         <input
+          required
+          type="text"
           id="login-company"
           name="company"
-          type="text"
           placeholder="Empresa"
         />
         <button type="submit">Entrar</button>
@@ -32,4 +34,4 @@ function Login(props) {
   )
 }
 
-export default Login
+export default LoginPage
