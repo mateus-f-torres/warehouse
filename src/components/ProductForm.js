@@ -5,7 +5,7 @@ import React from 'react'
 // ao menos um numero | pode ter ponto para dividir centenas | pode ter virgula para dividir decimal
 // const numberRegex = /^\d+(?:\.\d{3})*(?:,\d{1,2})?$/
 
-function convertToNumber(str) {
+export function convertToNumber(str) {
   return Number(str.replace(/\./g, '').replace(',', '.'))
 }
 

@@ -63,10 +63,12 @@ function removeItemFromDatabase(state, itemName) {
 }
 
 function editItemInDatabase(state, editedItem) {
+  // TODO: chamar sort() apos editar item
+  // preciso ter sort como uma key então... 'stock' e '!stock'
   return {
     ceilIndex: state.ceilIndex,
     productList: state.productList.map((item) =>
-      item.name !== editedItem.name ? item : editedItem,
+      item.product !== editedItem.product ? item : editedItem,
     ),
   }
 }

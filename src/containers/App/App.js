@@ -35,6 +35,14 @@ function App() {
     )
   }
 
+  function handleProductModifications(product, modifications) {
+    if (modifications.stock === 0) {
+      database.removeProduct(product)
+    } else {
+      database.updateProduct(product, modifications)
+    }
+  }
+
   return (
     <div>
       <p>Hello World</p>
@@ -55,7 +63,7 @@ function App() {
         sort={database.sort}
         list={database.list}
         reOrder={database.reOrder}
-        onEdit={database.updateProduct}
+        onEdit={handleProductModifications}
         onDelete={database.removeProduct}
       />
     </div>
