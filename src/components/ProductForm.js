@@ -1,6 +1,8 @@
 import React from 'react'
 
-// const nameRegex = /([\u0000-\u0019\u0021-\uFFFF])+/gu
+// A-Z | a-z | vogais acentuadas caixa-alta e caixa-baixa
+// const nameRegex = /([\u0041-\u005A\u0061-\u007A\u00C0-\u00FF])+/gu
+// ao menos um numero | pode ter ponto para dividir centenas | pode ter virgula para dividir decimal
 // const numberRegex = /^\d+(?:\.\d{3})*(?:,\d{1,2})?$/
 
 function convertToNumber(str) {
@@ -100,19 +102,6 @@ function ProductForm(props) {
 
   const formClass = 'form'.concat(errorsVisible ? ` -validate` : '')
 
-  /* NOTE:
-      name
-        should NOT be empty []
-        should NOT be repeated [OK, ]
-        should NOT be only numerical []
-      stock
-        should NOT be LESS THAN || EQUAL TO 0
-        should only be numeric
-      price
-        should NOT be LESS THAN || EQUAL TO 0
-        should only be numeric
-  */
-
   // .form.-validate input:invalid { some style }
 
   return (
@@ -123,7 +112,7 @@ function ProductForm(props) {
         name="product"
         error={errors.product}
         placeholder="Nome do Produto"
-        pattern="([\u0000-\u0019\u0021-\uFFFF])+"
+        pattern="([\u0000-\u00FF])+"
         validation={validateProductName}
       />
       <SuperInput

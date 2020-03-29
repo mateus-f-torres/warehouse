@@ -65,7 +65,7 @@ describe('Warehouse', function() {
     // NOTE: esse teste vale mais no DELETE
     // it('should reuse any vacant ID when inserting a new product in the list', function() {})
     // NOTE: esse teste vale mais no drag-n-drop talvez
-    // it('should keep current products list locally saved', function() {})
+    // it('should keep current products order list locally saved', function() {})
     */
   })
 })
