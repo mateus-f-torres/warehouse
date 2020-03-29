@@ -7,10 +7,7 @@ function ProductListItem(props) {
       <td>{props.product}</td>
       <td>{props.formatter.format(props.stock)}</td>
       <td>&#82;&#36; {props.formatter.format(props.price)}</td>
-      <td>
-        &#82;&#36;{' '}
-        {props.formatter.format((props.stock * props.price).toFixed(2))}
-      </td>
+      <td>&#82;&#36; {props.formatter.format(props.total)}</td>
       <td>
         <button onClick={() => props.onDelete(props.product)}>Deletar</button>
       </td>

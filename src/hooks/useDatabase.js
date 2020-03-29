@@ -46,7 +46,8 @@ function useDatabase() {
 
     // isso é um BUG... ele não vai usar ID vagas
     const newId = state.ceilIndex + 1
-    const newProduct = {...product, id: newId}
+    const total = (product.stock * product.price).toFixed(2)
+    const newProduct = {...product, total, id: newId}
 
     const request = database.current
       .transaction(['products'], 'readwrite')
