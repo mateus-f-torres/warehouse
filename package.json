@@ -1,9 +1,9 @@
 {
-  "name": "barefoot",
-  "version": "4.2.0",
-  "description": "React Redux SPA boilerplate",
+  "name": "warehouse",
+  "version": "0.0.1",
+  "description": "",
   "author": "mateus-f-torres",
-  "homepage": "https://mateus-f-torres.github.io/barefoot/",
+  "homepage": "",
   "main": "index.js",
   "license": "MIT",
   "private": true,
