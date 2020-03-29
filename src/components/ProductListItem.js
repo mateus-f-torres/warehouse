@@ -1,5 +1,15 @@
 import React from 'react'
 
+/* exemplo de implementação
+document.querySelectorAll('tr').forEach((row) => {
+  row.style.position = 'absolute'
+  row.addEventListener('touchmove', function(e) {
+    row.style.top = e.targetTouches[0].pageY + 'px'
+    row.style.left = e.targetTouches[0].pageX + 'px'
+  })
+})
+*/
+
 function ProductListItem(props) {
   return (
     <tr onDoubleClick={(e) => props.editMode(props.product)}>
