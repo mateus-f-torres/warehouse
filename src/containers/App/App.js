@@ -2,6 +2,7 @@ import React from 'react'
 import ProductList from '../../components/ProductList'
 import ProductForm from '../../components/ProductForm'
 import useDatabase from '../../hooks/useDatabase'
+import './App.css'
 
 export function normalizeString(str) {
   return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '')

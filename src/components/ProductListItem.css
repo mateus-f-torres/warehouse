@@ -1,0 +1,6 @@
+.dnd-row {
+  position: absolute;
+  top: var(--top, auto);
+  left: var(--left, auto);
+  height: 32px;
+}

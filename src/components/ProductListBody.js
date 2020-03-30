@@ -4,9 +4,13 @@ import {normalizeString} from '../containers/App/App'
 import {convertToNumber} from './ProductForm'
 
 function ProductListBody(props) {
-  const visibleList = props.list.filter(
-    ({product}) => normalizeString(product).search(props.filter) >= 0,
-  )
+  const [visibleList, changeVisibleList] = React.useState([])
+  React.useLayoutEffect(() => {
+    const newVisibleList = props.list.filter(
+      ({product}) => normalizeString(product).search(props.filter) >= 0,
+    )
+    changeVisibleList(newVisibleList)
+  }, [props.list, props.filter])
 
   const formatter = new Intl.NumberFormat('pt-BR')
 
@@ -17,9 +21,20 @@ function ProductListBody(props) {
     toggleEditMode(null)
   }
 
+  const [grid, changeGrid] = React.useState([])
+  const tableBodyRef = React.createRef(null)
+
+  React.useLayoutEffect(() => {
+    const {left, top} = tableBodyRef.current.getBoundingClientRect()
+    const newGrid = visibleList.map((item, index) => {
+      return [left, top + index * 32]
+    })
+    changeGrid(newGrid)
+  }, [visibleList])
+
   return (
-    <tbody>
-      {visibleList.map((productInfo) =>
+    <tbody ref={tableBodyRef} style={{position: 'relative'}}>
+      {visibleList.map((productInfo, index) =>
         productInfo.product !== editing ? (
           <ProductListItem
             key={productInfo.product}
@@ -27,6 +42,7 @@ function ProductListBody(props) {
             onDelete={props.onDelete}
             editMode={toggleEditMode}
             formatter={formatter}
+            position={grid[index]}
           />
         ) : (
           <Editing
