@@ -2,6 +2,7 @@ import React from 'react'
 import ProductList from '../../components/ProductList'
 import ProductForm from '../../components/ProductForm'
 import useDatabase from '../../hooks/useDatabase'
+import './App.css'
 
 export function normalizeString(str) {
   return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
@@ -45,9 +46,9 @@ function App() {
 
   return (
     <div>
-      <p>Hello World</p>
+      <h1>Hello World</h1>
       <p>brought to you by Mateus F Torres</p>
-      <input placeholder="Buscar" onChange={handleSearch} />
+      <input className="search" placeholder="Buscar" onChange={handleSearch} />
       <button onClick={() => toggleUserIsAddingProduct(!userIsAddingProduct)}>
         Adicionar novo produto
       </button>

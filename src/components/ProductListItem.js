@@ -6,8 +6,8 @@ function ProductListItem(props) {
       <td>{props.id}</td>
       <td>{props.product}</td>
       <td>{props.formatter.format(props.stock)}</td>
-      <td>&#82;&#36; {props.formatter.format(props.price)}</td>
-      <td>&#82;&#36; {props.formatter.format(props.total)}</td>
+      <td>{`&#82;&#36; ${props.formatter.format(props.price)}`}</td>
+      <td>{`&#82;&#36; ${props.formatter.format(props.total)}`}</td>
       <td>
         <button onClick={() => props.editMode(props.product)}>Editar</button>
       </td>

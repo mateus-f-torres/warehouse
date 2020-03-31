@@ -1,0 +1,84 @@
+.search {
+  font: inherit;
+  /*color: currentColor;*/
+  width: 100%;
+  border: 0;
+  height: 1.1875em;
+  margin: 0;
+  display: block;
+  padding: 0.5rem;
+  min-width: 0;
+  background: none;
+  box-sizing: content-box;
+}
+
+.input {
+  border: 0;
+  margin: 0;
+  display: inline-flex;
+  padding: 0;
+  position: relative;
+  min-width: 0;
+  flex-direction: column;
+  vertical-align: top;
+}
+
+table {
+  --stock-column-width: 0%;
+  --price-column-width: 0%;
+  --total-column-width: 30%;
+
+  --stock-column-visibility: collapse;
+  --price-column-visibility: collapse;
+  --total-column-visibility: visible;
+
+  table-layout: fixed;
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead th:nth-child(1) {
+  width: 15%;
+}
+
+thead th:nth-child(2) {
+  width: 55%;
+}
+
+thead th:nth-child(3) {
+  width: var(--stock-column-width);
+  visibility: var(--stock-column-visibility);
+}
+
+thead th:nth-child(4) {
+  width: var(--price-column-width);
+  visibility: var(--price-column-visibility);
+}
+
+thead th:nth-child(5) {
+  width: var(--total-column-width);
+  visibility: var(--total-column-visibility);
+}
+
+tbody tr td:nth-child(1) {
+  width: 15%;
+}
+
+tbody tr td:nth-child(2) {
+  width: 55%;
+}
+
+tbody tr td:nth-child(3) {
+  width: var(--stock-column-width);
+  visibility: var(--stock-column-visibility);
+}
+
+tbody tr td:nth-child(4) {
+  width: var(--price-column-width);
+  visibility: var(--price-column-visibility);
+}
+
+tbody tr td:nth-child(5) {
+  width: var(--total-column-width);
+  visibility: var(--total-column-visibility);
+}
