@@ -25,16 +25,32 @@ function ProductListBody(props) {
   const tableBodyRef = React.createRef(null)
 
   React.useLayoutEffect(() => {
-    const {left, top} = tableBodyRef.current.getBoundingClientRect()
-    const newGrid = visibleList.map((item, index) => {
-      return [left, top + index * 32]
-    })
+    const {top} = tableBodyRef.current.getBoundingClientRect()
+    const newGrid = visibleList.map((item, index) => top + index * 32)
     changeGrid(newGrid)
   }, [visibleList])
 
-  // function handleTouchDrag(y) {}
+  function handleTouchStart() {
+    toggleLock(false)
+  }
 
-  // function handleTouchDrop(y) {}
+  // TODO:
+  // BUG: se muito rapido ele não captura a mudança de posição
+  function handleTouchDrag(itemTopPosition, itemGridIndex) {
+    const index = grid.indexOf(itemTopPosition)
+    if (index !== -1) {
+      const newList = visibleList.filter((item, i) => i !== itemGridIndex)
+      newList.splice(index, 0, visibleList[itemGridIndex])
+      changeVisibleList(newList)
+    }
+  }
+
+  const [lock, toggleLock] = React.useState(true)
+
+  function handleTouchDrop() {
+    // NOTE: record current grid order
+    toggleLock(true)
+  }
 
   return (
     <tbody ref={tableBodyRef} style={{position: 'relative'}}>
@@ -47,6 +63,11 @@ function ProductListBody(props) {
             editMode={toggleEditMode}
             formatter={formatter}
             position={grid[index]}
+            positionLocked={lock}
+            index={index}
+            onTouchStart={handleTouchStart}
+            onTouchDrag={handleTouchDrag}
+            onTouchDrop={handleTouchDrop}
           />
         ) : (
           <Editing

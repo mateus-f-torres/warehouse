@@ -43,6 +43,8 @@ function App() {
       database.updateProduct(product, modifications)
     }
   }
+  // TODO: change reOrder to changeSort
+  // TODO: add changeOrder for drag-n-drop
 
   return (
     <div>

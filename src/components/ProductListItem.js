@@ -8,34 +8,36 @@ function ProductListItem(props) {
 
   React.useLayoutEffect(() => {
     if (props.position) {
-      rowRef.current.style.setProperty('--top', props.position[1] + 'px')
+      rowRef.current.style.setProperty('--top', props.position + 'px')
     }
-  }, [props.position])
+  }, [props.position, props.positionLocked])
 
   function handleTouchStart(e) {
-    setTouchY(e.targetTouches[0].pageY)
+    setTouchY(e.changedTouches[0].pageY)
     toggleDragging(true)
+    props.onTouchStart()
   }
 
   function handleTouchMove(e) {
     const prevTop = Number(
       e.currentTarget.style.getPropertyValue('--top').slice(0, -2),
     )
-    const {pageY} = e.targetTouches[0]
+
+    const {pageY} = e.changedTouches[0]
     const distance = touchY - pageY
     const movement = Math.abs(distance)
+    const newTop = distance < 0 ? prevTop + movement : prevTop - movement
 
-    distance < 0
-      ? e.currentTarget.style.setProperty('--top', prevTop + movement + 'px')
-      : e.currentTarget.style.setProperty('--top', prevTop - movement + 'px')
+    e.currentTarget.style.setProperty('--top', newTop + 'px')
 
-    // props.onTouchDrag(pageY)
     setTouchY(pageY)
+    props.onTouchDrag(newTop, props.index)
   }
 
   function handleTouchEnd(e) {
     setTouchY(null)
     toggleDragging(false)
+    props.onTouchDrop()
   }
 
   const itemClass = 'dnd-row'.concat(dragging ? ' -dragging' : '')
