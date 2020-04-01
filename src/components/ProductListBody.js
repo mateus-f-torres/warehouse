@@ -32,6 +32,10 @@ function ProductListBody(props) {
     changeGrid(newGrid)
   }, [visibleList])
 
+  // function handleTouchDrag(y) {}
+
+  // function handleTouchDrop(y) {}
+
   return (
     <tbody ref={tableBodyRef} style={{position: 'relative'}}>
       {visibleList.map((productInfo, index) =>

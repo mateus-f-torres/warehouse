@@ -1,6 +1,9 @@
 .dnd-row {
   position: absolute;
-  top: var(--top, auto);
-  left: var(--left, auto);
   height: 32px;
+  top: var(--top, auto);
+}
+
+.dnd-row.-dragging {
+  border: 1px solid pink;
 }
