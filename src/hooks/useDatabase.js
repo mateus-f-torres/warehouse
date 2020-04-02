@@ -114,8 +114,25 @@ function useDatabase() {
     }
   }
 
-  function reOrder(key) {
+  function changeSort(key) {
     dispatch(sortItems(key))
+  }
+
+  function changeOrder(list) {
+    const oldData = state.productList
+    const newData = oldData.map((p) => ({...p, order: list.indexOf(p.product)}))
+
+    const store = database.current
+      .transaction(['products'], 'readwrite')
+      .objectStore('products')
+
+    for (const d of newData) {
+      const updateRequest = store.put(d)
+      updateRequest.onsuccess = () => {}
+      updateRequest.onerror = () => {}
+    }
+
+    getAllProducts()
   }
 
   return {
@@ -123,7 +140,8 @@ function useDatabase() {
     addProduct,
     removeProduct,
     updateProduct,
-    reOrder,
+    changeSort,
+    changeOrder,
     clearAllProducts,
     getAllProducts,
   }

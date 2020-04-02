@@ -34,11 +34,11 @@ function databaseReducer(state, action) {
 
 function getAllItemsFromDatabase(items) {
   let ceilIndex = 1
-  const productList = []
+  const productList = Array.from(items.length)
 
   items.forEach((item) => {
     if (item.id > ceilIndex) ceilIndex = item.id
-    productList.push(item)
+    productList[item.order] = item
   })
 
   // BUG: falta o sort

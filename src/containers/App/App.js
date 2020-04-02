@@ -65,7 +65,8 @@ function App() {
         filter={filter}
         sort={database.sort}
         list={database.list}
-        reOrder={database.reOrder}
+        onSort={database.changeSort}
+        onDnD={database.changeOrder}
         onEdit={handleProductModifications}
         onDelete={database.removeProduct}
       />

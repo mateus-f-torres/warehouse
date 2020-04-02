@@ -5,10 +5,11 @@ import ProductListBody from './ProductListBody'
 function ProductList(props) {
   return (
     <table>
-      <ProductListHeader onHeaderClick={props.reOrder} />
+      <ProductListHeader onHeaderClick={props.onSort} />
       <ProductListBody
         list={props.list}
         filter={props.filter}
+        onDnD={props.onDnD}
         onEdit={props.onEdit}
         onDelete={props.onDelete}
       />

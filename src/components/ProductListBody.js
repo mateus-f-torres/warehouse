@@ -34,8 +34,6 @@ function ProductListBody(props) {
     toggleLock(false)
   }
 
-  // TODO:
-  // BUG: se muito rapido ele não captura a mudança de posição
   function handleTouchDrag(itemTopPosition, itemGridIndex) {
     const index = grid.indexOf(itemTopPosition)
     if (index !== -1) {
@@ -48,8 +46,8 @@ function ProductListBody(props) {
   const [lock, toggleLock] = React.useState(true)
 
   function handleTouchDrop() {
-    // NOTE: record current grid order
     toggleLock(true)
+    props.onDnD(visibleList.map(({product}) => product))
   }
 
   return (
