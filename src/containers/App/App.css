@@ -82,3 +82,7 @@ tbody tr td:nth-child(5) {
   width: var(--total-column-width);
   visibility: var(--total-column-visibility);
 }
+
+.product__list__item.-invisible {
+  opacity: 0.3;
+}

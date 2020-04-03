@@ -1,5 +1,5 @@
 export const defaultDatabase = {
-  ceilIndex: 1,
+  ceilIndex: 0,
   productList: [],
   sortKey: 'name',
 }
@@ -33,32 +33,29 @@ function databaseReducer(state, action) {
 }
 
 function getAllItemsFromDatabase(items) {
-  let ceilIndex = 1
-  const productList = []
-
-  items.forEach((item) => {
-    if (item.id > ceilIndex) ceilIndex = item.id
-    productList.push(item)
-  })
-
+  const nextId = getSpareId(items)
   // BUG: falta o sort
   return {
-    ceilIndex,
-    productList,
+    ceilIndex: nextId,
+    productList: items,
   }
 }
 
 function addNewItemToDatabase(state, newItem) {
+  const newList = [...state.productList, newItem]
+  const nextId = getSpareId(newList)
   return {
-    ceilIndex: newItem.id,
-    productList: [...state.productList, newItem],
+    ceilIndex: nextId,
+    productList: newList,
   }
 }
 
-function removeItemFromDatabase(state, itemName) {
+function removeItemFromDatabase(state, id) {
+  const filteredList = state.productList.filter((item) => item.id !== id)
+  const nextId = getSpareId(filteredList)
   return {
-    ceilIndex: state.ceilIndex,
-    productList: state.productList.filter((item) => item.product !== itemName),
+    ceilIndex: nextId,
+    productList: filteredList,
   }
 }
 
@@ -68,7 +65,7 @@ function editItemInDatabase(state, editedItem) {
   return {
     ceilIndex: state.ceilIndex,
     productList: state.productList.map((item) =>
-      item.product !== editedItem.product ? item : editedItem,
+      item.id !== editedItem.id ? item : editedItem,
     ),
   }
 }
@@ -106,10 +103,10 @@ export function addNewItem(item) {
   }
 }
 
-export function removeItem(itemName) {
+export function removeItem(id) {
   return {
     type: REMOVE_ITEM,
-    payload: itemName,
+    payload: id,
   }
 }
 
@@ -125,6 +122,13 @@ export function sortItems(key) {
     type: SORT_ITEMS,
     payload: key,
   }
+}
+
+function getSpareId(arr) {
+  return arr
+    .map(({id}) => id)
+    .sort((a, b) => (a > b ? 1 : -1))
+    .reduce((num, nextNumber) => (num == nextNumber ? num + 1 : num), 1)
 }
 
 export default databaseReducer

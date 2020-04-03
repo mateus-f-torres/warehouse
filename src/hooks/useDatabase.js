@@ -14,12 +14,17 @@ function getRandomDelay() {
   return Math.ceil(Math.random() * 0) * 1000
 }
 
+// TODO: adicionar 09% de erro
+// function throwRandomError() {
+//   if (Math.random() > 0.9) throw new Error('Oh no!')
+// }
+
 // NOTE: export para limpar a mesma db no Cypress
 const DATABASE = {
   name: 'DigitalWarehouse',
   version: 1,
   store: 'products',
-  key: 'product',
+  key: 'id',
 }
 
 function useDatabase() {
@@ -51,9 +56,7 @@ function useDatabase() {
   }
 
   function addProduct(product) {
-    // isso é um BUG... ele não vai usar ID vagas
-    const newId = state.ceilIndex + 1
-
+    const newId = state.ceilIndex
     const total = Number((product.stock * product.price).toFixed(2))
     const newProduct = {...product, total, id: newId}
 
@@ -69,12 +72,12 @@ function useDatabase() {
     }, getRandomDelay())
   }
 
-  function removeProduct(productName) {
+  function removeProduct(id) {
     window.setTimeout(() => {
       database.current
-        .deleteData(productName)
+        .deleteData(id)
         .then(() => {
-          dispatch(removeItem(productName))
+          dispatch(removeItem(id))
         })
         .catch((error) => {
           throw new Error(error)
@@ -83,10 +86,10 @@ function useDatabase() {
   }
 
   // BUG: se mudar nome perde a 'key'
-  function updateProduct(productName, newProductData) {
+  function updateProduct(id, newData) {
     window.setTimeout(() => {
       database.current
-        .putData(productName, newProductData)
+        .putData(id, newData)
         .then((result) => {
           dispatch(editItem(result))
         })
