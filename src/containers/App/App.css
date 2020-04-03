@@ -24,12 +24,12 @@
 }
 
 table {
-  --stock-column-width: 0%;
-  --price-column-width: 0%;
+  --stock-column-width: 10%;
+  --price-column-width: 10%;
   --total-column-width: 30%;
 
-  --stock-column-visibility: collapse;
-  --price-column-visibility: collapse;
+  --stock-column-visibility: visible;
+  --price-column-visibility: visible;
   --total-column-visibility: visible;
 
   table-layout: fixed;
