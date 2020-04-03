@@ -7,12 +7,27 @@ import databaseReducer, {
   removeItem,
   sortItems,
 } from '../reducers/databaseReducer'
+import {
+  addData,
+  clearAllData,
+  deleteData,
+  getAllData,
+  putData,
+} from '../utils/indexedDB/indexedDB'
+
+function getRandomDelay() {
+  return Math.ceil(Math.random() * 10) * 1000
+}
 
 function useDatabase() {
   const [state, dispatch] = React.useReducer(databaseReducer, defaultDatabase)
   const database = React.useRef(null)
 
   React.useEffect(() => {
+    // NOTE: handle errors elsewhere
+    // transaction.oncomplete = () => { console.log('transaction completed') }
+    // transaction.onerror = () => { console.log('transaction failed') }
+
     // NOTE: upgrade or delete previous DBs
     const request = indexedDB.open('DigitalWarehouse', 1)
     // handle errors
@@ -27,91 +42,69 @@ function useDatabase() {
   }, [])
 
   function getAllProducts() {
-    const request = database.current
-      .transaction(['products'])
-      .objectStore('products')
-      .getAll()
-    request.onerror = () => {
-      console.log('could not getAll')
-    }
-    request.onsuccess = (e) => {
-      dispatch(getAllItems(e.target.result))
-    }
+    // NOTE: start load  here?
+    window.setTimeout(() => {
+      getAllData('products', database.current)
+        .then((result) => {
+          dispatch(getAllItems(result))
+        })
+        .catch((error) => {
+          throw new Error(error)
+        })
+    }, getRandomDelay())
   }
 
   function addProduct(product) {
-    // NOTE: handle errors elsewhere
-    // transaction.oncomplete = () => { console.log('transaction completed') }
-    // transaction.onerror = () => { console.log('transaction failed') }
-
     // isso é um BUG... ele não vai usar ID vagas
     const newId = state.ceilIndex + 1
+
     const total = Number((product.stock * product.price).toFixed(2))
     const newProduct = {...product, total, id: newId}
 
-    const request = database.current
-      .transaction(['products'], 'readwrite')
-      .objectStore('products')
-      .add(newProduct)
-
-    request.onsuccess = (event) => {
-      dispatch(addNewItem(newProduct))
-    }
-    request.onerror = () => {
-      console.log('product NOT added')
-    }
+    window.setTimeout(() => {
+      addData('products', database.current, newProduct)
+        .then(() => {
+          dispatch(addNewItem(newProduct))
+        })
+        .catch((error) => {
+          throw new Error(error)
+        })
+    }, getRandomDelay())
   }
 
   function removeProduct(productName) {
-    const request = database.current
-      .transaction(['products'], 'readwrite')
-      .objectStore('products')
-      .delete(productName)
-
-    request.onsuccess = () => {
-      dispatch(removeItem(productName))
-    }
-
-    request.onerror = () => {
-      console.log('product NOT added')
-    }
+    window.setTimeout(() => {
+      deleteData('products', database.current, productName)
+        .then(() => {
+          dispatch(removeItem(productName))
+        })
+        .catch((error) => {
+          throw new Error(error)
+        })
+    }, getRandomDelay())
   }
 
+  // BUG: se mudar nome perde a 'key'
   function updateProduct(productName, newProductData) {
-    const store = database.current
-      .transaction(['products'], 'readwrite')
-      .objectStore('products')
-    const request = store.get(productName)
-    request.onerror = () => {
-      console.log('product NOT modified')
-    }
-
-    request.onsuccess = (event) => {
-      const oldData = event.target.result
-      const newData = Object.assign({}, oldData, newProductData)
-      const updateRequest = store.put(newData)
-
-      updateRequest.onsuccess = () => {
-        dispatch(editItem(newData))
-      }
-
-      updateRequest.onerror = () => {
-        console.log('product NOT added')
-      }
-    }
+    window.setTimeout(() => {
+      putData('products', database.current, productName, newProductData)
+        .then((result) => {
+          dispatch(editItem(result))
+        })
+        .catch((error) => {
+          throw new Error(error)
+        })
+    })
   }
 
   function clearAllProducts() {
-    const request = database.current
-      .transaction(['products'], 'readwrite')
-      .objectStore('products')
-      .clear()
-    request.onerror = () => {
-      console.log('database NOT cleared')
-    }
-    request.onsuccess = (e) => {
-      console.log('database cleared', e.target.result)
-    }
+    window.setTimeout(() => {
+      clearAllData('products', database.current)
+        .then(() => {})
+        .catch((error) => {
+          throw new Error(error)
+        })
+    }, getRandomDelay())
   }
 
   function reOrder(key) {
@@ -125,7 +118,6 @@ function useDatabase() {
     updateProduct,
     reOrder,
     clearAllProducts,
-    getAllProducts,
   }
 }
 
