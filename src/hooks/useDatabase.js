@@ -7,44 +7,40 @@ import databaseReducer, {
   removeItem,
   sortItems,
 } from '../reducers/databaseReducer'
-import {
-  addData,
-  clearAllData,
-  deleteData,
-  getAllData,
-  putData,
-} from '../utils/indexedDB/indexedDB'
+import createDatabase from '../utils/indexedDB/createDatabase'
 
+// TODO: tornar configuravel para rodar os tests E2E
 function getRandomDelay() {
-  return Math.ceil(Math.random() * 10) * 1000
+  return Math.ceil(Math.random() * 0) * 1000
+}
+
+// NOTE: export para limpar a mesma db no Cypress
+const DATABASE = {
+  name: 'DigitalWarehouse',
+  version: 1,
+  store: 'products',
+  key: 'product',
 }
 
 function useDatabase() {
   const [state, dispatch] = React.useReducer(databaseReducer, defaultDatabase)
-  const database = React.useRef(null)
+  const database = React.useRef({})
 
   React.useEffect(() => {
-    // NOTE: handle errors elsewhere
-    // transaction.oncomplete = () => { console.log('transaction completed') }
-    // transaction.onerror = () => { console.log('transaction failed') }
-
-    // NOTE: upgrade or delete previous DBs
-    const request = indexedDB.open('DigitalWarehouse', 1)
-    // handle errors
-    request.onerror = handleError
-    // handle new DB opening
-    request.onupgradeneeded = handleUpgradeNeeded
-    // onSuccess getAll and dispatch
-    request.onsuccess = (event) => {
-      database.current = event.target.result
-      getAllProducts()
-    }
+    createDatabase(DATABASE)
+      .then((result) => {
+        database.current = result
+      })
+      .then(() => getAllProducts())
+      .catch((e) => {
+        throw new Error(e)
+      })
   }, [])
 
   function getAllProducts() {
-    // NOTE: start load  here?
     window.setTimeout(() => {
-      getAllData('products', database.current)
+      database.current
+        .getAllData()
         .then((result) => {
           dispatch(getAllItems(result))
         })
@@ -62,7 +58,8 @@ function useDatabase() {
     const newProduct = {...product, total, id: newId}
 
     window.setTimeout(() => {
-      addData('products', database.current, newProduct)
+      database.current
+        .addData(newProduct)
         .then(() => {
           dispatch(addNewItem(newProduct))
         })
@@ -74,7 +71,8 @@ function useDatabase() {
 
   function removeProduct(productName) {
     window.setTimeout(() => {
-      deleteData('products', database.current, productName)
+      database.current
+        .deleteData(productName)
         .then(() => {
           dispatch(removeItem(productName))
         })
@@ -87,7 +85,8 @@ function useDatabase() {
   // BUG: se mudar nome perde a 'key'
   function updateProduct(productName, newProductData) {
     window.setTimeout(() => {
-      putData('products', database.current, productName, newProductData)
+      database.current
+        .putData(productName, newProductData)
         .then((result) => {
           dispatch(editItem(result))
         })
@@ -97,15 +96,15 @@ function useDatabase() {
     })
   }
 
+  /**
   function clearAllProducts() {
     window.setTimeout(() => {
-      clearAllData('products', database.current)
+      database.current.clearAllData()
         .then(() => {})
-        .catch((error) => {
-          throw new Error(error)
-        })
+        .catch((error) => { throw new Error(error) })
     }, getRandomDelay())
   }
+  **/
 
   function reOrder(key) {
     dispatch(sortItems(key))
@@ -117,21 +116,6 @@ function useDatabase() {
     removeProduct,
     updateProduct,
     reOrder,
-    clearAllProducts,
-  }
-}
-
-function handleError(event) {
-  console.log("Why didn't you allow me to open the database ?")
-}
-
-function handleUpgradeNeeded(event) {
-  const db = event.target.result
-
-  const store = db.createObjectStore('products', {keyPath: 'product'})
-  store.createIndex('product', 'product', {unique: true})
-  store.transaction.oncomplete = function() {
-    console.log('store upgraded')
   }
 }
 
