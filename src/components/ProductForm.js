@@ -145,6 +145,7 @@ function SuperInput(props) {
   return (
     <label>
       <input
+        className="input"
         autoComplete="off"
         required={props.required}
         pattern={props.pattern}
