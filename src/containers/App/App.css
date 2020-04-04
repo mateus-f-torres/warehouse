@@ -1,25 +1,88 @@
-body {
-  font-size: 1rem;
-  font-family: Roboto, sans-serif;
-}
-
-.container {
-  display: flex;
-  flex-wrap: wrap;
-}
-
-.header {
+.search {
+  font: inherit;
+  /*color: currentColor;*/
   width: 100%;
-  text-align: center;
+  border: 0;
+  height: 1.1875em;
+  margin: 0;
+  display: block;
+  padding: 0.5rem;
+  min-width: 0;
+  background: none;
+  box-sizing: content-box;
 }
 
-.form {
-  width: 100%;
-  display: flex;
+.input {
+  border: 0;
+  margin: 0;
+  display: inline-flex;
+  padding: 0;
+  position: relative;
+  min-width: 0;
   flex-direction: column;
-  align-items: center;
+  vertical-align: top;
 }
 
-.form label {margin: 0.5rem;}
+table {
+  --stock-column-width: 10%;
+  --price-column-width: 10%;
+  --total-column-width: 30%;
 
-.form > button {margin-top: 1rem;}
+  --stock-column-visibility: visible;
+  --price-column-visibility: visible;
+  --total-column-visibility: visible;
+
+  table-layout: fixed;
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead th:nth-child(1) {
+  width: 15%;
+}
+
+thead th:nth-child(2) {
+  width: 55%;
+}
+
+thead th:nth-child(3) {
+  width: var(--stock-column-width);
+  visibility: var(--stock-column-visibility);
+}
+
+thead th:nth-child(4) {
+  width: var(--price-column-width);
+  visibility: var(--price-column-visibility);
+}
+
+thead th:nth-child(5) {
+  width: var(--total-column-width);
+  visibility: var(--total-column-visibility);
+}
+
+tbody tr td:nth-child(1) {
+  width: 15%;
+}
+
+tbody tr td:nth-child(2) {
+  width: 55%;
+}
+
+tbody tr td:nth-child(3) {
+  width: var(--stock-column-width);
+  visibility: var(--stock-column-visibility);
+}
+
+tbody tr td:nth-child(4) {
+  width: var(--price-column-width);
+  visibility: var(--price-column-visibility);
+}
+
+tbody tr td:nth-child(5) {
+  width: var(--total-column-width);
+  visibility: var(--total-column-visibility);
+}
+
+.product__list__item.-invisible {
+  opacity: 0.3;
+}

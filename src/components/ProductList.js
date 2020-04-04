@@ -9,6 +9,7 @@ function ProductList(props) {
       <ProductListBody
         list={props.list}
         filter={props.filter}
+        onEdit={props.onEdit}
         onDelete={props.onDelete}
       />
     </table>
