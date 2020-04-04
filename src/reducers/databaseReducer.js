@@ -42,7 +42,8 @@ function getAllItemsFromDatabase(items) {
 }
 
 function addNewItemToDatabase(state, newItem) {
-  const newList = [...state.productList, newItem]
+  // NOTE: veja se isso é legal Mateus
+  const newList = [newItem, ...state.productList]
   const nextId = getSpareId(newList)
   return {
     ceilIndex: nextId,
@@ -70,6 +71,7 @@ function editItemInDatabase(state, editedItem) {
   }
 }
 
+// TODO: fix => esta com bugs
 function sortItemsInDatabase(state, key) {
   if (state.sortKey !== key) {
     const newSort = [...state.productList].sort((a, b) => {
@@ -83,6 +85,7 @@ function sortItemsInDatabase(state, key) {
       sortKey: key,
     })
   } else {
+    // TODO: essa é a linha que quebra... esse reverse()
     return Object.assign({}, state, {
       productList: [...state.productList.reverse()],
     })
