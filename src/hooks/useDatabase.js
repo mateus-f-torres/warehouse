@@ -1,12 +1,11 @@
 import React from 'react'
-import databaseReducer, {
-  addNewItem,
-  defaultDatabase,
-  editItem,
-  getAllItems,
-  removeItem,
-  sortItems,
-} from '../reducers/databaseReducer'
+import listReducer, {
+  loadList,
+  addItem,
+  deleteItem,
+  updateItem,
+  defaultList,
+} from '../reducers/listReducer'
 import createDatabase from '../utils/indexedDB/createDatabase'
 
 // TODO: tornar configuravel para rodar os tests E2E
@@ -28,7 +27,7 @@ const DATABASE = {
 }
 
 function useDatabase() {
-  const [state, dispatch] = React.useReducer(databaseReducer, defaultDatabase)
+  const [state, dispatch] = React.useReducer(listReducer, defaultList)
   const database = React.useRef({})
 
   React.useEffect(() => {
@@ -48,7 +47,7 @@ function useDatabase() {
       database.current
         .getAllData()
         .then((result) => {
-          dispatch(getAllItems(result))
+          dispatch(loadList(result))
         })
         .catch((error) => {
           throw new Error(error)
@@ -57,7 +56,7 @@ function useDatabase() {
   }
 
   function addProduct(product) {
-    const newId = state.ceilIndex
+    const newId = state.nextId
     const total = Number((product.stock * product.price).toFixed(2))
     const newProduct = {...product, total, id: newId}
 
@@ -65,7 +64,7 @@ function useDatabase() {
       database.current
         .addData(newProduct)
         .then(() => {
-          dispatch(addNewItem(newProduct))
+          dispatch(addItem(newProduct))
         })
         .catch((error) => {
           throw new Error(error)
@@ -78,7 +77,7 @@ function useDatabase() {
       database.current
         .deleteData(id)
         .then(() => {
-          dispatch(removeItem(id))
+          dispatch(deleteItem(id))
         })
         .catch((error) => {
           throw new Error(error)
@@ -86,18 +85,17 @@ function useDatabase() {
     }, getRandomDelay())
   }
 
-  // BUG: se mudar nome perde a 'key'
   function updateProduct(id, newData) {
     window.setTimeout(() => {
       database.current
         .putData(id, newData)
         .then((result) => {
-          dispatch(editItem(result))
+          dispatch(updateItem(result))
         })
         .catch((error) => {
           throw new Error(error)
         })
-    })
+    }, getRandomDelay())
   }
 
   /**
@@ -110,16 +108,11 @@ function useDatabase() {
   }
   **/
 
-  function reOrder(key) {
-    dispatch(sortItems(key))
-  }
-
   return {
-    list: state.productList,
+    list: state.list,
     addProduct,
     removeProduct,
     updateProduct,
-    reOrder,
   }
 }
 

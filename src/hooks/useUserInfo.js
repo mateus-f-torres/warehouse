@@ -23,7 +23,7 @@ function useUserInfo() {
   }, [])
 
   function createNewUser([username, company]) {
-    writeToLocalStorage({USERNAME_KEY: username, COMPANY_KEY: company})
+    writeToLocalStorage({[USERNAME_KEY]: username, [COMPANY_KEY]: company})
     dispatch(loadUser([username, company]))
   }
 

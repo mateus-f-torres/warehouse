@@ -15,14 +15,14 @@ function App() {
         <LoginPage onLogin={user.createNewUser} />
       ) : (
         <ProductsPage
-          list={database.list}
-          sort={database.sort}
           company={user.company}
           username={user.username}
-          reOrder={database.reOrder}
+          list={database.list}
+          sort={database.sort}
           addProduct={database.addProduct}
           updateProduct={database.updateProduct}
           removeProduct={database.removeProduct}
+          reOrder={() => {}}
         />
       )}
     </div>
