@@ -1,6 +1,6 @@
 import React from 'react'
 import ProductListItem from './ProductListItem'
-import {normalizeString} from '../containers/App/App'
+import {normalizeString} from '../containers/ProductsPage/ProductsPage'
 import {convertToNumber} from './ProductForm'
 
 function ProductListBody(props) {

@@ -36,6 +36,7 @@ function useDatabase() {
       .then((result) => {
         database.current = result
       })
+      // NOTE: localStorage.getItem('username') ? getAll : clearAll
       .then(() => getAllProducts())
       .catch((e) => {
         throw new Error(e)

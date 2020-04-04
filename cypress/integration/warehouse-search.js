@@ -1,3 +1,8 @@
+const MOCK_USER = {
+  username: 'MOCK_USERNAME',
+  company: 'MOCK_COMPANY',
+}
+
 const MOCK_PRODUCT_LIST = [
   {name: 'Wine', stock: '4', price: '47,99'},
   {name: 'Butterscotch', stock: '2', price: '22,39'},
@@ -10,20 +15,10 @@ const MOCK_PRODUCT_LIST = [
   {name: 'Filtro de café', stock: '2', price: '3,99'},
 ]
 
-function populateProductListWith(MOCK_LIST) {
-  MOCK_LIST.forEach((item) => {
-    cy.findByText('Adicionar novo produto').click()
-    cy.findByPlaceholderText('Nome do Produto').type(item.name)
-    cy.findByPlaceholderText('Quantidade em Estoque').type(item.stock)
-    cy.findByPlaceholderText('Preço Unitário').type(item.price)
-    cy.findByText('Criar').click()
-  })
-}
-
 describe('Warehouse', function() {
   before(() => {
-    cy.visit('/')
-    populateProductListWith(MOCK_PRODUCT_LIST)
+    cy.loginWith(MOCK_USER)
+    cy.populateProductListWith(MOCK_PRODUCT_LIST)
   })
 
   afterEach(() => {
