@@ -4,6 +4,10 @@ import {
   userInfoReducer,
   loadUser,
 } from '../reducers/userInfoReducer'
+import {
+  readFromLocalStorage,
+  writeToLocalStorage,
+} from '../utils/localStorage/localStorage'
 
 const USERNAME_KEY = 'username'
 const COMPANY_KEY = 'company'
@@ -12,16 +16,14 @@ function useUserInfo() {
   const [state, dispatch] = React.useReducer(userInfoReducer, defaultUserInfo)
 
   React.useLayoutEffect(() => {
-    if (localStorage.getItem(USERNAME_KEY)) {
-      const username = localStorage.getItem(USERNAME_KEY)
-      const company = localStorage.getItem(COMPANY_KEY)
-      dispatch(loadUser([username, company]))
+    const info = readFromLocalStorage([USERNAME_KEY, COMPANY_KEY])
+    if (info.every((i) => i !== null)) {
+      dispatch(loadUser(info))
     }
   }, [])
 
   function createNewUser([username, company]) {
-    localStorage.setItem(USERNAME_KEY, username)
-    localStorage.setItem(COMPANY_KEY, company)
+    writeToLocalStorage({USERNAME_KEY: username, COMPANY_KEY: company})
     dispatch(loadUser([username, company]))
   }
 
