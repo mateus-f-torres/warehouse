@@ -1,5 +1,12 @@
+const MOCK_USER = {
+  username: 'MOCK_USERNAME',
+  company: 'MOCK_COMPANY',
+}
+
+// TODO: precisa limpar o IndexedDB antes do teste
 describe('Warehouse', function() {
-  before(() => cy.visit('/'))
+  before(() => cy.loginWith(MOCK_USER))
+
   describe('allows a user to add a new product to the list', function() {
     beforeEach(() => cy.findByText('Adicionar novo produto').click())
 
