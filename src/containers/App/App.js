@@ -24,7 +24,6 @@ function App() {
             addProduct={addProduct}
             updateProduct={updateProduct}
             removeProduct={removeProduct}
-            reOrder={() => {}}
           />
         )}
       </UserContext.Provider>

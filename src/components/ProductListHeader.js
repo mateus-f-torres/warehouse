@@ -5,7 +5,7 @@ function ProductListHeader(props) {
     <thead>
       <tr>
         <th onClick={() => props.onHeaderClick('id')}>Id</th>
-        <th onClick={() => props.onHeaderClick('name')}>Nome</th>
+        <th onClick={() => props.onHeaderClick('product')}>Nome</th>
         <th onClick={() => props.onHeaderClick('stock')}>Estoque</th>
         <th onClick={() => props.onHeaderClick('price')}>Unidade</th>
         <th onClick={() => props.onHeaderClick('total')}>Total</th>

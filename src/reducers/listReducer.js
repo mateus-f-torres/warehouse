@@ -63,29 +63,6 @@ function updateItemInList(state, edit) {
   }
 }
 
-/*
-// TODO: fix => esta com bugs
-function sortItemsInDatabase(state, key) {
-  if (state.sortKey !== key) {
-    const newSort = [...state.productList].sort((a, b) => {
-      if (a[key] < b[key]) return -1
-      else if (a[key] > b[key]) return 1
-      else return 0
-    })
-
-    return Object.assign({}, state, {
-      productList: newSort,
-      sortKey: key,
-    })
-  } else {
-    // TODO: essa é a linha que quebra... esse reverse()
-    return Object.assign({}, state, {
-      productList: [...state.productList.reverse()],
-    })
-  }
-}
-*/
-
 export function loadList(items) {
   return {
     type: LOAD_LIST,
@@ -113,15 +90,6 @@ export function updateItem(edit) {
     payload: edit,
   }
 }
-
-/*
-export function sortItems(key) {
-  return {
-    type: SORT_ITEMS,
-    payload: key,
-  }
-}
-*/
 
 function getSpareIdInList(arr) {
   return arr

@@ -93,16 +93,6 @@ function useDatabase() {
     }, getRandomDelay())
   }
 
-  /**
-  function clearAllProducts() {
-    window.setTimeout(() => {
-      database.current.clearAllData()
-        .then(() => {})
-        .catch((error) => { throw new Error(error) })
-    }, getRandomDelay())
-  }
-  **/
-
   return [state.list, {addProduct, removeProduct, updateProduct}]
 }
 

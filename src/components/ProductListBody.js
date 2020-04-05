@@ -1,36 +1,23 @@
 import React from 'react'
 import ProductListItem from './ProductListItem'
-import {normalizeString} from '../containers/ProductsPage/ProductsPage'
 import {convertToNumber} from './ProductForm'
 
 function ProductListBody(props) {
-  const [list, changeList] = React.useState([[], []])
-
-  React.useEffect(() => {
-    const visible = []
-    const invisible = []
-
-    for (const item of props.list) {
-      normalizeString(item.product).search(props.filter) >= 0
-        ? visible.push(item)
-        : invisible.push(item)
-    }
-
-    changeList([visible, invisible])
-  }, [props.list, props.filter])
-
+  const [editing, toggleEditMode] = React.useState(null)
   const formatter = new Intl.NumberFormat('pt-BR')
 
-  const [editing, toggleEditMode] = React.useState(null)
-
   function completeModification(modifications) {
-    props.onEdit(editing, modifications)
-    toggleEditMode(null)
+    if (modifications.stock <= 0) {
+      props.onDelete(editing)
+    } else {
+      props.onEdit(editing, modifications)
+      toggleEditMode(null)
+    }
   }
 
   return (
     <tbody>
-      {list[0].map((productInfo) =>
+      {props.visible.map((productInfo) =>
         productInfo.id !== editing ? (
           <ProductListItem
             key={productInfo.id}
@@ -49,7 +36,7 @@ function ProductListBody(props) {
           />
         ),
       )}
-      {list[1].map((p) => (
+      {props.invisible.map((p) => (
         <ProductListItem
           key={p.product}
           formatter={formatter}
