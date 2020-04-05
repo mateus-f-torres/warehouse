@@ -13,11 +13,6 @@ function getRandomDelay() {
   return Math.ceil(Math.random() * 0) * 1000
 }
 
-// TODO: adicionar 09% de erro
-// function throwRandomError() {
-//   if (Math.random() > 0.9) throw new Error('Oh no!')
-// }
-
 // NOTE: export para limpar a mesma db no Cypress
 const DATABASE = {
   name: 'DigitalWarehouse',
@@ -108,12 +103,7 @@ function useDatabase() {
   }
   **/
 
-  return {
-    list: state.list,
-    addProduct,
-    removeProduct,
-    updateProduct,
-  }
+  return [state.list, {addProduct, removeProduct, updateProduct}]
 }
 
 export default useDatabase

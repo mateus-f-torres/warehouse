@@ -1,9 +1,6 @@
 import React from 'react'
-import {
-  defaultUserInfo,
-  userInfoReducer,
-  loadUser,
-} from '../reducers/userInfoReducer'
+
+import {userReducer, loadUser, defaultUser} from '../reducers/userReducer'
 import {
   readFromLocalStorage,
   writeToLocalStorage,
@@ -12,8 +9,8 @@ import {
 const USERNAME_KEY = 'username'
 const COMPANY_KEY = 'company'
 
-function useUserInfo() {
-  const [state, dispatch] = React.useReducer(userInfoReducer, defaultUserInfo)
+function useUser() {
+  const [state, dispatch] = React.useReducer(userReducer, defaultUser)
 
   React.useLayoutEffect(() => {
     const info = readFromLocalStorage([USERNAME_KEY, COMPANY_KEY])
@@ -27,11 +24,7 @@ function useUserInfo() {
     dispatch(loadUser([username, company]))
   }
 
-  return {
-    username: state.username,
-    company: state.company,
-    createNewUser,
-  }
+  return [{username: state.username, company: state.company}, {createNewUser}]
 }
 
-export default useUserInfo
+export default useUser

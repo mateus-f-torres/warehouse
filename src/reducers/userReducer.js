@@ -1,11 +1,11 @@
-export const defaultUserInfo = {
+export const defaultUser = {
   username: '',
   company: '',
 }
 
 const LOAD_USER = 'warehouse/userInfo-info/LOAD_USER'
 
-export function userInfoReducer(state, action) {
+export function userReducer(state, action) {
   switch (action.type) {
     case LOAD_USER:
       return loadUserFromLocalStorage(action.payload)

@@ -1,6 +1,9 @@
 import React from 'react'
+
+import {UserContext} from '../App/App'
 import ProductList from '../../components/ProductList'
 import ProductForm from '../../components/ProductForm'
+
 import './ProductsPage.css'
 
 export function normalizeString(str) {
@@ -8,6 +11,7 @@ export function normalizeString(str) {
 }
 
 function ProductsPage(props) {
+  const user = React.useContext(UserContext)
   const [filter, changeFilter] = React.useState(/./)
 
   function handleSearch(e) {
@@ -42,8 +46,8 @@ function ProductsPage(props) {
 
   return (
     <div>
-      <p>Olá {props.username}</p>
-      <p>da empresa {props.company}</p>
+      <p>Olá {user.username}</p>
+      <p>da empresa {user.company}</p>
       <input className="search" placeholder="Buscar" onChange={handleSearch} />
       <button onClick={() => toggleUserIsAddingProduct(!userIsAddingProduct)}>
         Adicionar novo produto
