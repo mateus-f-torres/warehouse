@@ -1,3 +1,8 @@
+// TODO: adicionar chance de ERROR
+// function throwRandomError() {
+//   if (Math.random() > 0.9) throw new Error('Oh no!')
+// }
+
 function composeDatabase(db, store) {
   return {
     getAllData: composeGetAllData(db, store),
@@ -9,12 +14,9 @@ function composeDatabase(db, store) {
 }
 
 function composeGetAllData(db, store) {
-  return function() {
+  return function () {
     return new Promise((resolve, reject) => {
-      const request = db
-        .transaction(store)
-        .objectStore(store)
-        .getAll()
+      const request = db.transaction(store).objectStore(store).getAll()
       request.onerror = (e) => {
         reject(e)
       }
@@ -26,7 +28,7 @@ function composeGetAllData(db, store) {
 }
 
 function composeAddData(db, store) {
-  return function(data) {
+  return function (data) {
     return new Promise((resolve, reject) => {
       const request = db
         .transaction(store, 'readwrite')
@@ -43,7 +45,7 @@ function composeAddData(db, store) {
 }
 
 function composeDeleteData(db, store) {
-  return function(key) {
+  return function (key) {
     return new Promise((resolve, reject) => {
       const request = db
         .transaction(store, 'readwrite')
@@ -60,7 +62,7 @@ function composeDeleteData(db, store) {
 }
 
 function composePutData(db, store) {
-  return function(key, data) {
+  return function (key, data) {
     return new Promise((resolve, reject) => {
       const transaction = db.transaction(store, 'readwrite')
       const storeRef = transaction.objectStore(store)
@@ -84,7 +86,7 @@ function composePutData(db, store) {
 }
 
 function composeClearAllData(db, store) {
-  return function() {
+  return function () {
     return new Promise((resolve, reject) => {
       const request = db
         .transaction(store, 'readwrite')
