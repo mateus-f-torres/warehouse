@@ -154,6 +154,12 @@ function ProductForm(props) {
         validation={validateProductPrice}
         error={errors.price}
       />
+      <button
+        type="button"
+        onClick={() => props.removeProduct(props.detail.id)}
+      >
+        Deletar
+      </button>
       <button type="button" onClick={() => props.toggleDetail(null)}>
         Cancelar
       </button>
