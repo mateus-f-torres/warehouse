@@ -1,8 +1,6 @@
 import React from 'react'
 import ProductListItem from './ProductListItem'
 
-const formatter = new Intl.NumberFormat('pt-BR')
-
 function ProductListBody(props) {
   return (
     <tbody>
@@ -10,7 +8,7 @@ function ProductListBody(props) {
         <ProductListItem
           {...item}
           key={item.id}
-          formatter={formatter}
+          columns={props.columns}
           toggleDetail={props.toggleDetail}
         />
       ))}
@@ -19,7 +17,7 @@ function ProductListBody(props) {
           {...item}
           invisible
           key={item.id}
-          formatter={formatter}
+          columns={props.columns}
         />
       ))}
     </tbody>

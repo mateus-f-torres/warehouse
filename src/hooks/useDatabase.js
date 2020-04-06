@@ -1,16 +1,16 @@
 import React from 'react'
 
-import listReducer, {
-  loadList,
+import databaseReducer, {
+  loadDatabase,
   addItem,
   deleteItem,
   updateItem,
-  defaultList,
-} from '../reducers/listReducer'
+  defaultDatabase,
+} from '../reducers/databaseReducer'
 import createDatabase from '../utils/indexedDB/createDatabase'
 
 function useDatabase(user) {
-  const [state, dispatch] = React.useReducer(listReducer, defaultList)
+  const [state, dispatch] = React.useReducer(databaseReducer, defaultDatabase)
   const database = React.useRef({})
 
   const DATABASE = {
@@ -30,7 +30,7 @@ function useDatabase(user) {
   function getAllProducts() {
     database.current
       .getAllData()
-      .then((result) => dispatch(loadList(result)))
+      .then((result) => dispatch(loadDatabase(result)))
       .catch((e) => console.error(new Error(e)))
   }
 

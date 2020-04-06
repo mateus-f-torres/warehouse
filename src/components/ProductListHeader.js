@@ -1,17 +1,65 @@
 import React from 'react'
 
+const COLUMNS = {
+  stock: 'Estoque',
+  price: 'Unidade',
+  total: 'Total',
+}
+
+const change = ['stock', 'price', 'total']
+
 function ProductListHeader(props) {
+  const [popupOpen, togglePopupOpen] = React.useState(null)
+
+  function _handleChangeColumn(newColumn) {
+    props.changeColumn([popupOpen, newColumn])
+    togglePopupOpen(null)
+  }
+
   return (
     <thead>
       <tr>
-        <th onClick={() => props.onHeaderClick('id')}>Id</th>
-        <th onClick={() => props.onHeaderClick('product')}>Nome</th>
-        <th onClick={() => props.onHeaderClick('stock')}>Estoque</th>
-        <th onClick={() => props.onHeaderClick('price')}>Unidade</th>
-        <th onClick={() => props.onHeaderClick('total')}>Total</th>
+        <th onClick={() => props.changeSort('id')}>ID</th>
+        <th onClick={() => props.changeSort('product')}>Produto</th>
+        {props.columns.map((key, i) => (
+          <th
+            key={key.concat(i)}
+            onPointerDown={getClickHandler(
+              () => props.changeSort(key),
+              () => togglePopupOpen(key),
+            )}
+          >
+            {COLUMNS[key]}
+          </th>
+        ))}
       </tr>
+      {popupOpen && (
+        <tr>
+          {change.map((option) => (
+            <th key={option} onClick={() => _handleChangeColumn(option)}>
+              {COLUMNS[option]}
+            </th>
+          ))}
+        </tr>
+      )}
     </thead>
   )
+}
+
+// ruim essa tatica...mudar
+function getClickHandler(onClick, onDblClick, delay = 250) {
+  let timeoutID = null
+  return function (event) {
+    if (!timeoutID) {
+      timeoutID = setTimeout(function () {
+        onClick(event)
+        timeoutID = null
+      }, delay)
+    } else {
+      timeoutID = clearTimeout(timeoutID)
+      onDblClick(event)
+    }
+  }
 }
 
 export default ProductListHeader

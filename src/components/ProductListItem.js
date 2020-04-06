@@ -1,5 +1,13 @@
 import React from 'react'
 
+const formatter = new Intl.NumberFormat('pt-BR')
+
+const COLUMNS = {
+  stock: (value) => formatter.format(value),
+  price: (value) => `R$ ${formatter.format(value)}`,
+  total: (value) => `R$ ${formatter.format(value)}`,
+}
+
 function ProductListItem(props) {
   const className = 'product__list__item'.concat(
     props.invisible ? ' -invisible' : '',
@@ -11,9 +19,9 @@ function ProductListItem(props) {
     >
       <td>{props.id}</td>
       <td>{props.product}</td>
-      <td>{props.formatter.format(props.stock)}</td>
-      <td>&#82;&#36; {props.formatter.format(props.price)}</td>
-      <td>&#82;&#36; {props.formatter.format(props.total)}</td>
+      {props.columns.map((key, i) => (
+        <td key={key.concat(i)}>{COLUMNS[key](props[key])}</td>
+      ))}
       <td>
         <button onClick={() => props.toggleDetail(props.id)}>Editar</button>
       </td>

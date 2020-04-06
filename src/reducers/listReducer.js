@@ -1,101 +1,158 @@
 export const defaultList = {
-  nextId: 0,
-  list: [],
+  filter: /./,
+  sort: 'id',
+  visible: [],
+  invisible: [],
+  complete: [],
+  columns: ['stock', 'price', 'total'],
 }
 
-const LOAD_LIST = 'warehouse/database/LOAD_LIST'
-const ADD_ITEM = 'warehouse/database/ADD_ITEM'
-const DELETE_ITEM = 'warehouse/database/DELETE_ITEM'
-const UPDATE_ITEM = 'warehouse/database/UPDATE_ITEM'
+const UPDATE_LIST = 'warehouse/list/UPDATE_LIST'
+const CHANGE_FILTER = 'warehouse/list/CHANGE_FILTER'
+const CHANGE_SORT = 'warehouse/list/CHANGE_SORT'
+const CHANGE_COLUMN = 'warehouse/list/CHANGE_COLUMN'
 
 function listReducer(state, action) {
   switch (action.type) {
-    case LOAD_LIST:
-      return loadListWithItems(action.payload)
+    case UPDATE_LIST:
+      return updateCompleteList(state, action.payload)
 
-    case ADD_ITEM:
-      return addItemToList(state, action.payload)
+    case CHANGE_FILTER:
+      return filterList(state, action.payload)
 
-    case DELETE_ITEM:
-      return deleteItemFromList(state, action.payload)
+    case CHANGE_SORT:
+      return sortList(state, action.payload)
 
-    case UPDATE_ITEM:
-      return updateItemInList(state, action.payload)
+    case CHANGE_COLUMN:
+      return changeColumnOrder(state, action.payload)
 
     default:
       return state
   }
 }
 
-function loadListWithItems(items) {
-  const nextId = getSpareIdInList(items)
+function updateCompleteList(state, newCompleteList) {
+  const newVisible = []
+  const newInvisible = []
+
+  for (const item of newCompleteList) {
+    normalizeString(item.product).search(state.filter) >= 0
+      ? newVisible.push(item)
+      : newInvisible.push(item)
+  }
+
   return {
-    nextId,
-    list: items,
+    ...state,
+    visible: newVisible,
+    invisible: newInvisible,
+    complete: newCompleteList,
   }
 }
 
-function addItemToList(state, newItem) {
-  const newList = [newItem, ...state.list]
-  const nextId = getSpareIdInList(newList)
-  return {
-    nextId,
-    list: newList,
+function filterList(state, filter) {
+  if (filter) {
+    const newVisible = []
+    const newInvisible = []
+    const newFilter = new RegExp(normalizeString(filter), 'ig')
+
+    for (const item of state.complete) {
+      normalizeString(item.product).search(newFilter) >= 0
+        ? newVisible.push(item)
+        : newInvisible.push(item)
+    }
+
+    return {
+      ...state,
+      filter: newFilter,
+      visible: newVisible,
+      invisible: newInvisible,
+    }
+  } else {
+    return {
+      ...state,
+      filter: defaultList.filter,
+      visible: state.complete,
+      invisible: [],
+    }
   }
 }
 
-function deleteItemFromList(state, id) {
-  const filteredList = state.list.filter((item) => item.id !== id)
-  const nextId = getSpareIdInList(filteredList)
-  return {
-    nextId,
-    list: filteredList,
+function sortList(state, key) {
+  const isSortInverted = state.sort.startsWith('!')
+  const sortKey = isSortInverted ? state.sort.slice(1) : state.sort
+
+  if (sortKey !== key) {
+    const sortedList = [...state.visible].sort(fromLowestToHighest(key))
+    return {...state, sort: key, visible: sortedList}
+  } else if (isSortInverted === false) {
+    const invertSort = '!' + key
+    const sortedList = [...state.visible].sort(fromHighestToLowest(key))
+    return {...state, sort: invertSort, visible: sortedList}
+  } else {
+    const sortedList = [...state.visible].sort(fromLowestToHighest(key))
+    return {...state, sort: sortKey, visible: sortedList}
   }
 }
 
-function updateItemInList(state, edit) {
-  const editedList = state.list.map((item) =>
-    item.id === edit.id ? edit : item,
-  )
-  return {
-    nextId: state.nextId,
-    list: editedList,
+function changeColumnOrder(state, [oldColumn, newColumn]) {
+  const newColumns = state.columns.map((c) => (c == oldColumn ? newColumn : c))
+  return {...state, columns: newColumns}
+}
+
+function fromLowestToHighest(key) {
+  return function (a, b) {
+    if (a[key] < b[key]) {
+      return -1
+    } else if (a[key] > b[key]) {
+      return 1
+    } else {
+      return 0
+    }
   }
 }
 
-export function loadList(items) {
-  return {
-    type: LOAD_LIST,
-    payload: items,
+function fromHighestToLowest(key) {
+  return function (a, b) {
+    if (a[key] > b[key]) {
+      return -1
+    } else if (a[key] < b[key]) {
+      return 1
+    } else {
+      return 0
+    }
   }
 }
 
-export function addItem(item) {
+function normalizeString(str) {
+  return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+}
+
+export function updateList(newList) {
   return {
-    type: ADD_ITEM,
-    payload: item,
+    type: UPDATE_LIST,
+    payload: newList,
   }
 }
 
-export function deleteItem(id) {
+export function changeFilter(filter) {
   return {
-    type: DELETE_ITEM,
-    payload: id,
+    type: CHANGE_FILTER,
+    payload: filter,
   }
 }
 
-export function updateItem(edit) {
+export function changeSort(key) {
   return {
-    type: UPDATE_ITEM,
-    payload: edit,
+    type: CHANGE_SORT,
+    payload: key,
   }
 }
 
-function getSpareIdInList(arr) {
-  return arr
-    .map(({id}) => id)
-    .sort((a, b) => (a > b ? 1 : -1))
-    .reduce((num, nextNumber) => (num == nextNumber ? num + 1 : num), 1)
+export function changeColumn(pair) {
+  return {
+    type: CHANGE_COLUMN,
+    payload: pair,
+  }
 }
 
 export default listReducer

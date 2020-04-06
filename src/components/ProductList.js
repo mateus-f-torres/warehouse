@@ -1,19 +1,17 @@
 import React from 'react'
 
-import visibleListReducer, {
+import listReducer, {
   updateList,
   changeFilter,
   changeSort,
-  defaultVisibleList,
-} from '../reducers/visibleListReducer'
+  changeColumn,
+  defaultList,
+} from '../reducers/listReducer'
 import ProductListHeader from './ProductListHeader'
 import ProductListBody from './ProductListBody'
 
 function ProductList(props) {
-  const [state, dispatch] = React.useReducer(
-    visibleListReducer,
-    defaultVisibleList,
-  )
+  const [state, dispatch] = React.useReducer(listReducer, defaultList)
 
   React.useEffect(() => {
     dispatch(updateList(props.list))
@@ -23,8 +21,12 @@ function ProductList(props) {
     dispatch(changeFilter(e.target.value.trim()))
   }
 
-  function handleHeaderClick(key) {
+  function handleChangeSort(key) {
     dispatch(changeSort(key))
+  }
+
+  function handleChangeColumn(pair) {
+    dispatch(changeColumn(pair))
   }
 
   return (
@@ -34,8 +36,13 @@ function ProductList(props) {
         Adicionar novo produto
       </button>
       <table>
-        <ProductListHeader onHeaderClick={handleHeaderClick} />
+        <ProductListHeader
+          columns={state.columns}
+          changeSort={handleChangeSort}
+          changeColumn={handleChangeColumn}
+        />
         <ProductListBody
+          columns={state.columns}
           visible={state.visible}
           invisible={state.invisible}
           toggleDetail={props.toggleDetail}
