@@ -4,20 +4,26 @@ import {UserContext} from '../App/App'
 import ProductList from '../../components/ProductList'
 import ProductForm from '../../components/ProductForm'
 
+import useDatabase from '../../hooks/useDatabase'
 import './ProductsPage.css'
 
-function ProductsPage(props) {
+function ProductsPage() {
   const user = React.useContext(UserContext)
+  const [list, {addProduct, removeProduct, updateProduct}] = useDatabase(user)
+  // TODO: colocar dentro do Form
   const [userIsAddingProduct, toggleUserIsAddingProduct] = React.useState(false)
 
   function repeatedProductCheck(name) {
-    return props.list.find(({product}) => product == name) !== undefined
+    return list.find(({product}) => product == name) !== undefined
   }
 
+  // TODO: colocar dentro do Form
   function handleNewProductSubmission(product) {
-    props.addProduct(product)
+    addProduct(product)
     toggleUserIsAddingProduct(false)
   }
+
+  // TODO: melhorar ProductForm
 
   return (
     <div>
@@ -34,9 +40,9 @@ function ProductsPage(props) {
         />
       )}
       <ProductList
-        list={props.list}
-        onEdit={props.updateProduct}
-        onDelete={props.removeProduct}
+        list={list}
+        onEdit={updateProduct}
+        onDelete={removeProduct}
       />
     </div>
   )

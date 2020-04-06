@@ -1,4 +1,5 @@
 import React from 'react'
+
 import listReducer, {
   loadList,
   addItem,
@@ -8,46 +9,29 @@ import listReducer, {
 } from '../reducers/listReducer'
 import createDatabase from '../utils/indexedDB/createDatabase'
 
-// TODO: tornar configuravel para rodar os tests E2E
-function getRandomDelay() {
-  return Math.ceil(Math.random() * 0) * 1000
-}
-
-// NOTE: export para limpar a mesma db no Cypress
-const DATABASE = {
-  name: 'DigitalWarehouse',
-  version: 1,
-  store: 'products',
-  key: 'id',
-}
-
-function useDatabase() {
+function useDatabase(user) {
   const [state, dispatch] = React.useReducer(listReducer, defaultList)
   const database = React.useRef({})
 
+  const DATABASE = {
+    name: user.company,
+    version: 1,
+    store: 'products',
+    key: 'id',
+  }
+
   React.useEffect(() => {
     createDatabase(DATABASE)
-      .then((result) => {
-        database.current = result
-      })
-      // NOTE: localStorage.getItem('username') ? getAll : clearAll
+      .then((result) => (database.current = result))
       .then(() => getAllProducts())
-      .catch((e) => {
-        throw new Error(e)
-      })
+      .catch((e) => console.error(new Error(e)))
   }, [])
 
   function getAllProducts() {
-    window.setTimeout(() => {
-      database.current
-        .getAllData()
-        .then((result) => {
-          dispatch(loadList(result))
-        })
-        .catch((error) => {
-          throw new Error(error)
-        })
-    }, getRandomDelay())
+    database.current
+      .getAllData()
+      .then((result) => dispatch(loadList(result)))
+      .catch((e) => console.error(new Error(e)))
   }
 
   function addProduct(product) {
@@ -55,42 +39,24 @@ function useDatabase() {
     const total = Number((product.stock * product.price).toFixed(2))
     const newProduct = {...product, total, id: newId}
 
-    window.setTimeout(() => {
-      database.current
-        .addData(newProduct)
-        .then(() => {
-          dispatch(addItem(newProduct))
-        })
-        .catch((error) => {
-          throw new Error(error)
-        })
-    }, getRandomDelay())
+    database.current
+      .addData(newProduct)
+      .then(() => dispatch(addItem(newProduct)))
+      .catch((e) => console.error(new Error(e)))
   }
 
   function removeProduct(id) {
-    window.setTimeout(() => {
-      database.current
-        .deleteData(id)
-        .then(() => {
-          dispatch(deleteItem(id))
-        })
-        .catch((error) => {
-          throw new Error(error)
-        })
-    }, getRandomDelay())
+    database.current
+      .deleteData(id)
+      .then(() => dispatch(deleteItem(id)))
+      .catch((e) => console.error(new Error(e)))
   }
 
   function updateProduct(id, newData) {
-    window.setTimeout(() => {
-      database.current
-        .putData(id, newData)
-        .then((result) => {
-          dispatch(updateItem(result))
-        })
-        .catch((error) => {
-          throw new Error(error)
-        })
-    }, getRandomDelay())
+    database.current
+      .putData(id, newData)
+      .then((result) => dispatch(updateItem(result)))
+      .catch((e) => console.error(new Error(e)))
   }
 
   return [state.list, {addProduct, removeProduct, updateProduct}]
