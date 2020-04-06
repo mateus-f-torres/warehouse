@@ -1,134 +1,28 @@
 import React from 'react'
 import ProductListItem from './ProductListItem'
-import {convertToNumber} from './ProductForm'
+
+const formatter = new Intl.NumberFormat('pt-BR')
 
 function ProductListBody(props) {
-  const [editing, toggleEditMode] = React.useState(null)
-  const formatter = new Intl.NumberFormat('pt-BR')
-
-  function completeModification(modifications) {
-    if (modifications.stock <= 0) {
-      props.onDelete(editing)
-    } else {
-      props.onEdit(editing, modifications)
-      toggleEditMode(null)
-    }
-  }
-
   return (
     <tbody>
-      {props.visible.map((productInfo) =>
-        productInfo.id !== editing ? (
-          <ProductListItem
-            key={productInfo.id}
-            {...productInfo}
-            onDelete={props.onDelete}
-            editMode={toggleEditMode}
-            formatter={formatter}
-          />
-        ) : (
-          <Editing
-            key={productInfo.id}
-            {...productInfo}
-            onComplete={completeModification}
-            onCancel={() => toggleEditMode(null)}
-            formatter={formatter}
-          />
-        ),
-      )}
-      {props.invisible.map((p) => (
+      {props.visible.map((item) => (
         <ProductListItem
-          key={p.product}
+          {...item}
+          key={item.id}
           formatter={formatter}
+          toggleDetail={props.toggleDetail}
+        />
+      ))}
+      {props.invisible.map((item) => (
+        <ProductListItem
+          {...item}
           invisible
-          {...p}
+          key={item.id}
+          formatter={formatter}
         />
       ))}
     </tbody>
-  )
-}
-
-function Editing(props) {
-  const [modifications, updateModifications] = React.useState({})
-
-  React.useEffect(() => {
-    updateModifications({
-      product: props.product,
-      stock: props.formatter.format(props.stock),
-      price: props.formatter.format(props.price),
-    })
-  }, [])
-
-  const total = calculateTotal(modifications.stock, modifications.price)
-
-  function calculateTotal(stock, price) {
-    if (stock && price) {
-      const stockNumber = convertToNumber(stock)
-      const priceNumber = convertToNumber(price)
-      const totalNumber = (stockNumber * priceNumber).toFixed(2)
-      return props.formatter.format(totalNumber)
-    } else {
-      return '00,00'
-    }
-  }
-
-  function handleInput(e) {
-    const {name, value} = e.target
-    updateModifications((prevModifications) =>
-      Object.assign({}, prevModifications, {[name]: value}),
-    )
-  }
-
-  function completeModifications() {
-    const {product, stock, price} = modifications
-    const stockNumber = convertToNumber(stock)
-    const priceNumber = convertToNumber(price)
-    const totalNumber = Number((stockNumber * priceNumber).toFixed(2))
-    props.onComplete({
-      product,
-      stock: stockNumber,
-      price: priceNumber,
-      total: totalNumber,
-    })
-  }
-
-  // NOTE: colocar a cifra como ::before
-  // TODO: colocar validação dos campos
-  return (
-    <tr>
-      <td>{props.id}</td>
-      <td>
-        <input
-          name="product"
-          defaultValue={modifications.product}
-          autoComplete="off"
-          onInput={handleInput}
-        />
-      </td>
-      <td>
-        <input
-          name="stock"
-          defaultValue={modifications.stock}
-          autoComplete="off"
-          onInput={handleInput}
-        />
-      </td>
-      <td>
-        <input
-          name="price"
-          defaultValue={modifications.price}
-          autoComplete="off"
-          onInput={handleInput}
-        />
-      </td>
-      <td>&#82;&#36; {total}</td>
-      <td>
-        <button onClick={props.onCancel}>Cancelar</button>
-      </td>
-      <td>
-        <button onClick={completeModifications}>Concluir</button>
-      </td>
-    </tr>
   )
 }
 

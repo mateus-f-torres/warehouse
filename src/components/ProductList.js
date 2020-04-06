@@ -30,13 +30,15 @@ function ProductList(props) {
   return (
     <div>
       <input className="search" placeholder="Buscar" onChange={handleSearch} />
+      <button onClick={() => props.toggleDetail({})}>
+        Adicionar novo produto
+      </button>
       <table>
         <ProductListHeader onHeaderClick={handleHeaderClick} />
         <ProductListBody
           visible={state.visible}
           invisible={state.invisible}
-          onEdit={props.onEdit}
-          onDelete={props.onDelete}
+          toggleDetail={props.toggleDetail}
         />
       </table>
     </div>

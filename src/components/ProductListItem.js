@@ -5,17 +5,17 @@ function ProductListItem(props) {
     props.invisible ? ' -invisible' : '',
   )
   return (
-    <tr className={className} onDoubleClick={(e) => props.editMode(props.id)}>
+    <tr
+      className={className}
+      onDoubleClick={(e) => props.toggleDetail(props.id)}
+    >
       <td>{props.id}</td>
       <td>{props.product}</td>
       <td>{props.formatter.format(props.stock)}</td>
       <td>&#82;&#36; {props.formatter.format(props.price)}</td>
       <td>&#82;&#36; {props.formatter.format(props.total)}</td>
       <td>
-        <button onClick={() => props.editMode(props.id)}>Editar</button>
-      </td>
-      <td>
-        <button onClick={() => props.onDelete(props.id)}>Deletar</button>
+        <button onClick={() => props.toggleDetail(props.id)}>Editar</button>
       </td>
     </tr>
   )

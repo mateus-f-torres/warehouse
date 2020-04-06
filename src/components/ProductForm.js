@@ -9,6 +9,23 @@ export function convertToNumber(str) {
   return Number(str.replace(/\./g, '').replace(',', '.'))
 }
 
+// TODO: pegar o formatter do ProductListBody
+/*
+function calculateTotal(stock, price) {
+  if (stock && price) {
+    const stockNumber = convertToNumber(stock)
+    const priceNumber = convertToNumber(price)
+    const totalNumber = (stockNumber * priceNumber).toFixed(2)
+    return props.formatter.format(totalNumber)
+  } else {
+    return '00,00'
+  }
+}
+ */
+
+// TODO: edit ? stock <= 0 deleta
+// TODO: adicionar botão deletar
+
 function allInputsAreValid(inputArray) {
   return inputArray.every((input) => input.validity.valid === true)
 }
@@ -22,11 +39,12 @@ function ProductForm(props) {
     const {product, stock, price} = e.target
     if (allInputsAreValid([product, stock, price])) {
       toggleErrorsVisibility(false)
-      props.onSubmission({
+      props.addProduct({
         product: product.value,
         stock: convertToNumber(stock.value),
         price: convertToNumber(price.value),
       })
+      props.toggleDetail(null)
     } else {
       toggleErrorsVisibility(true)
       changeErrors({
@@ -111,6 +129,7 @@ function ProductForm(props) {
         type="text"
         name="product"
         error={errors.product}
+        default={props.detail ? props.detail.product : ''}
         placeholder="Nome do Produto"
         pattern="([\u0000-\u00FF])+"
         validation={validateProductName}
@@ -120,6 +139,7 @@ function ProductForm(props) {
         pattern="\d+(?:\.\d{3})*(,\d{1,2})?"
         type="text"
         name="stock"
+        default={props.detail ? props.detail.stock : ''}
         placeholder="Quantidade em Estoque"
         validation={validateProductStock}
         error={errors.stock}
@@ -129,11 +149,12 @@ function ProductForm(props) {
         pattern="\d+(?:\.\d{3})*(,\d{1,2})?"
         type="text"
         name="price"
+        default={props.detail ? props.detail.price : ''}
         placeholder="Preço Unitário"
         validation={validateProductPrice}
         error={errors.price}
       />
-      <button type="button" onClick={props.closeModal}>
+      <button type="button" onClick={() => props.toggleDetail(null)}>
         Cancelar
       </button>
       <button type="submit">Criar</button>
@@ -147,6 +168,7 @@ function SuperInput(props) {
       <input
         className="input"
         autoComplete="off"
+        defaultValue={props.default}
         required={props.required}
         pattern={props.pattern}
         type={props.type}

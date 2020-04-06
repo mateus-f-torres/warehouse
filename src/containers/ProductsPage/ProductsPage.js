@@ -10,40 +10,27 @@ import './ProductsPage.css'
 function ProductsPage() {
   const user = React.useContext(UserContext)
   const [list, {addProduct, removeProduct, updateProduct}] = useDatabase(user)
-  // TODO: colocar dentro do Form
-  const [userIsAddingProduct, toggleUserIsAddingProduct] = React.useState(false)
+  const [productDetail, toggleDetail] = React.useState(null)
 
   function repeatedProductCheck(name) {
     return list.find(({product}) => product == name) !== undefined
   }
 
-  // TODO: colocar dentro do Form
-  function handleNewProductSubmission(product) {
-    addProduct(product)
-    toggleUserIsAddingProduct(false)
-  }
-
-  // TODO: melhorar ProductForm
-
   return (
     <div>
       <p>Olá {user.username}</p>
       <p>da empresa {user.company}</p>
-      <button onClick={() => toggleUserIsAddingProduct(!userIsAddingProduct)}>
-        Adicionar novo produto
-      </button>
-      {userIsAddingProduct && (
+      {productDetail !== null && (
         <ProductForm
-          closeModal={() => toggleUserIsAddingProduct(false)}
+          addProduct={addProduct}
+          removeProduct={removeProduct}
+          updateProduct={updateProduct}
+          toggleDetail={toggleDetail}
+          detail={list.find(({id}) => id === productDetail)}
           checkForRepeatedProduct={repeatedProductCheck}
-          onSubmission={handleNewProductSubmission}
         />
       )}
-      <ProductList
-        list={list}
-        onEdit={updateProduct}
-        onDelete={removeProduct}
-      />
+      <ProductList list={list} toggleDetail={toggleDetail} />
     </div>
   )
 }
