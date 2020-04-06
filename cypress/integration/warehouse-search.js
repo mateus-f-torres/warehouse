@@ -1,8 +1,3 @@
-const MOCK_USER = {
-  username: 'MOCK_USERNAME',
-  company: 'MOCK_COMPANY',
-}
-
 const MOCK_PRODUCT_LIST = [
   {name: 'Wine', stock: '4', price: '47,99'},
   {name: 'Butterscotch', stock: '2', price: '22,39'},
@@ -17,7 +12,7 @@ const MOCK_PRODUCT_LIST = [
 
 describe('Warehouse', function () {
   before(() => {
-    cy.loginWith(MOCK_USER)
+    cy.login()
     cy.populateProductListWith(MOCK_PRODUCT_LIST)
   })
 
