@@ -7,7 +7,7 @@ const COLUMNS = {
   price: (value) => `R$ ${formatter.format(value)}`,
   total: (value) => `R$ ${formatter.format(value)}`,
 }
-
+// TODO: adicionar btn de editar
 function ProductListItem(props) {
   const className = 'product__list__item'.concat(
     props.invisible ? ' -invisible' : '',
@@ -22,9 +22,6 @@ function ProductListItem(props) {
       {props.columns.map((key, i) => (
         <td key={key.concat(i)}>{COLUMNS[key](props[key])}</td>
       ))}
-      <td>
-        <button onClick={() => props.toggleDetail(props.id)}>Editar</button>
-      </td>
     </tr>
   )
 }

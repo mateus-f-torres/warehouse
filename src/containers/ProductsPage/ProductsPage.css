@@ -1,4 +1,16 @@
+.productsPage {
+  display: grid;
+  grid-template-rows: min-content min-content max-content;
+  grid-template-columns: 80% 20%;
+  grid-template-areas: 'header settings' 'search add' 'table table';
+}
+
+.add {
+  grid-area: add;
+}
+
 .search {
+  grid-area: search;
   font: inherit;
   /*color: currentColor;*/
   width: 100%;
@@ -24,23 +36,23 @@
 }
 
 table {
-  --stock-column-width: 0%;
-  --price-column-width: 0%;
-  --total-column-width: 30%;
+  --1st-column-width: auto;
+  --2nd-column-width: auto;
+  --3rd-column-width: 30%;
 
-  --stock-column-visibility: hidden;
-  --price-column-visibility: hidden;
-  --total-column-visibility: visible;
+  --1st-column-visibility: hidden;
+  --2nd-column-visibility: hidden;
+  --3rd-column-visibility: visible;
 
+  grid-area: table;
   table-layout: fixed;
   width: 100%;
   border-collapse: collapse;
 }
 
-thead th {
-  background-color: gray;
-  padding: 1rem;
-}
+thead { position: relative; }
+
+thead th { background-color: gray; padding: 0.5rem; }
 
 thead th:nth-child(1) {
   width: 15%;
@@ -51,18 +63,18 @@ thead th:nth-child(2) {
 }
 
 thead th:nth-child(3) {
-  width: var(--stock-column-width);
-  visibility: var(--stock-column-visibility);
+  width: var(--1st-column-width);
+  visibility: var(--1st-column-visibility);
 }
 
 thead th:nth-child(4) {
-  width: var(--price-column-width);
-  visibility: var(--price-column-visibility);
+  width: var(--2nd-column-width);
+  visibility: var(--2nd-column-visibility);
 }
 
 thead th:nth-child(5) {
-  width: var(--total-column-width);
-  visibility: var(--total-column-visibility);
+  width: var(--3rd-column-width);
+  visibility: var(--3rd-column-visibility);
 }
 
 tbody tr td:nth-child(1) {
@@ -74,20 +86,41 @@ tbody tr td:nth-child(2) {
 }
 
 tbody tr td:nth-child(3) {
-  width: var(--stock-column-width);
-  visibility: var(--stock-column-visibility);
+  width: var(--1st-column-width);
+  visibility: var(--1st-column-visibility);
 }
 
 tbody tr td:nth-child(4) {
-  width: var(--price-column-width);
-  visibility: var(--price-column-visibility);
+  width: var(--2nd-column-width);
+  visibility: var(--2nd-column-visibility);
 }
 
 tbody tr td:nth-child(5) {
-  width: var(--total-column-width);
-  visibility: var(--total-column-visibility);
+  width: var(--3rd-column-width);
+  visibility: var(--3rd-column-visibility);
 }
 
 .product__list__item.-invisible {
   opacity: 0.3;
+}
+
+.options {
+  position: absolute;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  z-index: 1;
+}
+
+.options th:nth-child(1) {
+  width: auto;
+  visibility: visible;
+}
+.options th:nth-child(2) {
+  width: auto;
+  visibility: visible;
+}
+.options th:nth-child(3) {
+  width: auto;
+  visibility: visible;
 }

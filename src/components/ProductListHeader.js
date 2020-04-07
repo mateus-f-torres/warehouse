@@ -34,7 +34,7 @@ function ProductListHeader(props) {
         ))}
       </tr>
       {popupOpen && (
-        <tr>
+        <tr className="options">
           {change.map((option) => (
             <th key={option} onClick={() => _handleChangeColumn(option)}>
               {COLUMNS[option]}

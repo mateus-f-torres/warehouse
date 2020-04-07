@@ -18,6 +18,7 @@ function LoginPage(props) {
           Usuário
         </label>
         <input
+          autoComplete="off"
           required
           type="text"
           className="login-input"
@@ -29,6 +30,7 @@ function LoginPage(props) {
           Empresa
         </label>
         <input
+          autoComplete="off"
           className="login-input"
           required
           type="text"

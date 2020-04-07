@@ -17,9 +17,11 @@ function ProductsPage() {
   }
 
   return (
-    <div>
-      <p>Olá {user.username}</p>
-      <p>da empresa {user.company}</p>
+    <div className="productsPage">
+      <div className="productsPage__header">
+        <p>Olá {user.username}</p>
+        <p>da empresa {user.company}</p>
+      </div>
       {productDetail !== null && (
         <ProductForm
           addProduct={addProduct}
