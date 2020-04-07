@@ -1,6 +1,6 @@
 export const defaultDatabase = {
+  list: null,
   nextId: 0,
-  list: [],
 }
 
 const LOAD_LIST = 'warehouse/database/LOAD_LIST'

@@ -1,0 +1,21 @@
+.loadingTable {}
+.loadingTable > tr { height: 2rem; }
+.loadingTable > tr > td { animation-delay: inherit }
+.loadingTable > tr > td::after {
+  display: block;
+  content: '';
+  width: 80%;
+  height: 1rem;
+  margin: 0 auto;
+  opacity: 0.1;
+
+  animation: wave 4s ease-in-out infinite;
+  animation-delay: inherit;
+  background-color: gray;
+}
+
+@keyframes wave{
+  0%{ opacity: 0.1 }
+  50% { opacity: 1 }
+  100%{ opacity: 0.1 }
+}

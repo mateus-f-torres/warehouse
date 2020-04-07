@@ -1,6 +1,6 @@
 // TODO: tornar configuravel para rodar os tests E2E
 function getRandomDelay() {
-  return Math.ceil(Math.random() * 0) * 1000
+  return Math.ceil(Math.random() * 10) * 1000
 }
 
 // TODO: adicionar chance de ERROR

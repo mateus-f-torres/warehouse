@@ -1,8 +1,12 @@
-.productsPage {
+.products {
   display: grid;
   grid-template-rows: min-content min-content max-content;
   grid-template-columns: 80% 20%;
   grid-template-areas: 'header settings' 'search add' 'table table';
+}
+
+.products__header {
+  grid-area: header;
 }
 
 .add {
@@ -22,17 +26,6 @@
   min-width: 0;
   background: none;
   box-sizing: content-box;
-}
-
-.input {
-  border: 0;
-  margin: 0;
-  display: inline-flex;
-  padding: 0;
-  position: relative;
-  min-width: 0;
-  flex-direction: column;
-  vertical-align: top;
 }
 
 table {

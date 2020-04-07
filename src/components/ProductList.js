@@ -15,7 +15,9 @@ function ProductList(props) {
   const [state, dispatch] = React.useReducer(listReducer, defaultList)
 
   React.useEffect(() => {
-    dispatch(updateList(props.list))
+    if (!props.loading) {
+      dispatch(updateList(props.list))
+    }
   }, [props.list])
 
   function handleSearch(e) {
@@ -34,7 +36,7 @@ function ProductList(props) {
     <>
       <input className="search" placeholder="Buscar" onChange={handleSearch} />
       <button className="add" onClick={() => props.toggleDetail({})}>
-        <img src={addProduct} />
+        <img src={addProduct} alt="Adicionar novo produto" />
       </button>
       <table>
         <ProductListHeader
@@ -43,6 +45,7 @@ function ProductList(props) {
           changeColumn={handleChangeColumn}
         />
         <ProductListBody
+          loading={props.loading}
           columns={state.columns}
           visible={state.visible}
           invisible={state.invisible}

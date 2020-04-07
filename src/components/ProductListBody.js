@@ -1,8 +1,11 @@
 import React from 'react'
+import LoadingTable from './table/LoadingTable/LoadingTable'
 import ProductListItem from './ProductListItem'
 
 function ProductListBody(props) {
-  return (
+  return props.loading ? (
+    <LoadingTable />
+  ) : (
     <tbody>
       {props.visible.map((item) => (
         <ProductListItem
