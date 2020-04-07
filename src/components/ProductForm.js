@@ -1,5 +1,8 @@
 import React from 'react'
 
+import TextInput from './common/TextInput/TextInput'
+import Button from './common/Button/Button'
+
 // A-Z | a-z | vogais acentuadas caixa-alta e caixa-baixa
 // const nameRegex = /([\u0041-\u005A\u0061-\u007A\u00C0-\u00FF])+/gu
 // ao menos um numero | pode ter ponto para dividir centenas | pode ter virgula para dividir decimal
@@ -120,70 +123,50 @@ function ProductForm(props) {
 
   const formClass = 'form'.concat(errorsVisible ? ` -validate` : '')
 
-  // .form.-validate input:invalid { some style }
-
   return (
-    <form className={formClass} noValidate onSubmit={_handleSubmission}>
-      <SuperInput
+    <form noValidate className={formClass} onSubmit={_handleSubmission}>
+      <TextInput
         required
-        type="text"
         name="product"
-        error={errors.product}
         default={props.detail ? props.detail.product : ''}
-        placeholder="Nome do Produto"
+        autocomplete="off"
         pattern="([\u0000-\u00FF])+"
-        validation={validateProductName}
+        placeholder="Nome do Produto"
+        onInput={validateProductName}
       />
-      <SuperInput
+      {errors.product && <span>{errors.product}</span>}
+      <TextInput
         required
-        pattern="\d+(?:\.\d{3})*(,\d{1,2})?"
-        type="text"
         name="stock"
         default={props.detail ? props.detail.stock : ''}
-        placeholder="Quantidade em Estoque"
-        validation={validateProductStock}
-        error={errors.stock}
-      />
-      <SuperInput
-        required
+        autocomplete="off"
         pattern="\d+(?:\.\d{3})*(,\d{1,2})?"
-        type="text"
+        placeholder="Quantidade em Estoque"
+        onInput={validateProductStock}
+      />
+      {errors.stock && <span>{errors.stock}</span>}
+      <TextInput
+        required
         name="price"
         default={props.detail ? props.detail.price : ''}
+        autocomplete="off"
+        pattern="\d+(?:\.\d{3})*(,\d{1,2})?"
         placeholder="Preço Unitário"
-        validation={validateProductPrice}
-        error={errors.price}
+        onInput={validateProductPrice}
       />
-      <button
+      {errors.price && <span>{errors.price}</span>}
+      <Button
         type="button"
+        label="Deletar"
         onClick={() => props.removeProduct(props.detail.id)}
-      >
-        Deletar
-      </button>
-      <button type="button" onClick={() => props.toggleDetail(null)}>
-        Cancelar
-      </button>
-      <button type="submit">Criar</button>
-    </form>
-  )
-}
-
-function SuperInput(props) {
-  return (
-    <label>
-      <input
-        className="input"
-        autoComplete="off"
-        defaultValue={props.default}
-        required={props.required}
-        pattern={props.pattern}
-        type={props.type}
-        name={props.name}
-        placeholder={props.placeholder}
-        onInput={props.validation}
       />
-      {props.error && <span>{props.error}</span>}
-    </label>
+      <Button
+        type="button"
+        label="Cancelar"
+        onClick={() => props.toggleDetail(null)}
+      />
+      <Button type="submit" label="Criar" />
+    </form>
   )
 }
 

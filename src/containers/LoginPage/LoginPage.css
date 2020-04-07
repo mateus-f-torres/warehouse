@@ -7,11 +7,11 @@
   justify-items: center;
 }
 
-.login-title { grid-area: title; }
+.login__title { grid-area: title; }
 
-.login-img { grid-area: banner; width: 100%; }
+.login__banner { grid-area: banner; width: 100%; }
 
-.login-form {
+.login__form {
   grid-area: form;
   width: 100%;
   display: flex;
@@ -19,28 +19,12 @@
   justify-content: center;
 }
 
-.login-label { display: none; }
-
-.login-input {
+.login__form > .w-input {
   width: 75%;
-  padding: 0 0.5rem;
   margin: 0.5rem 0;
-  line-height: 2rem;
-  border: 1px solid #18A0FB;
-  border-radius: 0.25rem;
 }
 
-.login-input::placeholder { color: #18A0FB; }
-
-.login-btn {
+.login__form > .w-button {
   width: calc(75% + 1.25rem);
-  height: 2.25rem;
   margin-top: 0.5rem;
-  border: none;
-  color: white;
-  font-weight: bold;
-  letter-spacing: 0.25rem;
-  text-transform: uppercase;
-  background-color: #18A0FB;
-  border-radius: 0.25rem;
 }
