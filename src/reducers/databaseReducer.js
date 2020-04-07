@@ -1,133 +1,97 @@
 export const defaultDatabase = {
-  ceilIndex: 0,
-  productList: [],
-  sortKey: 'name',
+  nextId: 0,
+  list: [],
 }
 
-const GET_ALL_ITEMS = 'warehouse/database/GET_ALL_ITEMS'
-const ADD_NEW_ITEM = 'warehouse/database/ADD_NEW_ITEM'
-const REMOVE_ITEM = 'warehouse/database/REMOVE_ITEM'
-const EDIT_ITEM = 'warehouse/database/EDIT_ITEM'
-const SORT_ITEMS = 'warehouse/database/SORT_ITEMS'
+const LOAD_LIST = 'warehouse/database/LOAD_LIST'
+const ADD_ITEM = 'warehouse/database/ADD_ITEM'
+const DELETE_ITEM = 'warehouse/database/DELETE_ITEM'
+const UPDATE_ITEM = 'warehouse/database/UPDATE_ITEM'
 
 function databaseReducer(state, action) {
   switch (action.type) {
-    case GET_ALL_ITEMS:
-      return getAllItemsFromDatabase(action.payload)
+    case LOAD_LIST:
+      return loadDatabaseWithItems(action.payload)
 
-    case ADD_NEW_ITEM:
-      return addNewItemToDatabase(state, action.payload)
+    case ADD_ITEM:
+      return addItemToDatabase(state, action.payload)
 
-    case REMOVE_ITEM:
-      return removeItemFromDatabase(state, action.payload)
+    case DELETE_ITEM:
+      return deleteItemFromDatabase(state, action.payload)
 
-    case EDIT_ITEM:
-      return editItemInDatabase(state, action.payload)
-
-    case SORT_ITEMS:
-      return sortItemsInDatabase(state, action.payload)
+    case UPDATE_ITEM:
+      return updateItemInDatabase(state, action.payload)
 
     default:
       return state
   }
 }
 
-function getAllItemsFromDatabase(items) {
-  const nextId = getSpareId(items)
-  // BUG: falta o sort
+function loadDatabaseWithItems(items) {
+  const nextId = getSpareIdInList(items)
   return {
-    ceilIndex: nextId,
-    productList: items,
+    nextId,
+    list: items,
   }
 }
 
-function addNewItemToDatabase(state, newItem) {
-  // NOTE: veja se isso é legal Mateus
-  const newList = [newItem, ...state.productList]
-  const nextId = getSpareId(newList)
+function addItemToDatabase(state, newItem) {
+  const newList = [newItem, ...state.list]
+  const nextId = getSpareIdInList(newList)
   return {
-    ceilIndex: nextId,
-    productList: newList,
+    nextId,
+    list: newList,
   }
 }
 
-function removeItemFromDatabase(state, id) {
-  const filteredList = state.productList.filter((item) => item.id !== id)
-  const nextId = getSpareId(filteredList)
+function deleteItemFromDatabase(state, id) {
+  const filteredList = state.list.filter((item) => item.id !== id)
+  const nextId = getSpareIdInList(filteredList)
   return {
-    ceilIndex: nextId,
-    productList: filteredList,
+    nextId,
+    list: filteredList,
   }
 }
 
-function editItemInDatabase(state, editedItem) {
-  // TODO: chamar sort() apos editar item
-  // preciso ter sort como uma key então... 'stock' e '!stock'
+function updateItemInDatabase(state, edit) {
+  const editedList = state.list.map((item) =>
+    item.id === edit.id ? edit : item,
+  )
   return {
-    ceilIndex: state.ceilIndex,
-    productList: state.productList.map((item) =>
-      item.id !== editedItem.id ? item : editedItem,
-    ),
+    nextId: state.nextId,
+    list: editedList,
   }
 }
 
-// TODO: fix => esta com bugs
-function sortItemsInDatabase(state, key) {
-  if (state.sortKey !== key) {
-    const newSort = [...state.productList].sort((a, b) => {
-      if (a[key] < b[key]) return -1
-      else if (a[key] > b[key]) return 1
-      else return 0
-    })
-
-    return Object.assign({}, state, {
-      productList: newSort,
-      sortKey: key,
-    })
-  } else {
-    // TODO: essa é a linha que quebra... esse reverse()
-    return Object.assign({}, state, {
-      productList: [...state.productList.reverse()],
-    })
-  }
-}
-
-export function getAllItems(items) {
+export function loadDatabase(items) {
   return {
-    type: GET_ALL_ITEMS,
+    type: LOAD_LIST,
     payload: items,
   }
 }
 
-export function addNewItem(item) {
+export function addItem(item) {
   return {
-    type: ADD_NEW_ITEM,
+    type: ADD_ITEM,
     payload: item,
   }
 }
 
-export function removeItem(id) {
+export function deleteItem(id) {
   return {
-    type: REMOVE_ITEM,
+    type: DELETE_ITEM,
     payload: id,
   }
 }
 
-export function editItem(editedItem) {
+export function updateItem(edit) {
   return {
-    type: EDIT_ITEM,
-    payload: editedItem,
+    type: UPDATE_ITEM,
+    payload: edit,
   }
 }
 
-export function sortItems(key) {
-  return {
-    type: SORT_ITEMS,
-    payload: key,
-  }
-}
-
-function getSpareId(arr) {
+function getSpareIdInList(arr) {
   return arr
     .map(({id}) => id)
     .sort((a, b) => (a > b ? 1 : -1))

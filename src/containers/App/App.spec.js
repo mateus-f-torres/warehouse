@@ -18,8 +18,8 @@ describe('App', () => {
 })
 
 // NOTE: integration
-describe('Search Field', function() {
-  it('should filter the product list with given text', function() {})
+describe('Search Field', function () {
+  it('should filter the product list with given text', function () {})
 })
 
 // NOTE:
@@ -32,11 +32,11 @@ describe('Search Field', function() {
 //  1 - changes should be locally saved (page refresh wont reset list)
 //  5 - changing stock to 0 deletes entry
 //  6 - total value changes with stock|price modifications
-describe('Product List', function() {
-  it('should remove a zeroed stock quantity entry', function() {})
-  it('should alter total value when stock AND|OR price is modified', function() {})
-  it('should remove an entry when delete button is clicked', function() {})
-  it('should allow users to reorder the list by dragging items', function() {})
-  it('should reorder the list when headers are clicked', function() {})
-  it('should locally save list state (page refresh wont reset list)', function() {})
+describe('Product List', function () {
+  it('should remove a zeroed stock quantity entry', function () {})
+  it('should alter total value when stock AND|OR price is modified', function () {})
+  it('should remove an entry when delete button is clicked', function () {})
+  it('should allow users to reorder the list by dragging items', function () {})
+  it('should reorder the list when headers are clicked', function () {})
+  it('should locally save list state (page refresh wont reset list)', function () {})
 })

@@ -24,17 +24,22 @@
 }
 
 table {
-  --stock-column-width: 10%;
-  --price-column-width: 10%;
+  --stock-column-width: 0%;
+  --price-column-width: 0%;
   --total-column-width: 30%;
 
-  --stock-column-visibility: visible;
-  --price-column-visibility: visible;
+  --stock-column-visibility: hidden;
+  --price-column-visibility: hidden;
   --total-column-visibility: visible;
 
   table-layout: fixed;
   width: 100%;
   border-collapse: collapse;
+}
+
+thead th {
+  background-color: gray;
+  padding: 1rem;
 }
 
 thead th:nth-child(1) {

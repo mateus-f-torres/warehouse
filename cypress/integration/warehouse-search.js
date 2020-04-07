@@ -1,8 +1,3 @@
-const MOCK_USER = {
-  username: 'MOCK_USERNAME',
-  company: 'MOCK_COMPANY',
-}
-
 const MOCK_PRODUCT_LIST = [
   {name: 'Wine', stock: '4', price: '47,99'},
   {name: 'Butterscotch', stock: '2', price: '22,39'},
@@ -15,9 +10,9 @@ const MOCK_PRODUCT_LIST = [
   {name: 'Filtro de café', stock: '2', price: '3,99'},
 ]
 
-describe('Warehouse', function() {
+describe('Warehouse', function () {
   before(() => {
-    cy.loginWith(MOCK_USER)
+    cy.login()
     cy.populateProductListWith(MOCK_PRODUCT_LIST)
   })
 
@@ -25,22 +20,22 @@ describe('Warehouse', function() {
     cy.findByPlaceholderText('Buscar').clear()
   })
 
-  describe('allows a user to search for a product', function() {
-    it('should NOT be location sensitive', function() {
+  describe('allows a user to search for a product', function () {
+    it('should NOT be location sensitive', function () {
       cy.findByPlaceholderText('Buscar').type('Butter')
       cy.findByText('Vinho').should('not.exist')
       cy.findByText('Butterscotch').should('exist')
       cy.findByText('Coconut Butter').should('exist')
     })
 
-    it('should NOT be case sensitive', function() {
+    it('should NOT be case sensitive', function () {
       cy.findByPlaceholderText('Buscar').type('café')
       cy.findByText('Vinho').should('not.exist')
       cy.findByText('Filtro de café').should('exist')
       cy.findByText('Café em pó').should('exist')
     })
 
-    it('should NOT be accent sentive', function() {
+    it('should NOT be accent sentive', function () {
       cy.findByPlaceholderText('Buscar').type('mamão')
       cy.findByText('Vinho').should('not.exist')
       cy.findByText('Mamão').should('exist')

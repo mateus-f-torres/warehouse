@@ -1,30 +1,24 @@
 import React from 'react'
+
+import useUser from '../../hooks/useUser'
 import LoginPage from '../LoginPage/LoginPage'
 import ProductsPage from '../ProductsPage/ProductsPage'
-import useUserInfo from '../../hooks/useUserInfo'
-import useDatabase from '../../hooks/useDatabase'
 import './App.css'
 
+export const UserContext = React.createContext(null)
+
 function App() {
-  const user = useUserInfo()
-  const database = useDatabase()
+  const [user, {createNewUser}] = useUser()
 
   return (
     <div className="container">
-      {!user.username ? (
-        <LoginPage onLogin={user.createNewUser} />
-      ) : (
-        <ProductsPage
-          list={database.list}
-          sort={database.sort}
-          company={user.company}
-          username={user.username}
-          reOrder={database.reOrder}
-          addProduct={database.addProduct}
-          updateProduct={database.updateProduct}
-          removeProduct={database.removeProduct}
-        />
-      )}
+      <UserContext.Provider value={user}>
+        {!user.username ? (
+          <LoginPage onLogin={createNewUser} />
+        ) : (
+          <ProductsPage />
+        )}
+      </UserContext.Provider>
     </div>
   )
 }
