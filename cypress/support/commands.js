@@ -6,12 +6,14 @@ const MOCK_USER = {
 }
 
 beforeEach(() => {
-  const request = indexedDB.open('TEST_COMPANY', 1)
+  const request = window.indexedDB.open('TEST_COMPANY', 1)
   request.onerror = () => {}
-  request.onupgradeneeded = () => {}
+  request.onupgradeneeded = (e) => {
+    e.target.result.createObjectStore('products', {keyPath: 'id'})
+  }
   request.onsuccess = (event) => {
     const clearRequest = event.target.result
-      .transaction(['products'], 'readwrite')
+      .transaction('products', 'readwrite')
       .objectStore('products')
       .clear()
     clearRequest.onerror = () => {}
