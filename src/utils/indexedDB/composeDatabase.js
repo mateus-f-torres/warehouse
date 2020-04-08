@@ -46,7 +46,7 @@ function composeAddData(db, store) {
         request.onsuccess = () => {
           resolve()
         }
-      }, fake.asyncDelay())
+      })
     })
   }
 }
@@ -65,7 +65,7 @@ function composeDeleteData(db, store) {
         request.onsuccess = () => {
           resolve()
         }
-      }, fake.asyncDelay())
+      })
     })
   }
 }
@@ -91,7 +91,7 @@ function composePutData(db, store) {
             resolve(newData)
           }
         }
-      }, fake.asyncDelay())
+      })
     })
   }
 }
@@ -110,7 +110,7 @@ function composeClearAllData(db, store) {
         request.onsuccess = () => {
           resolve()
         }
-      }, fake.asyncDelay())
+      })
     })
   }
 }
