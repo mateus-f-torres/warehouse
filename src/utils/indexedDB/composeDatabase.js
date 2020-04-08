@@ -1,6 +1,4 @@
-// TODO: tornar configuravel para rodar os tests E2E
-// TODO: adicionar chance de ERROR
-import fake from '../fake'
+import fake from '../fake/fake'
 
 function composeDatabase(db, store) {
   return {

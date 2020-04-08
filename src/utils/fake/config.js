@@ -6,7 +6,7 @@ const CONFIG = {
   DEFAULT: {delay: 10, error: 0.9},
 }
 
-function getTestValue(key) {
+function getConfig(key) {
   const name = localStorage.getItem('company')
   if (CONFIG[name]) {
     return CONFIG[name][key]
@@ -15,11 +15,4 @@ function getTestValue(key) {
   }
 }
 
-export default {
-  asyncDelay() {
-    return Math.ceil(Math.random() * getTestValue('delay')) * 1000
-  },
-  throwRandomError() {
-    if (Math.random() > getTestValue('error')) throw new Error('Oh no!')
-  },
-}
+export default getConfig
