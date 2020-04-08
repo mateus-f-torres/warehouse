@@ -1,0 +1,19 @@
+.w-input {
+  padding: 0 0.5rem;
+  line-height: 2rem;
+  border: 1px solid #18A0FB;
+  border-radius: 0.25rem;
+  height: 2.5rem;
+}
+
+.w-input::placeholder {
+  color: #18A0FB;
+}
+
+.w-input:hover,
+.w-input:focus {
+  outline: none;
+}
+
+.w-input.-invalid {}
+

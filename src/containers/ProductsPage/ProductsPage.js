@@ -10,27 +10,33 @@ import './ProductsPage.css'
 function ProductsPage() {
   const user = React.useContext(UserContext)
   const [list, {addProduct, removeProduct, updateProduct}] = useDatabase(user)
-  const [productDetail, toggleDetail] = React.useState(null)
+  const [detail, toggleDetail] = React.useState(null)
 
   function repeatedProductCheck(name) {
     return list.find(({product}) => product == name) !== undefined
   }
 
   return (
-    <div>
-      <p>Olá {user.username}</p>
-      <p>da empresa {user.company}</p>
-      {productDetail !== null && (
+    <div className="products">
+      <div className="products__header">
+        <p>Olá {user.username}</p>
+        <p>da empresa {user.company}</p>
+      </div>
+      <ProductList
+        list={list}
+        loading={list === null}
+        toggleDetail={toggleDetail}
+      />
+      {detail !== null && (
         <ProductForm
           addProduct={addProduct}
           removeProduct={removeProduct}
           updateProduct={updateProduct}
           toggleDetail={toggleDetail}
-          detail={list.find(({id}) => id === productDetail)}
+          detail={list.find(({id}) => id === detail)}
           checkForRepeatedProduct={repeatedProductCheck}
         />
       )}
-      <ProductList list={list} toggleDetail={toggleDetail} />
     </div>
   )
 }

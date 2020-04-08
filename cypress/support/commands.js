@@ -6,12 +6,14 @@ const MOCK_USER = {
 }
 
 beforeEach(() => {
-  const request = indexedDB.open('TEST_COMPANY', 1)
+  const request = window.indexedDB.open('TEST_COMPANY', 1)
   request.onerror = () => {}
-  request.onupgradeneeded = () => {}
+  request.onupgradeneeded = (e) => {
+    e.target.result.createObjectStore('products', {keyPath: 'id'})
+  }
   request.onsuccess = (event) => {
     const clearRequest = event.target.result
-      .transaction(['products'], 'readwrite')
+      .transaction('products', 'readwrite')
       .objectStore('products')
       .clear()
     clearRequest.onerror = () => {}
@@ -43,14 +45,17 @@ Cypress.Commands.add('login', function () {
   cy.findByPlaceholderText('Usuário').type(MOCK_USER.username)
   cy.findByPlaceholderText('Empresa').type(MOCK_USER.company)
   cy.findByText('Entrar').click()
+  // TODO: change to wait for loading table to stop
+  /* eslint cypress/no-unnecessary-waiting: 'off' */
+  cy.wait(1000)
 })
 
 Cypress.Commands.add('populateProductListWith', function (MOCK_LIST) {
   MOCK_LIST.forEach((item) => {
-    cy.findByText('Adicionar novo produto').click()
-    cy.findByPlaceholderText('Nome do Produto').type(item.name)
-    cy.findByPlaceholderText('Quantidade em Estoque').type(item.stock)
-    cy.findByPlaceholderText('Preço Unitário').type(item.price)
+    cy.findAllByAltText('Adicionar novo produto').click()
+    cy.findByLabelText('Nome do produto').type(item.name)
+    cy.findByLabelText('Quantidade em estoque').type(item.stock)
+    cy.findByLabelText('Preço unitário').type(item.price)
     cy.findByText('Criar').click()
   })
 })

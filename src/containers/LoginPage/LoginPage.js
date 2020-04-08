@@ -1,6 +1,10 @@
 import React from 'react'
+
+import TextInput from '../../components/common/TextInput/TextInput'
+import Button from '../../components/common/Button/Button'
+
 import './LoginPage.css'
-import bannerImg from '../../assets/images/banner.svg'
+import banner from '../../assets/images/banner.svg'
 
 function LoginPage(props) {
   function handleSubmit(e) {
@@ -11,34 +15,24 @@ function LoginPage(props) {
 
   return (
     <div className="login">
-      <h1 className="login-title">Warehouse</h1>
-      <img className="login-img" src={bannerImg} alt="hi" />
-      <form className="login-form" onSubmit={handleSubmit}>
-        <label className="login-label" htmlFor="login-user">
-          Usuário
-        </label>
-        <input
+      <h1 className="login__title">Warehouse</h1>
+      <img className="login__banner" src={banner} alt="Warehouse Banner" />
+      <form noValidate className="login__form" onSubmit={handleSubmit}>
+        <TextInput
           required
-          type="text"
-          className="login-input"
-          id="login-user"
           name="username"
+          id="login-username"
+          autocomplete="off"
           placeholder="Usuário"
         />
-        <label className="login-label" htmlFor="login-company">
-          Empresa
-        </label>
-        <input
-          className="login-input"
+        <TextInput
           required
-          type="text"
-          id="login-company"
           name="company"
+          id="login-company"
+          autocomplete="off"
           placeholder="Empresa"
         />
-        <button className="login-btn" type="submit">
-          Entrar
-        </button>
+        <Button type="submit" label="Entrar" />
       </form>
     </div>
   )

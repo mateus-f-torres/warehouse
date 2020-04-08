@@ -22,19 +22,13 @@ function ProductListHeader(props) {
         <th onClick={() => props.changeSort('id')}>ID</th>
         <th onClick={() => props.changeSort('product')}>Produto</th>
         {props.columns.map((key, i) => (
-          <th
-            key={key.concat(i)}
-            onPointerDown={getClickHandler(
-              () => props.changeSort(key),
-              () => togglePopupOpen(key),
-            )}
-          >
+          <th key={key.concat(i)} onClick={() => props.changeSort(key)}>
             {COLUMNS[key]}
           </th>
         ))}
       </tr>
       {popupOpen && (
-        <tr>
+        <tr className="options">
           {change.map((option) => (
             <th key={option} onClick={() => _handleChangeColumn(option)}>
               {COLUMNS[option]}
@@ -46,7 +40,9 @@ function ProductListHeader(props) {
   )
 }
 
+// TODO: achar uma forma melhor de double touch
 // ruim essa tatica...mudar
+/*
 function getClickHandler(onClick, onDblClick, delay = 250) {
   let timeoutID = null
   return function (event) {
@@ -61,5 +57,6 @@ function getClickHandler(onClick, onDblClick, delay = 250) {
     }
   }
 }
+ */
 
 export default ProductListHeader

@@ -1,0 +1,14 @@
+.w-button {
+  height: 2.25rem;
+  border: none;
+  color: white;
+  font-weight: bold;
+  letter-spacing: 0.25rem;
+  text-transform: uppercase;
+  background-color: #18A0FB;
+  border-radius: 0.25rem;
+}
+
+.w-button:hover,
+.w-button:focus {}
+.w-button:active {}

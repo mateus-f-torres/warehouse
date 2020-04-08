@@ -1,93 +1,165 @@
+.products {
+  display: grid;
+  grid-template-rows: min-content min-content max-content;
+  grid-template-columns: 80% 20%;
+  grid-template-areas: 'header settings' 'search add' 'table table';
+}
+
+.products__header {
+  grid-area: header;
+  margin-left: 0.75rem;
+}
+
+.add {
+  grid-area: add;
+  margin-right: 0.75rem;
+  width: min-content;
+  height: min-content;
+  align-self: end;
+  justify-self: end;
+}
+
 .search {
-  font: inherit;
-  /*color: currentColor;*/
+  grid-area: search;
   width: 100%;
   border: 0;
-  height: 1.1875em;
-  margin: 0;
+  height: 2rem;
+  margin-left: 0.5rem;
   display: block;
   padding: 0.5rem;
   min-width: 0;
   background: none;
-  box-sizing: content-box;
-}
-
-.input {
-  border: 0;
-  margin: 0;
-  display: inline-flex;
-  padding: 0;
-  position: relative;
-  min-width: 0;
-  flex-direction: column;
-  vertical-align: top;
 }
 
 table {
-  --stock-column-width: 0%;
-  --price-column-width: 0%;
-  --total-column-width: 30%;
+  --1st-column-width: 15%;
+  --2nd-column-width: 55%;
+  --3rd-column-width: auto;
+  --4th-column-width: auto;
+  --5th-column-width: 30%;
 
-  --stock-column-visibility: hidden;
-  --price-column-visibility: hidden;
-  --total-column-visibility: visible;
+  --1st-column-visibility: visible;
+  --2nd-column-visibility: visible;
+  --3rd-column-visibility: hidden;
+  --4th-column-visibility: hidden;
+  --5th-column-visibility: visible;
 
-  table-layout: fixed;
+  grid-area: table;
   width: 100%;
+  margin-top: 1rem;
+  table-layout: fixed;
   border-collapse: collapse;
 }
 
-thead th {
-  background-color: gray;
-  padding: 1rem;
-}
+thead { position: relative; }
+
+thead th { background-color: gray; padding: 0.5rem; }
 
 thead th:nth-child(1) {
-  width: 15%;
+  width: var(--1st-column-width);
+  visibility: var(--1st-column-visibility);
 }
 
 thead th:nth-child(2) {
-  width: 55%;
+  width: var(--2nd-column-width);
+  visibility: var(--2nd-column-visibility);
 }
 
 thead th:nth-child(3) {
-  width: var(--stock-column-width);
-  visibility: var(--stock-column-visibility);
+  width: var(--3rd-column-width);
+  visibility: var(--3rd-column-visibility);
 }
 
 thead th:nth-child(4) {
-  width: var(--price-column-width);
-  visibility: var(--price-column-visibility);
+  width: var(--4th-column-width);
+  visibility: var(--4th-column-visibility);
 }
 
 thead th:nth-child(5) {
-  width: var(--total-column-width);
-  visibility: var(--total-column-visibility);
+  width: var(--5th-column-width);
+  visibility: var(--5th-column-visibility);
 }
 
 tbody tr td:nth-child(1) {
-  width: 15%;
+  width: var(--1st-column-width);
+  visibility: var(--1st-column-visibility);
 }
 
 tbody tr td:nth-child(2) {
-  width: 55%;
+  width: var(--2nd-column-width);
+  visibility: var(--2nd-column-visibility);
 }
 
 tbody tr td:nth-child(3) {
-  width: var(--stock-column-width);
-  visibility: var(--stock-column-visibility);
+  width: var(--3rd-column-width);
+  visibility: var(--3rd-column-visibility);
 }
 
 tbody tr td:nth-child(4) {
-  width: var(--price-column-width);
-  visibility: var(--price-column-visibility);
+  width: var(--4th-column-width);
+  visibility: var(--4th-column-visibility);
 }
 
 tbody tr td:nth-child(5) {
-  width: var(--total-column-width);
-  visibility: var(--total-column-visibility);
+  width: var(--5th-column-width);
+  visibility: var(--5th-column-visibility);
+}
+
+@media screen and (min-width: 600px) {
+  table {
+    --1st-column-width: 10%;
+    --2nd-column-width: 30%;
+    --3rd-column-width: 20%;
+    --4th-column-width: 20%;
+    --5th-column-width: 20%;
+
+    --1st-column-visibility: visible;
+    --2nd-column-visibility: visible;
+    --3rd-column-visibility: visible;
+    --4th-column-visibility: visible;
+    --5th-column-visibility: visible;
+  }
+
+}
+
+.product__list__item {
+  height: 2rem;
 }
 
 .product__list__item.-invisible {
   opacity: 0.3;
 }
+
+/*
+.options {
+  position: absolute;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  z-index: 1;
+}
+
+.options th:nth-child(1) {
+  width: auto;
+  visibility: visible;
+}
+.options th:nth-child(2) {
+  width: auto;
+  visibility: visible;
+}
+.options th:nth-child(3) {
+  width: auto;
+  visibility: visible;
+}
+ */
+
+/* controlar quando o primeiro item faz fadein
+.product__list__item:nth-of-type(1) {
+  animation: fadein 2s;
+}
+
+@keyframes fadein {
+  from { opacity: 0 }
+  to { opacity: 1 }
+}
+ */
