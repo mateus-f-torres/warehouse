@@ -3,6 +3,7 @@
   line-height: 2rem;
   border: 1px solid #18A0FB;
   border-radius: 0.25rem;
+  height: 2.5rem;
 }
 
 .w-input::placeholder {

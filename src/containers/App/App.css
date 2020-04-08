@@ -3,7 +3,11 @@ body {
   font-family: Roboto, sans-serif;
 }
 
-.container {}
+.container {
+  height: 100vh;
+  width: 100%;
+  overflow-y: hidden;
+}
 
 .header {
   width: 100%;

@@ -1,7 +1,8 @@
 .login {
+  height: calc(100% - 2rem);
   margin: 1rem;
   display: grid;
-  grid-template-rows: max-content min-content min-content;
+  grid-template-rows: minmax(200px, 60%) min-content min-content;
   grid-template-columns: auto;
   grid-template-areas: 'banner' 'title' 'form';
   justify-items: center;
@@ -9,7 +10,13 @@
 
 .login__title { grid-area: title; }
 
-.login__banner { grid-area: banner; width: 100%; }
+.login__banner {
+  grid-area: banner;
+  align-self: end;
+  width: 100%;
+  height: auto;
+  max-height: 100%;
+}
 
 .login__form {
   grid-area: form;
@@ -21,10 +28,37 @@
 
 .login__form > .w-input {
   width: 75%;
+  max-width: 360px;
   margin: 0.5rem 0;
 }
 
 .login__form > .w-button {
   width: calc(75% + 1.25rem);
+  max-width: calc(360px + 1.25rem);
   margin-top: 0.5rem;
+}
+
+
+/* TODO: write more media queries */
+@media screen and (min-width: 600px) {
+  .login {
+    grid-template-rows: auto;
+    grid-template-columns: minmax(350px, 60%) auto;
+    grid-template-areas: 'banner title' 'banner form';
+  }
+
+  .login__title {
+    margin-top: 10rem;
+    align-self: end;
+  }
+
+  .login__banner {
+    margin-bottom: 2rem;
+    margin-left: 1rem;
+  }
+
+  .login__form {
+    flex-direction: column;
+    align-items: center;
+  }
 }
