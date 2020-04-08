@@ -2,7 +2,7 @@ describe('Warehouse', function () {
   before(() => cy.login())
 
   describe('allows a user to add a new product to the list', function () {
-    beforeEach(() => cy.findByText('Adicionar novo produto').click())
+    beforeEach(() => cy.findByAltText('Adicionar novo produto').click())
 
     function addNewProduct({name, stock, price}) {
       cy.findByPlaceholderText('Nome do Produto').type(name)

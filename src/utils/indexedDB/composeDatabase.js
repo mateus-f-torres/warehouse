@@ -1,12 +1,6 @@
 // TODO: tornar configuravel para rodar os tests E2E
-function getRandomDelay() {
-  return Math.ceil(Math.random() * 10) * 1000
-}
-
 // TODO: adicionar chance de ERROR
-// function throwRandomError() {
-//   if (Math.random() > 0.9) throw new Error('Oh no!')
-// }
+import fake from '../fake'
 
 function composeDatabase(db, store) {
   return {
@@ -22,6 +16,12 @@ function composeGetAllData(db, store) {
   return function () {
     return new Promise((resolve, reject) => {
       window.setTimeout(() => {
+        try {
+          fake.throwRandomError()
+        } catch (e) {
+          reject(e)
+        }
+
         const request = db.transaction(store).objectStore(store).getAll()
         request.onerror = (e) => {
           reject(e)
@@ -29,7 +29,7 @@ function composeGetAllData(db, store) {
         request.onsuccess = (e) => {
           resolve(e.target.result)
         }
-      }, getRandomDelay())
+      }, fake.asyncDelay())
     })
   }
 }
@@ -48,7 +48,7 @@ function composeAddData(db, store) {
         request.onsuccess = () => {
           resolve()
         }
-      }, getRandomDelay())
+      }, fake.asyncDelay())
     })
   }
 }
@@ -67,7 +67,7 @@ function composeDeleteData(db, store) {
         request.onsuccess = () => {
           resolve()
         }
-      }, getRandomDelay())
+      }, fake.asyncDelay())
     })
   }
 }
@@ -93,7 +93,7 @@ function composePutData(db, store) {
             resolve(newData)
           }
         }
-      }, getRandomDelay())
+      }, fake.asyncDelay())
     })
   }
 }
@@ -112,7 +112,7 @@ function composeClearAllData(db, store) {
         request.onsuccess = () => {
           resolve()
         }
-      }, getRandomDelay())
+      }, fake.asyncDelay())
     })
   }
 }

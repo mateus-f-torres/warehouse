@@ -23,9 +23,11 @@ body {
   z-index: 10;
 }
 
-.product__list__item {
+/* controlar quando o primeiro item faz fadein
+.product__list__item:nth-of-type(1) {
   animation: fadein 2s;
 }
+ */
 
 @keyframes fadein {
   from { opacity: 0 }

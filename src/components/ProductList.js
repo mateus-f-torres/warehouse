@@ -35,7 +35,11 @@ function ProductList(props) {
   return (
     <>
       <input className="search" placeholder="Buscar" onChange={handleSearch} />
-      <button className="add" onClick={() => props.toggleDetail({})}>
+      <button
+        className="add"
+        onClick={() => props.toggleDetail({})}
+        disabled={props.loading}
+      >
         <img src={addProduct} alt="Adicionar novo produto" />
       </button>
       <table>
