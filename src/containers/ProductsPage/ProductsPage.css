@@ -7,6 +7,7 @@
 
 .products__header {
   grid-area: header;
+  margin-left: 0.75rem;
 }
 
 .add {
@@ -38,8 +39,9 @@ table {
   --3rd-column-visibility: visible;
 
   grid-area: table;
-  table-layout: fixed;
   width: 100%;
+  margin-top: 1rem;
+  table-layout: fixed;
   border-collapse: collapse;
 }
 
