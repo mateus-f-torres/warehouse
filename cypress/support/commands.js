@@ -53,9 +53,9 @@ Cypress.Commands.add('login', function () {
 Cypress.Commands.add('populateProductListWith', function (MOCK_LIST) {
   MOCK_LIST.forEach((item) => {
     cy.findAllByAltText('Adicionar novo produto').click()
-    cy.findByPlaceholderText('Nome do Produto').type(item.name)
-    cy.findByPlaceholderText('Quantidade em Estoque').type(item.stock)
-    cy.findByPlaceholderText('Preço Unitário').type(item.price)
+    cy.findByLabelText('Nome do produto').type(item.name)
+    cy.findByLabelText('Quantidade em estoque').type(item.stock)
+    cy.findByLabelText('Preço unitário').type(item.price)
     cy.findByText('Criar').click()
   })
 })

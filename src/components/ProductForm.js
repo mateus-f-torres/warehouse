@@ -144,6 +144,7 @@ function ProductForm(props) {
           <span>{props.detail ? props.detail.product : 'Novo produto'}</span>
         </h3>
         <button
+          data-testid="cancel"
           type="button"
           className="form__exit"
           onClick={() => props.toggleDetail(null)}
@@ -151,7 +152,7 @@ function ProductForm(props) {
           X
         </button>
         <label htmlFor="product">
-          Nome do Produto
+          Nome do produto
           <TextInput
             required
             id="product"
@@ -176,7 +177,7 @@ function ProductForm(props) {
           {errors.stock && <p>{errors.stock}</p>}
         </label>
         <label htmlFor="price">
-          Preço Unitário
+          Preço unitário
           <TextInput
             required
             name="price"
