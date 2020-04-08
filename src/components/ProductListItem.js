@@ -22,6 +22,9 @@ function ProductListItem(props) {
       {props.columns.map((key, i) => (
         <td key={key.concat(i)}>{COLUMNS[key](props[key])}</td>
       ))}
+      <td>
+        <button onClick={() => props.toggleDetail(props.id)}>Editar</button>
+      </td>
     </tr>
   )
 }
