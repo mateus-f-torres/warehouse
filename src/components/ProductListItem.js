@@ -1,19 +1,28 @@
 import React from 'react'
 
+const formatter = new Intl.NumberFormat('pt-BR')
+
+const COLUMNS = {
+  stock: (value) => formatter.format(value),
+  price: (value) => `R$ ${formatter.format(value)}`,
+  total: (value) => `R$ ${formatter.format(value)}`,
+}
+
+// TODO: adicionar btn de editar
 function ProductListItem(props) {
+  const className = 'product__list__item'.concat(
+    props.invisible ? ' -invisible' : '',
+  )
   return (
-    <tr>
+    <tr
+      className={className}
+      onDoubleClick={(e) => props.toggleDetail(props.id)}
+    >
       <td>{props.id}</td>
       <td>{props.product}</td>
-      <td>{props.formatter.format(props.stock)}</td>
-      <td>&#82;&#36; {props.formatter.format(props.price)}</td>
-      <td>
-        &#82;&#36;{' '}
-        {props.formatter.format((props.stock * props.price).toFixed(2))}
-      </td>
-      <td>
-        <button onClick={() => props.onDelete(props.product)}>Deletar</button>
-      </td>
+      {props.columns.map((key, i) => (
+        <td key={key.concat(i)}>{COLUMNS[key](props[key])}</td>
+      ))}
     </tr>
   )
 }

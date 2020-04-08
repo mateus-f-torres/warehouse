@@ -1,5 +1,10 @@
 import React from 'react'
 
+import TextInput from './common/TextInput/TextInput'
+import Button from './common/Button/Button'
+
+import './ProductsForm.css'
+
 // A-Z | a-z | vogais acentuadas caixa-alta e caixa-baixa
 // const nameRegex = /([\u0041-\u005A\u0061-\u007A\u00C0-\u00FF])+/gu
 // ao menos um numero | pode ter ponto para dividir centenas | pode ter virgula para dividir decimal
@@ -8,6 +13,23 @@ import React from 'react'
 function convertToNumber(str) {
   return Number(str.replace(/\./g, '').replace(',', '.'))
 }
+
+const formatter = new Intl.NumberFormat('pt-BR')
+
+/*
+function calculateTotal(stock, price) {
+  if (stock && price) {
+    const stockNumber = convertToNumber(stock)
+    const priceNumber = convertToNumber(price)
+    const totalNumber = (stockNumber * priceNumber).toFixed(2)
+    return formatter.format(totalNumber)
+  } else {
+    return '00,00'
+  }
+}
+ */
+
+// TODO: adicionar botão deletar
 
 function allInputsAreValid(inputArray) {
   return inputArray.every((input) => input.validity.valid === true)
@@ -22,11 +44,23 @@ function ProductForm(props) {
     const {product, stock, price} = e.target
     if (allInputsAreValid([product, stock, price])) {
       toggleErrorsVisibility(false)
-      props.onSubmission({
-        product: product.value,
-        stock: convertToNumber(stock.value),
-        price: convertToNumber(price.value),
-      })
+      const numberStock = convertToNumber(stock.value)
+      const numberPrice = convertToNumber(price.value)
+      if (props.detail) {
+        props.updateProduct(props.detail.id, {
+          product: product.value,
+          stock: numberStock,
+          price: numberPrice,
+          total: Number((numberStock * numberPrice).toFixed(2)),
+        })
+      } else {
+        props.addProduct({
+          product: product.value,
+          stock: numberStock,
+          price: numberPrice,
+        })
+      }
+      props.toggleDetail(null)
     } else {
       toggleErrorsVisibility(true)
       changeErrors({
@@ -102,59 +136,73 @@ function ProductForm(props) {
 
   const formClass = 'form'.concat(errorsVisible ? ` -validate` : '')
 
-  // .form.-validate input:invalid { some style }
-
   return (
-    <form className={formClass} noValidate onSubmit={_handleSubmission}>
-      <SuperInput
-        required
-        type="text"
-        name="product"
-        error={errors.product}
-        placeholder="Nome do Produto"
-        pattern="([\u0000-\u00FF])+"
-        validation={validateProductName}
-      />
-      <SuperInput
-        required
-        pattern="\d+(?:\.\d{3})*(,\d{1,2})?"
-        type="text"
-        name="stock"
-        placeholder="Quantidade em Estoque"
-        validation={validateProductStock}
-        error={errors.stock}
-      />
-      <SuperInput
-        required
-        pattern="\d+(?:\.\d{3})*(,\d{1,2})?"
-        type="text"
-        name="price"
-        placeholder="Preço Unitário"
-        validation={validateProductPrice}
-        error={errors.price}
-      />
-      <button type="button" onClick={props.closeModal}>
-        Cancelar
-      </button>
-      <button type="submit">Criar</button>
-    </form>
-  )
-}
-
-function SuperInput(props) {
-  return (
-    <label>
-      <input
-        autoComplete="off"
-        required={props.required}
-        pattern={props.pattern}
-        type={props.type}
-        name={props.name}
-        placeholder={props.placeholder}
-        onInput={props.validation}
-      />
-      {props.error && <span>{props.error}</span>}
-    </label>
+    <div className="modal">
+      <form noValidate className={formClass} onSubmit={_handleSubmission}>
+        <h3 className="form__title">
+          <span>#{props.detail ? props.detail.id : '_'}</span>{' '}
+          <span>{props.detail ? props.detail.product : 'Novo produto'}</span>
+        </h3>
+        <button
+          data-testid="cancel"
+          type="button"
+          className="form__exit"
+          onClick={() => props.toggleDetail(null)}
+        >
+          X
+        </button>
+        <label htmlFor="product">
+          Nome do produto
+          <TextInput
+            required
+            id="product"
+            name="product"
+            default={props.detail ? props.detail.product : ''}
+            autocomplete="off"
+            pattern="([\u0000-\u00FF])+"
+            onInput={validateProductName}
+          />
+          {errors.product && <p>{errors.product}</p>}
+        </label>
+        <label htmlFor="stock">
+          Quantidade em estoque
+          <TextInput
+            required
+            name="stock"
+            default={props.detail ? formatter.format(props.detail.stock) : ''}
+            autocomplete="off"
+            pattern="\d+(?:\.\d{3})*(,\d{1,2})?"
+            onInput={validateProductStock}
+          />
+          {errors.stock && <p>{errors.stock}</p>}
+        </label>
+        <label htmlFor="price">
+          Preço unitário
+          <TextInput
+            required
+            name="price"
+            default={props.detail ? formatter.format(props.detail.price) : ''}
+            autocomplete="off"
+            pattern="\d+(?:\.\d{3})*(,\d{1,2})?"
+            onInput={validateProductPrice}
+          />
+          {errors.price && <p>{errors.price}</p>}
+        </label>
+        <div className="form__buttons">
+          {props.detail && (
+            <Button
+              type="button"
+              label="Deletar"
+              onClick={() => {
+                props.removeProduct(props.detail.id)
+                props.toggleDetail(null)
+              }}
+            />
+          )}
+          <Button type="submit" label={props.detail ? 'Editar' : 'Criar'} />
+        </div>
+      </form>
+    </div>
   )
 }
 

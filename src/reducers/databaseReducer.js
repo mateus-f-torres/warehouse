@@ -1,128 +1,101 @@
 export const defaultDatabase = {
-  ceilIndex: 1,
-  productList: [],
-  sortKey: 'name',
+  list: null,
+  nextId: 0,
 }
 
-const GET_ALL_ITEMS = 'warehouse/database/GET_ALL_ITEMS'
-const ADD_NEW_ITEM = 'warehouse/database/ADD_NEW_ITEM'
-const REMOVE_ITEM = 'warehouse/database/REMOVE_ITEM'
-const EDIT_ITEM = 'warehouse/database/EDIT_ITEM'
-const SORT_ITEMS = 'warehouse/database/SORT_ITEMS'
+const LOAD_LIST = 'warehouse/database/LOAD_LIST'
+const ADD_ITEM = 'warehouse/database/ADD_ITEM'
+const DELETE_ITEM = 'warehouse/database/DELETE_ITEM'
+const UPDATE_ITEM = 'warehouse/database/UPDATE_ITEM'
 
 function databaseReducer(state, action) {
   switch (action.type) {
-    case GET_ALL_ITEMS:
-      return getAllItemsFromDatabase(action.payload)
+    case LOAD_LIST:
+      return loadDatabaseWithItems(action.payload)
 
-    case ADD_NEW_ITEM:
-      return addNewItemToDatabase(state, action.payload)
+    case ADD_ITEM:
+      return addItemToDatabase(state, action.payload)
 
-    case REMOVE_ITEM:
-      return removeItemFromDatabase(state, action.payload)
+    case DELETE_ITEM:
+      return deleteItemFromDatabase(state, action.payload)
 
-    case EDIT_ITEM:
-      return editItemInDatabase(state, action.payload)
-
-    case SORT_ITEMS:
-      return sortItemsInDatabase(state, action.payload)
+    case UPDATE_ITEM:
+      return updateItemInDatabase(state, action.payload)
 
     default:
       return state
   }
 }
 
-function getAllItemsFromDatabase(items) {
-  let ceilIndex = 1
-  const productList = []
-
-  items.forEach((item) => {
-    if (item.id > ceilIndex) ceilIndex = item.id
-    productList.push(item)
-  })
-
-  // BUG: falta o sort
+function loadDatabaseWithItems(items) {
+  const nextId = getSpareIdInList(items)
   return {
-    ceilIndex,
-    productList,
+    nextId,
+    list: items,
   }
 }
 
-function addNewItemToDatabase(state, newItem) {
+function addItemToDatabase(state, newItem) {
+  const newList = [newItem, ...state.list]
+  const nextId = getSpareIdInList(newList)
   return {
-    ceilIndex: newItem.id,
-    productList: [...state.productList, newItem],
+    nextId,
+    list: newList,
   }
 }
 
-function removeItemFromDatabase(state, itemName) {
+function deleteItemFromDatabase(state, id) {
+  const filteredList = state.list.filter((item) => item.id !== id)
+  const nextId = getSpareIdInList(filteredList)
   return {
-    ceilIndex: state.ceilIndex,
-    productList: state.productList.filter((item) => item.product !== itemName),
+    nextId,
+    list: filteredList,
   }
 }
 
-function editItemInDatabase(state, editedItem) {
+function updateItemInDatabase(state, edit) {
+  const editedList = state.list.map((item) =>
+    item.id === edit.id ? edit : item,
+  )
   return {
-    ceilIndex: state.ceilIndex,
-    productList: state.productList.map((item) =>
-      item.name !== editedItem.name ? item : editedItem,
-    ),
+    nextId: state.nextId,
+    list: editedList,
   }
 }
 
-function sortItemsInDatabase(state, key) {
-  if (state.sortKey !== key) {
-    const newSort = [...state.productList].sort((a, b) => {
-      if (a[key] < b[key]) return -1
-      else if (a[key] > b[key]) return 1
-      else return 0
-    })
-
-    return Object.assign({}, state, {
-      productList: newSort,
-      sortKey: key,
-    })
-  } else {
-    return Object.assign({}, state, {
-      productList: [...state.productList.reverse()],
-    })
-  }
-}
-
-export function getAllItems(items) {
+export function loadDatabase(items) {
   return {
-    type: GET_ALL_ITEMS,
+    type: LOAD_LIST,
     payload: items,
   }
 }
 
-export function addNewItem(item) {
+export function addItem(item) {
   return {
-    type: ADD_NEW_ITEM,
+    type: ADD_ITEM,
     payload: item,
   }
 }
 
-export function removeItem(itemName) {
+export function deleteItem(id) {
   return {
-    type: REMOVE_ITEM,
-    payload: itemName,
+    type: DELETE_ITEM,
+    payload: id,
   }
 }
 
-export function editItem(editedItem) {
+export function updateItem(edit) {
   return {
-    type: EDIT_ITEM,
-    payload: editedItem,
+    type: UPDATE_ITEM,
+    payload: edit,
   }
 }
 
-export function sortItems(key) {
-  return {
-    type: SORT_ITEMS,
-    payload: key,
-  }
+function getSpareIdInList(arr) {
+  return arr
+    .map(({id}) => id)
+    .sort((a, b) => (a > b ? 1 : -1))
+    .reduce((num, nextNumber) => (num == nextNumber ? num + 1 : num), 1)
 }
 
 export default databaseReducer

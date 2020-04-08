@@ -10,42 +10,32 @@ const MOCK_PRODUCT_LIST = [
   {name: 'Filtro de café', stock: '2', price: '3,99'},
 ]
 
-function populateProductListWith(MOCK_LIST) {
-  MOCK_LIST.forEach((item) => {
-    cy.findByText('Adicionar novo produto').click()
-    cy.findByPlaceholderText('Nome do Produto').type(item.name)
-    cy.findByPlaceholderText('Quantidade em Estoque').type(item.stock)
-    cy.findByPlaceholderText('Preço Unitário').type(item.price)
-    cy.findByText('Criar').click()
-  })
-}
-
-describe('Warehouse', function() {
+describe('Warehouse', function () {
   before(() => {
-    cy.visit('/')
-    populateProductListWith(MOCK_PRODUCT_LIST)
+    cy.login()
+    cy.populateProductListWith(MOCK_PRODUCT_LIST)
   })
 
   afterEach(() => {
     cy.findByPlaceholderText('Buscar').clear()
   })
 
-  describe('allows a user to search for a product', function() {
-    it('should NOT be location sensitive', function() {
+  describe('allows a user to search for a product', function () {
+    it('should NOT be location sensitive', function () {
       cy.findByPlaceholderText('Buscar').type('Butter')
       cy.findByText('Vinho').should('not.exist')
       cy.findByText('Butterscotch').should('exist')
       cy.findByText('Coconut Butter').should('exist')
     })
 
-    it('should NOT be case sensitive', function() {
+    it('should NOT be case sensitive', function () {
       cy.findByPlaceholderText('Buscar').type('café')
       cy.findByText('Vinho').should('not.exist')
       cy.findByText('Filtro de café').should('exist')
       cy.findByText('Café em pó').should('exist')
     })
 
-    it('should NOT be accent sentive', function() {
+    it('should NOT be accent sentive', function () {
       cy.findByPlaceholderText('Buscar').type('mamão')
       cy.findByText('Vinho').should('not.exist')
       cy.findByText('Mamão').should('exist')
