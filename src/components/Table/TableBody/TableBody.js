@@ -1,14 +1,14 @@
 import React from 'react'
-import LoadingTable from './table/LoadingTable/LoadingTable'
-import ProductListItem from './ProductListItem'
+import LoadingTable from '../LoadingTable/LoadingTable'
+import TableBodyItem from './TableBodyItem/TableBodyItem'
 
-function ProductListBody(props) {
+function TableBody(props) {
   return props.loading ? (
     <LoadingTable />
   ) : (
     <tbody>
       {props.visible.map((item) => (
-        <ProductListItem
+        <TableBodyItem
           {...item}
           key={item.id}
           columns={props.columns}
@@ -16,7 +16,7 @@ function ProductListBody(props) {
         />
       ))}
       {props.invisible.map((item) => (
-        <ProductListItem
+        <TableBodyItem
           {...item}
           invisible
           key={item.id}
@@ -27,4 +27,4 @@ function ProductListBody(props) {
   )
 }
 
-export default ProductListBody
+export default TableBody

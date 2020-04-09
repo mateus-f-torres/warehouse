@@ -6,7 +6,7 @@ describe('Warehouse Login', function () {
 
     it('shows login page for new users', function () {
       cy.visit('/')
-      cy.findByText('Warehouse').should('exist')
+      cy.findByAltText('Warehouse Banner').should('exist')
     })
 
     it('allows a new user to log in', function () {
@@ -35,7 +35,7 @@ describe('Warehouse Login', function () {
 
     it('shows login page if local storage is cleared', function () {
       cy.reload()
-      cy.findByText('Warehouse').should('exist')
+      cy.findByAltText('Warehouse Banner').should('exist')
     })
   })
 })

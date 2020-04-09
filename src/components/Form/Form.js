@@ -1,20 +1,17 @@
 import React from 'react'
 
-import TextInput from './common/TextInput/TextInput'
-import Button from './common/Button/Button'
+import TextInput from '../common/TextInput/TextInput'
+import Button from '../common/Button/Button'
 
-import './ProductsForm.css'
+import validateProductName from './validations/validateProductName'
+import validateProductStock from './validations/validateProductStock'
+import validateProductPrice from './validations/validateProductPrice'
+import './Form.css'
 
 // A-Z | a-z | vogais acentuadas caixa-alta e caixa-baixa
 // const nameRegex = /([\u0041-\u005A\u0061-\u007A\u00C0-\u00FF])+/gu
 // ao menos um numero | pode ter ponto para dividir centenas | pode ter virgula para dividir decimal
 // const numberRegex = /^\d+(?:\.\d{3})*(?:,\d{1,2})?$/
-
-function convertToNumber(str) {
-  return Number(str.replace(/\./g, '').replace(',', '.'))
-}
-
-const formatter = new Intl.NumberFormat('pt-BR')
 
 /*
 function calculateTotal(stock, price) {
@@ -29,13 +26,17 @@ function calculateTotal(stock, price) {
 }
  */
 
-// TODO: adicionar botão deletar
+function convertToNumber(str) {
+  return Number(str.replace(/\./g, '').replace(',', '.'))
+}
+
+const formatter = new Intl.NumberFormat('pt-BR')
 
 function allInputsAreValid(inputArray) {
   return inputArray.every((input) => input.validity.valid === true)
 }
 
-function ProductForm(props) {
+function Form(props) {
   const [errorsVisible, toggleErrorsVisibility] = React.useState(false)
   const [errors, changeErrors] = React.useState({})
 
@@ -46,6 +47,7 @@ function ProductForm(props) {
       toggleErrorsVisibility(false)
       const numberStock = convertToNumber(stock.value)
       const numberPrice = convertToNumber(price.value)
+      // NOTE: edit mode
       if (props.detail) {
         props.updateProduct(props.detail.id, {
           product: product.value,
@@ -53,6 +55,7 @@ function ProductForm(props) {
           price: numberPrice,
           total: Number((numberStock * numberPrice).toFixed(2)),
         })
+        // NOTE: create mode
       } else {
         props.addProduct({
           product: product.value,
@@ -61,6 +64,8 @@ function ProductForm(props) {
         })
       }
       props.toggleDetail(null)
+
+      // NOTE: invalid
     } else {
       toggleErrorsVisibility(true)
       changeErrors({
@@ -68,69 +73,6 @@ function ProductForm(props) {
         stock: stock.validationMessage,
         price: price.validationMessage,
       })
-    }
-  }
-
-  function validateProductName(e) {
-    const input = e.target
-    const name = input.value
-    switch (true) {
-      case name.trim() === '':
-        input.setCustomValidity('produto precisa de um nome')
-        input.checkValidity()
-        break
-
-      case props.checkForRepeatedProduct(name):
-        input.setCustomValidity('produto já existente')
-        input.checkValidity()
-        break
-
-      default:
-        input.setCustomValidity('')
-        input.checkValidity()
-        break
-    }
-  }
-
-  function validateProductStock(e) {
-    const input = e.target
-    const stock = input.value
-    switch (true) {
-      case input.validity.patternMismatch:
-        input.setCustomValidity('quantidade precisa ser numerica')
-        input.checkValidity()
-        break
-
-      case convertToNumber(stock) <= 0:
-        input.setCustomValidity('quantidade em estoque não pode ser 0')
-        input.checkValidity()
-        break
-
-      default:
-        input.setCustomValidity('')
-        input.checkValidity()
-        break
-    }
-  }
-
-  function validateProductPrice(e) {
-    const input = e.target
-    const price = input.value
-    switch (true) {
-      case input.validity.patternMismatch:
-        input.setCustomValidity('valor unitário precisa ser numerico')
-        input.checkValidity()
-        break
-
-      case convertToNumber(price) <= 0:
-        input.setCustomValidity('valor unitário não pode ser 0')
-        input.checkValidity()
-        break
-
-      default:
-        input.setCustomValidity('')
-        input.checkValidity()
-        break
     }
   }
 
@@ -206,4 +148,4 @@ function ProductForm(props) {
   )
 }
 
-export default ProductForm
+export default Form
