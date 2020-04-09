@@ -1,8 +1,8 @@
 import React from 'react'
 
 import {UserContext} from '../App/App'
-import ProductList from '../../components/ProductList'
-import ProductForm from '../../components/ProductForm'
+import Table from '../../components/Table/Table'
+import Form from '../../components/Form/Form'
 
 import useDatabase from '../../hooks/useDatabase'
 import './ProductsPage.css'
@@ -22,13 +22,9 @@ function ProductsPage() {
         <p>Olá {user.username}</p>
         <p>da empresa {user.company}</p>
       </div>
-      <ProductList
-        list={list}
-        loading={list === null}
-        toggleDetail={toggleDetail}
-      />
+      <Table list={list} loading={list === null} toggleDetail={toggleDetail} />
       {detail !== null && (
-        <ProductForm
+        <Form
           addProduct={addProduct}
           removeProduct={removeProduct}
           updateProduct={updateProduct}

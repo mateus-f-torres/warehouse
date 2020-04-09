@@ -32,7 +32,7 @@ describe('Search Field', function () {
 //  1 - changes should be locally saved (page refresh wont reset list)
 //  5 - changing stock to 0 deletes entry
 //  6 - total value changes with stock|price modifications
-describe('Product List', function () {
+describe('Product Table', function () {
   it('should remove a zeroed stock quantity entry', function () {})
   it('should alter total value when stock AND|OR price is modified', function () {})
   it('should remove an entry when delete button is clicked', function () {})

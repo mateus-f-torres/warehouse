@@ -8,8 +8,7 @@ const COLUMNS = {
   total: (value) => `R$ ${formatter.format(value)}`,
 }
 
-// TODO: adicionar btn de editar
-function ProductListItem(props) {
+function TableBodyItem(props) {
   const className = 'product__list__item'.concat(
     props.invisible ? ' -invisible' : '',
   )
@@ -27,4 +26,4 @@ function ProductListItem(props) {
   )
 }
 
-export default ProductListItem
+export default TableBodyItem
