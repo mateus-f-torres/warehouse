@@ -8,7 +8,7 @@ const COLUMNS = {
 
 const change = ['stock', 'price', 'total']
 
-function ProductListHeader(props) {
+function TableHeader(props) {
   const [popupOpen, togglePopupOpen] = React.useState(null)
 
   function _handleChangeColumn(newColumn) {
@@ -59,4 +59,4 @@ function getClickHandler(onClick, onDblClick, delay = 250) {
 }
  */
 
-export default ProductListHeader
+export default TableHeader
