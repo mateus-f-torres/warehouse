@@ -40,6 +40,22 @@ function Form(props) {
   const [errorsVisible, toggleErrorsVisibility] = React.useState(false)
   const [errors, changeErrors] = React.useState({})
 
+  React.useEffect(() => {
+    // TODO: js router
+    // NOTE: initial draft of client-side vanilla js router
+    window.onpopstate = function () {
+      if (window.location.pathname == '/') props.toggleDetail(null)
+    }
+    window.history.pushState(
+      {},
+      '',
+      props.detail ? props.detail.product : 'novo-produto',
+    )
+    return () => {
+      if (window.location.pathname != '/') window.history.back()
+    }
+  }, [])
+
   function _handleSubmission(e) {
     e.preventDefault()
     const {product, stock, price} = e.target
@@ -76,11 +92,20 @@ function Form(props) {
     }
   }
 
+  function handleKeyDown(e) {
+    if (e.key === 'Escape') props.toggleDetail(null)
+  }
+
   const formClass = 'form'.concat(errorsVisible ? ` -validate` : '')
 
   return (
     <div className="modal">
-      <form noValidate className={formClass} onSubmit={_handleSubmission}>
+      <form
+        noValidate
+        className={formClass}
+        onSubmit={_handleSubmission}
+        onKeyDown={handleKeyDown}
+      >
         <h3 className="form__title">
           <span>#{props.detail ? props.detail.id : '_'}</span>{' '}
           <span>{props.detail ? props.detail.product : 'Novo produto'}</span>
@@ -89,6 +114,7 @@ function Form(props) {
           data-testid="cancel"
           type="button"
           className="form__exit"
+          autoFocus
           onClick={() => props.toggleDetail(null)}
         >
           X
@@ -111,6 +137,7 @@ function Form(props) {
           <TextInput
             required
             name="stock"
+            inputmode="decimal"
             default={props.detail ? formatter.format(props.detail.stock) : ''}
             autocomplete="off"
             pattern="\d+(?:\.\d{3})*(,\d{1,2})?"
@@ -123,6 +150,7 @@ function Form(props) {
           <TextInput
             required
             name="price"
+            inputmode="decimal"
             default={props.detail ? formatter.format(props.detail.price) : ''}
             autocomplete="off"
             pattern="\d+(?:\.\d{3})*(,\d{1,2})?"

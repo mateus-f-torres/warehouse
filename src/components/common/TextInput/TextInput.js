@@ -10,6 +10,8 @@ function TextInput(props) {
       name={props.name}
       pattern={props.pattern}
       required={props.required}
+      autoFocus={props.autofocus}
+      inputMode={props.inputmode}
       defaultValue={props.default}
       placeholder={props.placeholder}
       autoComplete={props.autocomplete}
