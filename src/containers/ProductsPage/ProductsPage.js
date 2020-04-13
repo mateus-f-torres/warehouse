@@ -7,10 +7,11 @@ import Form from '../../components/Form/Form'
 import useDatabase from '../../hooks/useDatabase'
 import './ProductsPage.css'
 
-function ProductsPage() {
+function ProductsPage(props) {
   const user = React.useContext(UserContext)
   const [list, {addProduct, removeProduct, updateProduct}] = useDatabase(user)
   const [detail, toggleDetail] = React.useState(null)
+  const [settings, toggleSettings] = React.useState(false)
 
   function repeatedProductCheck(name) {
     return list.find(({product}) => product == name) !== undefined
@@ -22,7 +23,16 @@ function ProductsPage() {
         <p>Olá {user.username}</p>
         <p>da empresa {user.company}</p>
       </div>
+      <button
+        className="settings"
+        onClick={() => {
+          toggleSettings(true)
+        }}
+      >
+        settings
+      </button>
       <Table list={list} loading={list === null} toggleDetail={toggleDetail} />
+      {settings && <button onClick={props.onLogout}>sair</button>}
       {detail !== null && (
         <Form
           addProduct={addProduct}

@@ -7,3 +7,7 @@ export function writeToLocalStorage(map) {
     localStorage.setItem(key, value)
   }
 }
+
+export function removeFromLocalStorage(keys) {
+  for (const k of keys) localStorage.removeItem(k)
+}

@@ -31,6 +31,16 @@
   background: none;
 }
 
+.settings {
+  grid-area: settings;
+  margin-top: 0.75rem;
+  margin-right: 0.75rem;
+  width: min-content;
+  height: min-content;
+  align-self: start;
+  justify-self: end;
+}
+
 .product__list__item {
   height: 2rem;
 }

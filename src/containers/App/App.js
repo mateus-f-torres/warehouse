@@ -8,7 +8,7 @@ import './App.css'
 export const UserContext = React.createContext(null)
 
 function App() {
-  const [user, {createNewUser}] = useUser()
+  const [user, {createNewUser, deleteUser}] = useUser()
 
   return (
     <div className="container">
@@ -16,7 +16,7 @@ function App() {
         {!user.username ? (
           <LoginPage onLogin={createNewUser} />
         ) : (
-          <ProductsPage />
+          <ProductsPage onLogout={deleteUser} />
         )}
       </UserContext.Provider>
     </div>
