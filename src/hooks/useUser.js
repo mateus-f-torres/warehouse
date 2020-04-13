@@ -6,6 +6,7 @@ import {
   unloadUser,
   defaultUser,
 } from '../reducers/userReducer'
+
 import {
   readFromLocalStorage,
   writeToLocalStorage,
@@ -25,7 +26,7 @@ function useUser() {
     }
   }, [])
 
-  function createNewUser([username, company]) {
+  function createUser([username, company]) {
     writeToLocalStorage({[USERNAME_KEY]: username, [COMPANY_KEY]: company})
     dispatch(loadUser([username, company]))
   }
@@ -37,7 +38,7 @@ function useUser() {
 
   return [
     {username: state.username, company: state.company},
-    {createNewUser, deleteUser},
+    {createUser, deleteUser},
   ]
 }
 

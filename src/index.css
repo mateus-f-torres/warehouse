@@ -1,5 +1,6 @@
 @import '~normalize.css';
 
+/* TODO: adicionar custom propreties e fonts */
 :root {
   --main-bg-color: #445963;
   --main-tx-color: #1b1b1e;
