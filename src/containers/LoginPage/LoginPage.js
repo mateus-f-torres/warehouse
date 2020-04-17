@@ -1,12 +1,23 @@
 import React from 'react'
+import Button from '@material-ui/core/Button'
+import TextField from '@material-ui/core/TextField'
+import Typography from '@material-ui/core/Typography'
 
-import TextInput from '../../components/common/TextInput/TextInput'
-import Button from '../../components/common/Button/Button'
+import {useTheme} from '@material-ui/core/styles'
+import {useMediaQuery} from '@material-ui/core'
 
-import './LoginPage.css'
 import banner from '../../assets/images/banner.svg'
+import useLoginPageStyles from './LoginPage.styles'
 
 function LoginPage(props) {
+  const theme = useTheme()
+  const classes = useLoginPageStyles()
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('xs'))
+
+  const containerClass = `${classes.login} ${
+    !isSmallScreen ? classes['login-md'] : ''
+  }`
+
   function handleSubmit(e) {
     e.preventDefault()
     const {username, company} = e.target
@@ -14,25 +25,50 @@ function LoginPage(props) {
   }
 
   return (
-    <div className="login">
-      <h1 className="login__title">Warehouse</h1>
-      <img className="login__banner" src={banner} alt="Warehouse Banner" />
-      <form noValidate className="login__form" onSubmit={handleSubmit}>
-        <TextInput
+    <div className={containerClass}>
+      <Typography
+        variant={isSmallScreen ? 'h3' : 'h2'}
+        component="h1"
+        className={classes.title}
+      >
+        {isSmallScreen ? 'Warehouse' : 'Digital Warehouse'}
+      </Typography>
+      <img className={classes.banner} src={banner} alt="Warehouse Banner" />
+      <form
+        noValidate
+        autoComplete="off"
+        className={classes.form}
+        onSubmit={handleSubmit}
+      >
+        <TextField
+          className={classes.text}
+          fullWidth
           required
+          id="username"
           name="username"
-          id="login-username"
-          autocomplete="off"
+          autoComplete="off"
+          variant="outlined"
           placeholder="Usuário"
         />
-        <TextInput
+        <TextField
+          className={classes.text}
+          fullWidth
           required
+          id="company"
           name="company"
-          id="login-company"
-          autocomplete="off"
+          autoComplete="off"
+          variant="outlined"
           placeholder="Empresa"
         />
-        <Button type="submit" label="Entrar" />
+        <Button
+          className={classes.btn}
+          fullWidth
+          variant="contained"
+          color="primary"
+          type="submit"
+        >
+          Entrar
+        </Button>
       </form>
     </div>
   )
