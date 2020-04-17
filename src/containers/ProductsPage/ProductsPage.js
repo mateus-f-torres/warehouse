@@ -1,17 +1,20 @@
 import React from 'react'
-
-import {UserContext} from '../App/App'
 import Table from '../../components/Table/Table'
-import Form from '../../components/Form/Form'
 
 import useDatabase from '../../hooks/useDatabase'
 import './ProductsPage.css'
+import Header from '../../components/Header'
+import {UserContext} from '../App/App'
+import SmallScreenFAB from '../../components/SmallScreenFAB'
+import CustomDialog from '../../components/CustomDialog'
 
 function ProductsPage(props) {
   const user = React.useContext(UserContext)
-  const [list, {addProduct, removeProduct, updateProduct}] = useDatabase(user)
+  const [
+    list,
+    {addProduct, removeProduct, updateProduct, clearAllProducts},
+  ] = useDatabase(user)
   const [detail, toggleDetail] = React.useState(null)
-  const [settings, toggleSettings] = React.useState(false)
 
   function repeatedProductCheck(name) {
     return list.find(({product}) => product == name) !== undefined
@@ -19,30 +22,26 @@ function ProductsPage(props) {
 
   return (
     <div className="products">
-      <div className="products__header">
-        <p>Olá {user.username}</p>
-        <p>da empresa {user.company}</p>
-      </div>
-      <button
-        className="settings"
-        onClick={() => {
-          toggleSettings(true)
-        }}
-      >
-        settings
-      </button>
+      <Header
+        user={user}
+        onLogout={props.onLogout}
+        onClearAllProducts={clearAllProducts}
+      />
       <Table list={list} loading={list === null} toggleDetail={toggleDetail} />
-      {settings && <button onClick={props.onLogout}>sair</button>}
-      {detail !== null && (
-        <Form
-          addProduct={addProduct}
-          removeProduct={removeProduct}
-          updateProduct={updateProduct}
-          toggleDetail={toggleDetail}
-          detail={list.find(({id}) => id === detail)}
-          checkForRepeatedProduct={repeatedProductCheck}
-        />
-      )}
+      <CustomDialog
+        open={detail !== null}
+        onClose={() => toggleDetail(null)}
+        addProduct={addProduct}
+        removeProduct={removeProduct}
+        updateProduct={updateProduct}
+        toggleDetail={toggleDetail}
+        detail={detail ? list.find(({id}) => id === detail) : null}
+        checkForRepeatedProduct={repeatedProductCheck}
+      />
+      <SmallScreenFAB
+        visible={list !== null}
+        onClick={() => toggleDetail({})}
+      />
     </div>
   )
 }

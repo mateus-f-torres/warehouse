@@ -7,6 +7,7 @@ const LOAD_LIST = 'warehouse/database/LOAD_LIST'
 const ADD_ITEM = 'warehouse/database/ADD_ITEM'
 const DELETE_ITEM = 'warehouse/database/DELETE_ITEM'
 const UPDATE_ITEM = 'warehouse/database/UPDATE_ITEM'
+const CLEAR_LIST = 'warehouse/database/CLEAR_LIST'
 
 function databaseReducer(state, action) {
   switch (action.type) {
@@ -21,6 +22,9 @@ function databaseReducer(state, action) {
 
     case UPDATE_ITEM:
       return updateItemInDatabase(state, action.payload)
+
+    case CLEAR_LIST:
+      return clearAllItemsInDatabase()
 
     default:
       return state
@@ -63,6 +67,13 @@ function updateItemInDatabase(state, edit) {
   }
 }
 
+function clearAllItemsInDatabase() {
+  return {
+    list: [],
+    nextId: 0,
+  }
+}
+
 export function loadDatabase(items) {
   return {
     type: LOAD_LIST,
@@ -88,6 +99,12 @@ export function updateItem(edit) {
   return {
     type: UPDATE_ITEM,
     payload: edit,
+  }
+}
+
+export function clearDatabase() {
+  return {
+    type: CLEAR_LIST,
   }
 }
 

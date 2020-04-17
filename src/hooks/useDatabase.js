@@ -5,6 +5,7 @@ import databaseReducer, {
   addItem,
   deleteItem,
   updateItem,
+  clearDatabase,
   defaultDatabase,
 } from '../reducers/databaseReducer'
 import createDatabase from '../utils/indexedDB/createDatabase'
@@ -59,7 +60,17 @@ function useDatabase(user) {
       .catch((e) => console.error(new Error(e)))
   }
 
-  return [state.list, {addProduct, removeProduct, updateProduct}]
+  function clearAllProducts() {
+    database.current
+      .clearAllData()
+      .then(() => dispatch(clearDatabase()))
+      .catch((e) => console.error(new Error(e)))
+  }
+
+  return [
+    state.list,
+    {addProduct, removeProduct, updateProduct, clearAllProducts},
+  ]
 }
 
 export default useDatabase
