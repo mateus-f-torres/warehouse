@@ -6,6 +6,7 @@ function composeDatabase(db, store) {
     addData: composeAddData(db, store),
     deleteData: composeDeleteData(db, store),
     putData: composePutData(db, store),
+    updateAll: composeUpdateAll(db, store),
     clearAllData: composeClearAllData(db, store),
   }
 }
@@ -90,6 +91,26 @@ function composePutData(db, store) {
           updateRequest.onsuccess = () => {
             resolve(newData)
           }
+        }
+      })
+    })
+  }
+}
+
+function composeUpdateAll(db, store) {
+  return function (updatedData) {
+    return new Promise((resolve, reject) => {
+      window.setTimeout(() => {
+        const transaction = db.transaction(store, 'readwrite')
+        const storeRef = transaction.objectStore(store)
+        for (const d of updatedData) {
+          storeRef.put(d)
+        }
+        transaction.onerror = (e) => {
+          reject(e)
+        }
+        transaction.onsuccess = () => {
+          resolve()
         }
       })
     })

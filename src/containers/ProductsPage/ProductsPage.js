@@ -22,7 +22,7 @@ function ProductsPage(props) {
   const user = React.useContext(UserContext)
   const [database, dispatch] = useDatabase(user)
 
-  // const draft = React.useRef()
+  const draft = React.useRef()
 
   const [list, setList] = React.useState([])
   const [sort, setSort] = React.useState('')
@@ -40,13 +40,7 @@ function ProductsPage(props) {
     }
   }, [database])
 
-  /* TODO: use ref to hold list value on unmount
-  React.useEffect(() => {
-    return () => {
-      dispatch.saveCurrentProductOrder(draft.current)
-    }
-  }, [])
-  */
+  React.useEffect(() => () => dispatch.saveCurrentOrder(draft.current), [])
 
   function repeatedProductCheck(name) {
     return database.find(({product}) => product == name) !== undefined
@@ -55,9 +49,7 @@ function ProductsPage(props) {
   function handleFilter(e) {
     const value = e.target.value.trim()
     const [visible, invisible] = filterList(list, 'product', value)
-
     sortList(visible, sort)
-
     setFilter(value)
     setVisibleIndex(visible.length)
     setList([...visible, ...invisible])
@@ -84,12 +76,15 @@ function ProductsPage(props) {
     setList([...visibleList, ...invisibleList])
   }
 
-  function customReorder(newOrder) {
-    setSort('order')
-    setList(newOrder)
+  function handleReorder(from, to) {
+    const reordered = list.filter((_, i) => i !== from)
+    reordered.splice(to, 0, list[from])
+    setList(reordered)
+    setSort('custom')
   }
 
   const loading = database === null
+  draft.current = list
 
   return (
     <div className="products">
@@ -110,7 +105,7 @@ function ProductsPage(props) {
         sortKey={sort}
         visibleIndex={visibleIndex}
         toggleDetail={toggleDetail}
-        onListReorder={customReorder}
+        onListReorder={handleReorder}
         onHeaderClick={handleSort}
       />
       <CustomDialog

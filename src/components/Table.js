@@ -37,21 +37,16 @@ function MyTable(props) {
   const classes = useStyle()
 
   function handleDragEnd(result) {
-    console.log(result)
     if (result.destination) {
-      const sourceIndex = result.source.index
-      const destinationIndex = result.destination.index
-      const reordered = props.list.filter((_, i) => i !== sourceIndex)
-      reordered.splice(destinationIndex, 0, props.list[sourceIndex])
-      props.onListReorder(reordered)
+      const from = result.source.index
+      const to = result.destination.index
+      props.onListReorder(from, to)
     }
   }
 
   return (
     <TableContainer>
       <Table>
-        {/* NOTE: Table Head */}
-        {/* TODO: add sorting */}
         <TableHead>
           <TableRow>
             <TableCell>Ações</TableCell>
@@ -71,8 +66,6 @@ function MyTable(props) {
         {/* NOTE: Table Body */}
         {/* TODO: add loading table skeleton */}
         {/* TODO: add empty table */}
-        {/* TODO: add dnd re-order */}
-        {/* TODO: add edit button */}
         <DragDropContext onDragEnd={handleDragEnd}>
           <Droppable droppableId="product-tbody">
             {(dropProvided) => (

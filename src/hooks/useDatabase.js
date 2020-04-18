@@ -60,16 +60,19 @@ function useDatabase(user) {
       .catch((e) => console.error(new Error(e)))
   }
 
+  function saveCurrentOrder(order) {
+    const newData = order.map((item, index) => ({...item, index}))
+    database.current
+      .updateAll(newData)
+      .then(() => {})
+      .catch((e) => console.error(new Error(e)))
+  }
+
   function clearAllProducts() {
     database.current
       .clearAllData()
       .then(() => dispatch(clearDatabase()))
       .catch((e) => console.error(new Error(e)))
-  }
-
-  function saveCurrentProductOrder(newOrder) {
-    // db.updateAll
-    console.log('saved: ', newOrder)
   }
 
   return [
@@ -79,7 +82,7 @@ function useDatabase(user) {
       removeProduct,
       updateProduct,
       clearAllProducts,
-      saveCurrentProductOrder,
+      saveCurrentOrder,
     },
   ]
 }

@@ -32,6 +32,7 @@ function databaseReducer(state, action) {
 }
 
 function loadDatabaseWithItems(items) {
+  items.sort((a, b) => (a.index > b.index ? 1 : -1))
   const nextId = getSpareIdInList(items)
   return {
     nextId,
