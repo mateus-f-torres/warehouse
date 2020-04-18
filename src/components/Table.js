@@ -5,6 +5,7 @@ import TableHead from '@material-ui/core/TableHead'
 import TableBody from '@material-ui/core/TableBody'
 import TableRow from '@material-ui/core/TableRow'
 import TableCell from '@material-ui/core/TableCell'
+import TableSortLabel from '@material-ui/core/TableSortLabel'
 import IconButton from '@material-ui/core/IconButton'
 import EditIcon from '@material-ui/icons/Edit'
 
@@ -15,8 +16,26 @@ const useStyle = makeStyles({
   transparent: {opacity: '0.3'},
 })
 
+const ORDER = ['id', 'product', 'stock', 'price', 'total']
+const HEAD = {
+  id: 'ID',
+  product: 'Produto',
+  stock: 'Estoque',
+  price: 'Unidade',
+  total: 'Total',
+}
+const formatter = new Intl.NumberFormat('pt-BR')
+const BODY = {
+  id: (value) => value,
+  product: (value) => value,
+  stock: (value) => formatter.format(value),
+  price: (value) => `R$ ${formatter.format(value)}`,
+  total: (value) => `R$ ${formatter.format(value)}`,
+}
+
 function MyTable(props) {
   const classes = useStyle()
+
   function handleDragEnd(result) {
     console.log(result)
     if (result.destination) {
@@ -28,23 +47,6 @@ function MyTable(props) {
     }
   }
 
-  const ORDER = ['id', 'product', 'stock', 'price', 'total']
-  const HEAD = {
-    id: 'ID',
-    product: 'Produto',
-    stock: 'Estoque',
-    price: 'Unidade',
-    total: 'Total',
-  }
-  const formatter = new Intl.NumberFormat('pt-BR')
-  const BODY = {
-    id: (value) => value,
-    product: (value) => value,
-    stock: (value) => formatter.format(value),
-    price: (value) => `R$ ${formatter.format(value)}`,
-    total: (value) => `R$ ${formatter.format(value)}`,
-  }
-
   return (
     <TableContainer>
       <Table>
@@ -54,7 +56,15 @@ function MyTable(props) {
           <TableRow>
             <TableCell>Ações</TableCell>
             {ORDER.map((key) => (
-              <TableCell key={key}>{HEAD[key]}</TableCell>
+              <TableCell key={key}>
+                <TableSortLabel
+                  active={props.sortKey.includes(key)}
+                  direction={props.sortKey.includes('!') ? 'asc' : 'desc'}
+                  onClick={() => props.onHeaderClick(key)}
+                >
+                  {HEAD[key]}
+                </TableSortLabel>
+              </TableCell>
             ))}
           </TableRow>
         </TableHead>
@@ -118,48 +128,5 @@ function MyTable(props) {
     </TableContainer>
   )
 }
-/*
-function sortList(list, key) {
-  const isSortInverted = state.sort.startsWith('!')
-  const sortKey = isSortInverted ? state.sort.slice(1) : state.sort
 
-  if (sortKey !== key) {
-    const sortedList = [...state.visible].sort(fromLowestToHighest(key))
-    return {...state, sort: key, visible: sortedList}
-  } else if (isSortInverted === false) {
-    const invertSort = '!' + key
-    const sortedList = [...state.visible].sort(fromHighestToLowest(key))
-    return {...state, sort: invertSort, visible: sortedList}
-  } else {
-    const sortedList = [...state.visible].sort(fromLowestToHighest(key))
-    return {...state, sort: sortKey, visible: sortedList}
-  }
-}
-
-
-function fromLowestToHighest(key) {
-  return function (a, b) {
-    if (a[key] < b[key]) {
-      return -1
-    } else if (a[key] > b[key]) {
-      return 1
-    } else {
-      return 0
-    }
-  }
-}
-
-function fromHighestToLowest(key) {
-  return function (a, b) {
-    if (a[key] > b[key]) {
-      return -1
-    } else if (a[key] < b[key]) {
-      return 1
-    } else {
-      return 0
-    }
-  }
-}
-
-*/
 export default MyTable

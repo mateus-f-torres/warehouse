@@ -67,9 +67,20 @@ function useDatabase(user) {
       .catch((e) => console.error(new Error(e)))
   }
 
+  function saveCurrentProductOrder(newOrder) {
+    // db.updateAll
+    console.log('saved: ', newOrder)
+  }
+
   return [
     state.list,
-    {addProduct, removeProduct, updateProduct, clearAllProducts},
+    {
+      addProduct,
+      removeProduct,
+      updateProduct,
+      clearAllProducts,
+      saveCurrentProductOrder,
+    },
   ]
 }
 

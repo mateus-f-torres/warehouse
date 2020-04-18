@@ -22,42 +22,71 @@ function ProductsPage(props) {
   const user = React.useContext(UserContext)
   const [database, dispatch] = useDatabase(user)
 
+  // const draft = React.useRef()
+
   const [list, setList] = React.useState([])
-  const [filter, setFilter] = React.useState(/./)
+  const [sort, setSort] = React.useState('')
+  const [filter, setFilter] = React.useState('')
   const [visibleIndex, setVisibleIndex] = React.useState(null)
 
   const [detail, toggleDetail] = React.useState(null)
 
-  // NOTE: add/edit/remove resetam a visualização
   React.useEffect(() => {
     if (database) {
-      setList(database)
+      const [visible, invisible] = filterList(database, 'product', filter)
+      sortList(visible, sort)
+      setVisibleIndex(visible.length)
+      setList([...visible, ...invisible])
     }
   }, [database])
+
+  /* TODO: use ref to hold list value on unmount
+  React.useEffect(() => {
+    return () => {
+      dispatch.saveCurrentProductOrder(draft.current)
+    }
+  }, [])
+  */
 
   function repeatedProductCheck(name) {
     return database.find(({product}) => product == name) !== undefined
   }
 
-  function filterList(e) {
+  function handleFilter(e) {
     const value = e.target.value.trim()
-    if (filter) {
-      const focusList = []
-      const unfocusList = []
-      const newFilter = new RegExp(normalizeString(value), 'ig')
-      for (const item of database) {
-        normalizeString(item.product).search(newFilter) >= 0
-          ? focusList.push(item)
-          : unfocusList.push(item)
-      }
-      setFilter(newFilter)
-      setVisibleIndex(focusList.length)
-      setList([...focusList, ...unfocusList])
+    const [visible, invisible] = filterList(list, 'product', value)
+
+    sortList(visible, sort)
+
+    setFilter(value)
+    setVisibleIndex(visible.length)
+    setList([...visible, ...invisible])
+  }
+
+  function handleSort(key) {
+    const isSortInverted = sort.startsWith('!')
+    const sortKey = isSortInverted ? sort.slice(1) : sort
+    const visibleList = list.slice(0, visibleIndex || undefined)
+    const invisibleList = list.slice(visibleIndex || list.length)
+
+    if (sortKey !== key) {
+      sortList(visibleList, key)
+      setSort(key)
+    } else if (!isSortInverted) {
+      const invertedKey = '!' + key
+      sortList(visibleList, invertedKey)
+      setSort(invertedKey)
     } else {
-      setFilter(/./)
-      setVisibleIndex(null)
-      setList(database)
+      sortList(visibleList, key)
+      setSort(sortKey)
     }
+
+    setList([...visibleList, ...invisibleList])
+  }
+
+  function customReorder(newOrder) {
+    setSort('order')
+    setList(newOrder)
   }
 
   const loading = database === null
@@ -72,15 +101,17 @@ function ProductsPage(props) {
       <TextField
         fullWidth
         placeholder="Buscar"
-        onChange={filterList}
+        onChange={handleFilter}
         className={classes.search}
       />
       <Table
         list={list}
         loading={loading}
+        sortKey={sort}
         visibleIndex={visibleIndex}
         toggleDetail={toggleDetail}
-        onListReorder={setList}
+        onListReorder={customReorder}
+        onHeaderClick={handleSort}
       />
       <CustomDialog
         open={detail !== null}
@@ -95,6 +126,52 @@ function ProductsPage(props) {
       <SmallScreenFAB visible={!loading} onClick={() => toggleDetail({})} />
     </div>
   )
+}
+
+function sortList(list, key) {
+  if (key.startsWith('!')) {
+    list.sort(fromHighestToLowest(key.slice(1)))
+  } else {
+    list.sort(fromLowestToHighest(key))
+  }
+}
+
+function fromLowestToHighest(key) {
+  return function (a, b) {
+    if (a[key] < b[key]) {
+      return -1
+    } else if (a[key] > b[key]) {
+      return 1
+    } else {
+      return 0
+    }
+  }
+}
+
+function fromHighestToLowest(key) {
+  return function (a, b) {
+    if (a[key] > b[key]) {
+      return -1
+    } else if (a[key] < b[key]) {
+      return 1
+    } else {
+      return 0
+    }
+  }
+}
+
+function filterList(list, key, value = '.') {
+  const regex = new RegExp(normalizeString(value), 'ig')
+  const filteredIn = []
+  const filteredOut = []
+
+  for (const i of list) {
+    normalizeString(i[key]).search(regex) >= 0
+      ? filteredIn.push(i)
+      : filteredOut.push(i)
+  }
+
+  return [filteredIn, filteredOut]
 }
 
 export default ProductsPage

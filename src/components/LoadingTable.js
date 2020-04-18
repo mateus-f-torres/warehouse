@@ -1,5 +1,5 @@
 import React from 'react'
-import './LoadingTable.css'
+import './Table/LoadingTable/LoadingTable.css'
 
 const EMPTY_COLUMNS = [null, null, null, null, null]
 
