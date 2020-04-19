@@ -16,6 +16,7 @@ const useStyle = makeStyles({
   transparent: {opacity: '0.3'},
 })
 
+const formatter = new Intl.NumberFormat('pt-BR')
 const ORDER = ['id', 'product', 'stock', 'price', 'total']
 const HEAD = {
   id: 'ID',
@@ -24,7 +25,6 @@ const HEAD = {
   price: 'Unidade',
   total: 'Total',
 }
-const formatter = new Intl.NumberFormat('pt-BR')
 const BODY = {
   id: (value) => value,
   product: (value) => value,
@@ -38,9 +38,9 @@ function MyTable(props) {
 
   function handleDragEnd(result) {
     if (result.destination) {
-      const from = result.source.index
-      const to = result.destination.index
-      props.onListReorder(from, to)
+      const source = result.source.index
+      const destination = result.destination.index
+      props.onListReorder(source, destination)
     }
   }
 

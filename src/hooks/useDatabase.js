@@ -10,9 +10,9 @@ import databaseReducer, {
 } from '../reducers/databaseReducer'
 import createDatabase from '../utils/indexedDB/createDatabase'
 
-function useDatabase(user) {
+function useDatabase(user, draft) {
   const [state, dispatch] = React.useReducer(databaseReducer, defaultDatabase)
-  const database = React.useRef({})
+  const database = React.useRef()
 
   const DATABASE = {
     name: user.company,
@@ -60,18 +60,45 @@ function useDatabase(user) {
       .catch((e) => console.error(new Error(e)))
   }
 
-  function saveCurrentOrder(order) {
-    const newData = order.map((item, index) => ({...item, index}))
-    database.current
-      .updateAll(newData)
-      .then(() => {})
-      .catch((e) => console.error(new Error(e)))
-  }
-
   function clearAllProducts() {
     database.current
       .clearAllData()
       .then(() => dispatch(clearDatabase()))
+      .catch((e) => console.error(new Error(e)))
+  }
+
+  // NOTE: save before unmount (logout)
+  React.useEffect(() => saveCurrentOrder, [])
+
+  // NOTE: save before page close
+  React.useEffect(() => {
+    window.addEventListener('beforeunload', saveOnPageClose)
+    document.addEventListener('visibilitychange', saveOnTabUnfocus)
+    return () => {
+      window.removeEventListener('beforeunload', saveOnPageClose)
+      document.removeEventListener('visibilitychange', saveOnTabUnfocus)
+    }
+  }, [])
+
+  function saveOnPageClose(e) {
+    // TODO: raise prompt only once (save then allow close)
+    // NOTE: if tab has focus will ask confirmation to close
+    // e.preventDefault()
+    // e.returnValue = ''
+    saveCurrentOrder()
+  }
+
+  function saveOnTabUnfocus() {
+    if (document.visibilityState == 'hidden') {
+      saveCurrentOrder()
+    }
+  }
+
+  function saveCurrentOrder(andClose) {
+    const newData = draft.current.map((item, index) => ({...item, index}))
+    database.current
+      .updateAll(newData)
+      .then(() => {})
       .catch((e) => console.error(new Error(e)))
   }
 

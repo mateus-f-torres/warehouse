@@ -1,17 +1,14 @@
 import React from 'react'
-import Table from '../../components/Table'
-
-import useDatabase from '../../hooks/useDatabase'
-import Header from '../../components/Header'
-import {UserContext} from '../App/App'
-import SmallScreenFAB from '../../components/SmallScreenFAB'
-import CustomDialog from '../../components/CustomDialog'
 import TextField from '@material-ui/core/TextField'
 import {makeStyles} from '@material-ui/core/styles'
 
-function normalizeString(str) {
-  return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-}
+import {UserContext} from '../App/App'
+import useDatabase from '../../hooks/useDatabase'
+
+import Header from '../../components/Header'
+import Table from '../../components/Table'
+import CustomDialog from '../../components/CustomDialog'
+import SmallScreenFAB from '../../components/SmallScreenFAB'
 
 const useStyle = makeStyles({
   search: {'margin-top': '5rem', 'margin-bottom': '1rem'},
@@ -19,10 +16,10 @@ const useStyle = makeStyles({
 
 function ProductsPage(props) {
   const classes = useStyle()
-  const user = React.useContext(UserContext)
-  const [database, dispatch] = useDatabase(user)
 
   const draft = React.useRef()
+  const user = React.useContext(UserContext)
+  const [database, dispatch] = useDatabase(user, draft)
 
   const [list, setList] = React.useState([])
   const [sort, setSort] = React.useState('')
@@ -33,14 +30,22 @@ function ProductsPage(props) {
 
   React.useEffect(() => {
     if (database) {
-      const [visible, invisible] = filterList(database, 'product', filter)
+      const normalized = database.map((item) => ({
+        ...item,
+        normalized: normalize(item.product),
+      }))
+
+      const [visible, invisible] = filterList(normalized, filter)
+
       sortList(visible, sort)
       setVisibleIndex(visible.length)
       setList([...visible, ...invisible])
     }
   }, [database])
 
-  React.useEffect(() => () => dispatch.saveCurrentOrder(draft.current), [])
+  React.useEffect(() => {
+    draft.current = list
+  })
 
   function repeatedProductCheck(name) {
     return database.find(({product}) => product == name) !== undefined
@@ -48,7 +53,7 @@ function ProductsPage(props) {
 
   function handleFilter(e) {
     const value = e.target.value.trim()
-    const [visible, invisible] = filterList(list, 'product', value)
+    const [visible, invisible] = filterList(list, value)
     sortList(visible, sort)
     setFilter(value)
     setVisibleIndex(visible.length)
@@ -76,15 +81,14 @@ function ProductsPage(props) {
     setList([...visibleList, ...invisibleList])
   }
 
-  function handleReorder(from, to) {
-    const reordered = list.filter((_, i) => i !== from)
-    reordered.splice(to, 0, list[from])
+  function handleReorder(source, destination) {
+    const reordered = list.filter((_, i) => i !== source)
+    reordered.splice(destination, 0, list[source])
     setList(reordered)
     setSort('custom')
   }
 
   const loading = database === null
-  draft.current = list
 
   return (
     <div className="products">
@@ -155,18 +159,21 @@ function fromHighestToLowest(key) {
   }
 }
 
-function filterList(list, key, value = '.') {
-  const regex = new RegExp(normalizeString(value), 'ig')
+function filterList(list, value = '.') {
+  const key = value == normalize(value) ? 'normalized' : 'product'
+  const regex = new RegExp(value, 'ig')
   const filteredIn = []
   const filteredOut = []
 
   for (const i of list) {
-    normalizeString(i[key]).search(regex) >= 0
-      ? filteredIn.push(i)
-      : filteredOut.push(i)
+    i[key].search(regex) >= 0 ? filteredIn.push(i) : filteredOut.push(i)
   }
 
   return [filteredIn, filteredOut]
+}
+
+function normalize(str) {
+  return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
 }
 
 export default ProductsPage

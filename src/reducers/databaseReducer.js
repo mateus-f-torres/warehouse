@@ -41,7 +41,7 @@ function loadDatabaseWithItems(items) {
 }
 
 function addItemToDatabase(state, newItem) {
-  const newList = [...state.list, newItem]
+  const newList = [newItem, ...state.list]
   const nextId = getSpareIdInList(newList)
   return {
     nextId,

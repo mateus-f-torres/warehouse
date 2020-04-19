@@ -109,7 +109,7 @@ function composeUpdateAll(db, store) {
         transaction.onerror = (e) => {
           reject(e)
         }
-        transaction.onsuccess = () => {
+        transaction.oncomplete = () => {
           resolve()
         }
       })
