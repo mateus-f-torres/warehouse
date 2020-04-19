@@ -1,22 +1,14 @@
 import React from 'react'
-import TextField from '@material-ui/core/TextField'
-import {makeStyles} from '@material-ui/core/styles'
+
+import Header from '../../components/Header'
+import Table from '../../components/Table'
+import Interactions from '../../components/Interactions'
+import CustomDialog from '../../components/CustomDialog'
 
 import {UserContext} from '../App/App'
 import useDatabase from '../../hooks/useDatabase'
 
-import Header from '../../components/Header'
-import Table from '../../components/Table'
-import CustomDialog from '../../components/CustomDialog'
-import SmallScreenFAB from '../../components/SmallScreenFAB'
-
-const useStyle = makeStyles({
-  search: {'margin-top': '5rem', 'margin-bottom': '1rem'},
-})
-
 function ProductsPage(props) {
-  const classes = useStyle()
-
   const draft = React.useRef()
   const user = React.useContext(UserContext)
   const [database, dispatch] = useDatabase(user, draft)
@@ -97,18 +89,19 @@ function ProductsPage(props) {
         onLogout={props.onLogout}
         onClearAllProducts={dispatch.clearAllProducts}
       />
-      <TextField
-        fullWidth
-        placeholder="Buscar"
-        onChange={handleFilter}
-        className={classes.search}
+      <Interactions
+        loading={loading}
+        handleFilter={handleFilter}
+        handleAdd={() => {
+          toggleDetail({})
+        }}
       />
       <Table
         list={list}
         loading={loading}
         sortKey={sort}
         visibleIndex={visibleIndex}
-        toggleDetail={toggleDetail}
+        onEdit={toggleDetail}
         onListReorder={handleReorder}
         onHeaderClick={handleSort}
       />
@@ -122,7 +115,6 @@ function ProductsPage(props) {
         detail={detail ? database.find(({id}) => id === detail) : null}
         checkForRepeatedProduct={repeatedProductCheck}
       />
-      <SmallScreenFAB visible={!loading} onClick={() => toggleDetail({})} />
     </div>
   )
 }

@@ -96,9 +96,7 @@ function MyTable(props) {
                             }
                           >
                             <TableCell>
-                              <IconButton
-                                onClick={() => props.toggleDetail(item.id)}
-                              >
+                              <IconButton onClick={() => props.onEdit(item.id)}>
                                 <EditIcon />
                               </IconButton>
                             </TableCell>
