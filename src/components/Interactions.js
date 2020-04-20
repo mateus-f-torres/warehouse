@@ -1,17 +1,14 @@
 import React from 'react'
-import Box from '@material-ui/core/Box'
-import TextField from '@material-ui/core/TextField'
 
 import Fab from '@material-ui/core/Fab'
 import Zoom from '@material-ui/core/Zoom'
 import AddIcon from '@material-ui/icons/Add'
-import Button from '@material-ui/core/Button'
+import Snackbar from '@material-ui/core/Snackbar'
+import SnackbarContent from '@material-ui/core/SnackbarContent'
 
-import {makeStyles, useTheme} from '@material-ui/core/styles'
-import {useMediaQuery} from '@material-ui/core'
+import {makeStyles} from '@material-ui/core/styles'
 
 const useStyle = makeStyles({
-  search: {'margin-top': '5rem', 'margin-bottom': '1rem'},
   fab: {
     'position': 'fixed',
     'bottom': '1rem',
@@ -21,33 +18,37 @@ const useStyle = makeStyles({
 })
 
 function Interactions(props) {
-  const theme = useTheme()
+  const [open, setOpen] = React.useState(false)
   const classes = useStyle()
-  const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'))
+
+  React.useEffect(() => {
+    if (props.request.status != 'IDLE') {
+      setOpen(true)
+    }
+  }, [props.request.status])
+
+  console.log(props.request)
 
   return (
-    <Box>
-      <TextField
-        fullWidth
-        placeholder="Buscar"
-        onChange={props.handleFilter}
-        className={classes.search}
-      />
-      {isSmallScreen ? (
-        <Zoom in={!props.loading} timeout={300}>
-          <Fab
-            color="primary"
-            aria-label="adicionar"
-            className={classes.fab}
-            onClick={props.handleAdd}
-          >
-            <AddIcon />
-          </Fab>
-        </Zoom>
-      ) : (
-        <Button onClick={props.handleAdd}>adicionar</Button>
-      )}
-    </Box>
+    <>
+      <Zoom in={props.status == 'RESOLVED'} timeout={300}>
+        <Fab
+          color="primary"
+          aria-label="adicionar"
+          className={classes.fab}
+          onClick={props.handleOnClick}
+        >
+          <AddIcon />
+        </Fab>
+      </Zoom>
+      <Snackbar
+        open={open}
+        autoHideDuration={6000}
+        onClose={() => setOpen(false)}
+      >
+        <SnackbarContent>{props.request.message}</SnackbarContent>
+      </Snackbar>
+    </>
   )
 }
 

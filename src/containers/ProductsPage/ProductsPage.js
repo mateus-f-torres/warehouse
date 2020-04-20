@@ -1,9 +1,9 @@
 import React from 'react'
 
-import Header from '../../components/Header'
+import Header from '../../components/Header/Header'
 import TableContainer from '../../components/TableContainer/TableContainer'
 import Interactions from '../../components/Interactions'
-import CustomDialog from '../../components/CustomDialog'
+import Dialog from '../../components/Dialog/Dialog'
 
 import {UserContext} from '../App/App'
 import useDatabase from '../../hooks/useDatabase'
@@ -12,10 +12,29 @@ function ProductsPage(props) {
   const draft = React.useRef()
   const user = React.useContext(UserContext)
   const [database, dispatch] = useDatabase(user, draft)
-  const [detail, toggleDetail] = React.useState(null)
+  const [dialogIsOpen, toggleDialog] = React.useState(false)
+  const [productDetail, setProductDetail] = React.useState(null)
 
   function openNewProductDialog() {
-    toggleDetail({})
+    setProductDetail(null)
+    toggleDialog(true)
+  }
+
+  function openDialogEditMode(id) {
+    setProductDetail(database.list.find((item) => item.id === id))
+    toggleDialog(true)
+  }
+
+  function closeDialog() {
+    setProductDetail(null)
+    toggleDialog(false)
+  }
+
+  function handleProductSubmission(data) {
+    const formatted = format(data)
+    productDetail === null
+      ? dispatch.addProduct(formatted)
+      : dispatch.updateProduct(productDetail.id, formatted)
   }
 
   return (
@@ -34,19 +53,24 @@ function ProductsPage(props) {
         data={database.list}
         dataRef={draft}
         status={database.status}
-        onEdit={toggleDetail}
+        onEdit={openDialogEditMode}
       />
-      <CustomDialog
-        open={detail !== null}
-        onClose={() => toggleDetail(null)}
-        addProduct={dispatch.addProduct}
-        removeProduct={dispatch.removeProduct}
-        updateProduct={dispatch.updateProduct}
-        toggleDetail={toggleDetail}
-        detail={detail ? database.list.find(({id}) => id === detail) : null}
+      <Dialog
+        open={dialogIsOpen}
+        detail={productDetail}
+        onClose={closeDialog}
+        onDelete={dispatch.removeProduct}
+        onSubmit={handleProductSubmission}
       />
     </div>
   )
+}
+
+function format(product) {
+  const stock = Number(product.stock.replace(/\./g, '').replace(',', '.'))
+  const price = Number(product.price.replace(/\./g, '').replace(',', '.'))
+  const total = Number((stock * price).toFixed(2))
+  return {...product, stock, price, total}
 }
 
 export default ProductsPage
