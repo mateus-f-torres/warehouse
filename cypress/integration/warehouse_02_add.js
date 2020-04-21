@@ -2,13 +2,17 @@ describe('Warehouse', function () {
   before(() => cy.login())
 
   describe('allows a user to add a new product to the list', function () {
-    beforeEach(() => cy.findByAltText('Adicionar novo produto').click())
+    beforeEach(() => cy.findByLabelText('adicionar').click())
 
     function addNewProduct({name, stock, price}) {
-      cy.findAllByLabelText('Nome do produto').type(name)
-      cy.findAllByLabelText('Quantidade em estoque').type(stock)
-      cy.findAllByLabelText('Preço unitário').type(price)
+      cy.findByLabelText(/Nome do produto/).type(name)
+      cy.findAllByLabelText(/Quantidade em estoque/).type(stock)
+      cy.findAllByLabelText(/Preço unitário/).type(price)
       cy.findByText('Criar').click()
+    }
+
+    function cancelCreation() {
+      cy.findByLabelText(/Nome do produto/).type('{esc}')
     }
 
     it('should add a new product to the list when created', function () {
@@ -27,31 +31,31 @@ describe('Warehouse', function () {
     it('should NOT allow an unnamed product creation', function () {
       addNewProduct({name: '    ', stock: '4', price: '12,99'})
       cy.findByText('Nome precisa ser preenchido').should('exist')
-      cy.findByTestId('cancel').click()
+      cancelCreation()
     })
 
     // NOTE: stock number
     it('should NOT allow a zero stock product creation', function () {
       addNewProduct({name: 'MOCK', stock: '0', price: '1'})
       cy.findByText('Estoque não pode ser 0').should('exist')
-      cy.findByTestId('cancel').click()
+      cancelCreation()
     })
     it('should NOT allow a non-numeric stock product creation', function () {
       addNewProduct({name: 'MOCK', stock: 'foobar', price: '1'})
       cy.findByText('Estoque precisa ser numérico').should('exist')
-      cy.findByTestId('cancel').click()
+      cancelCreation()
     })
 
     // NOTE: price value
     it('should NOT allow a zero price product creation', function () {
       addNewProduct({name: 'MOCK', stock: '1', price: '0'})
       cy.findByText('Valor não pode ser 0').should('exist')
-      cy.findByTestId('cancel').click()
+      cancelCreation()
     })
     it('should NOT allow a non-numeric price product creation', function () {
       addNewProduct({name: 'MOCK', stock: '1', price: 'foobar'})
       cy.findByText('Valor precisa ser numérico').should('exist')
-      cy.findByTestId('cancel').click()
+      cancelCreation()
     })
 
     // TODO:
