@@ -1,9 +1,15 @@
 import React from 'react'
 
-import {userReducer, loadUser, defaultUser} from '../reducers/userReducer'
+import userReducer, {
+  loadUser,
+  unloadUser,
+  defaultUser,
+} from '../reducers/userReducer'
+
 import {
   readFromLocalStorage,
   writeToLocalStorage,
+  removeFromLocalStorage,
 } from '../utils/localStorage/localStorage'
 
 const USERNAME_KEY = 'username'
@@ -13,18 +19,26 @@ function useUser() {
   const [state, dispatch] = React.useReducer(userReducer, defaultUser)
 
   React.useLayoutEffect(() => {
-    const info = readFromLocalStorage([USERNAME_KEY, COMPANY_KEY])
-    if (info.every((i) => i !== null)) {
-      dispatch(loadUser(info))
+    const data = readFromLocalStorage([USERNAME_KEY, COMPANY_KEY])
+    if (data.every((value) => value !== null)) {
+      dispatch(loadUser(data))
     }
   }, [])
 
-  function createNewUser([username, company]) {
+  function createUser([username, company]) {
     writeToLocalStorage({[USERNAME_KEY]: username, [COMPANY_KEY]: company})
     dispatch(loadUser([username, company]))
   }
 
-  return [{username: state.username, company: state.company}, {createNewUser}]
+  function deleteUser() {
+    removeFromLocalStorage([USERNAME_KEY, COMPANY_KEY])
+    dispatch(unloadUser())
+  }
+
+  return [
+    {username: state.username, company: state.company},
+    {createUser, deleteUser},
+  ]
 }
 
 export default useUser

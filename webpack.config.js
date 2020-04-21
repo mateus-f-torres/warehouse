@@ -7,24 +7,7 @@ const {BundleAnalyzerPlugin} = require('webpack-bundle-analyzer')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
 const CompressionPlugin = require('compression-webpack-plugin')
-const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
-const cssPlugin = (function(env) {
-  if (env == 'production') {
-    return new MiniCssExtractPlugin({
-      filename: '[name].[hash].css',
-      chunkFilename: '[id].[hash].css',
-    })
-  } else {
-    return new MiniCssExtractPlugin({
-      filename: '[name].css',
-      chunkFilename: '[id].css',
-    })
-  }
-})(process.env.NODE_ENV)
-
-const optimizeCss = new OptimizeCSSAssetsPlugin({})
 const hotReloadPlugin = new HotModuleReplacementPlugin()
 const cleanUpPlugin = new CleanWebpackPlugin()
 const progressPlugin = new SimpleProgressWebpackPlugin({format: 'compact'})
@@ -45,7 +28,6 @@ const htmlPlugin = new HtmlWebpackPlugin({
 
 const terser = new TerserPlugin()
 
-// TODO: compression with brotli
 const gzipPlugin = new CompressionPlugin({
   test: /.(js|css|html|svg|ttf)$/,
   filename: '[path].gz[query]',
@@ -77,18 +59,6 @@ let configs = {
         ],
       },
       {
-        test: /\.css$/,
-        use: [
-          'style-loader',
-          {
-            loader: MiniCssExtractPlugin.loader,
-            options: {hmr: true},
-          },
-          'css-loader',
-          'postcss-loader',
-        ],
-      },
-      {
         test: /\.(ttf|eot|woff|woff2)$/,
         use: [
           {
@@ -114,19 +84,14 @@ let configs = {
       },
     ],
   },
-  plugins: [
-    progressPlugin,
-    cleanUpPlugin,
-    cssPlugin,
-    htmlPlugin,
-    hotReloadPlugin,
-  ],
+  plugins: [progressPlugin, cleanUpPlugin, htmlPlugin, hotReloadPlugin],
   devServer: {
     hot: true,
     port: DEFAULT_PORT,
     publicPath: '/',
     contentBase: path.resolve(__dirname, 'dist'),
     watchContentBase: true,
+    historyApiFallback: true,
     proxy: {
       '/api': {target: 'http://localhost:3000'},
     },
@@ -150,16 +115,10 @@ if (process.env.NODE_ENV === 'production') {
             chunks: 'all',
             name: 'vendors',
           },
-          styles: {
-            test: /\.css$/,
-            chunks: 'all',
-            name: 'vendors',
-            enforce: true,
-          },
         },
       },
       minimize: true,
-      minimizer: [terser, optimizeCss],
+      minimizer: [terser],
     },
     module: {
       rules: [
@@ -173,17 +132,6 @@ if (process.env.NODE_ENV === 'production') {
                 compact: true,
               },
             },
-          ],
-        },
-        {
-          test: /\.css$/,
-          use: [
-            {
-              loader: MiniCssExtractPlugin.loader,
-              options: {hmr: false},
-            },
-            'css-loader',
-            'postcss-loader',
           ],
         },
         {
@@ -220,7 +168,6 @@ if (process.env.NODE_ENV === 'production') {
       analyzerPlugin,
       cleanUpPlugin,
       gzipPlugin,
-      cssPlugin,
       htmlPlugin,
     ],
   })
