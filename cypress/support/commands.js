@@ -5,6 +5,7 @@ const MOCK_USER = {
   company: 'TEST_COMPANY',
 }
 
+// TODO: use clearAll feature
 beforeEach(() => {
   const request = window.indexedDB.open('TEST_COMPANY', 1)
   request.onerror = () => {}
@@ -52,10 +53,10 @@ Cypress.Commands.add('login', function () {
 
 Cypress.Commands.add('populateProductListWith', function (MOCK_LIST) {
   MOCK_LIST.forEach((item) => {
-    cy.findAllByAltText('Adicionar novo produto').click()
-    cy.findByLabelText('Nome do produto').type(item.name)
-    cy.findByLabelText('Quantidade em estoque').type(item.stock)
-    cy.findByLabelText('Preço unitário').type(item.price)
+    cy.findByLabelText('adicionar').click()
+    cy.findByLabelText(/Nome do produto/).type(item.name)
+    cy.findByLabelText(/Quantidade em estoque/).type(item.stock)
+    cy.findByLabelText(/Preço unitário/).type(item.price)
     cy.findByText('Criar').click()
   })
 })

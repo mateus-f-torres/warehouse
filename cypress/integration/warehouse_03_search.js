@@ -10,6 +10,8 @@ const MOCK_PRODUCT_LIST = [
   {name: 'Filtro de café', stock: '2', price: '3,99'},
 ]
 
+// TODO: test for the opacity of the items
+
 describe('Warehouse', function () {
   before(() => {
     cy.login()
