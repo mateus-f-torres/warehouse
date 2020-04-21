@@ -9,8 +9,8 @@ import {
 } from 'react-router-dom'
 
 import useUser from '../../hooks/useUser'
-import LoginPage from '../LoginPage/LoginPage'
-import ProductsPage from '../ProductsPage/ProductsPage'
+import Login from '../Login/Login'
+import Warehouse from '../Warehouse/Warehouse'
 
 export const UserContext = React.createContext(null)
 
@@ -25,14 +25,14 @@ function App() {
             <Switch>
               <Route exact path="/login">
                 {!user.username ? (
-                  <LoginPage onLogin={createUser} />
+                  <Login onLogin={createUser} />
                 ) : (
                   <Redirect to="/app" />
                 )}
               </Route>
               <Route exact path="/app">
                 {user.username ? (
-                  <ProductsPage onLogout={deleteUser} />
+                  <Warehouse onLogout={deleteUser} />
                 ) : (
                   <Redirect to="/login" />
                 )}

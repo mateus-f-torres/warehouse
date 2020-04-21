@@ -1,14 +1,14 @@
 import React from 'react'
 
-import Header from '../../components/Header/Header'
-import TableContainer from '../../components/TableContainer/TableContainer'
-import Interactions from '../../components/Interactions'
-import Dialog from '../../components/Dialog/Dialog'
+import Header from './Header/Header'
+import TableContainer from './TableContainer/TableContainer'
+import Interactions from './Interactions'
+import Dialog from './Dialog/Dialog'
 
 import {UserContext} from '../App/App'
 import useDatabase from '../../hooks/useDatabase'
 
-function ProductsPage(props) {
+function Warehouse(props) {
   const draft = React.useRef()
   const user = React.useContext(UserContext)
   const [database, dispatch] = useDatabase(user, draft)
@@ -73,4 +73,4 @@ function format(product) {
   return {...product, stock, price, total}
 }
 
-export default ProductsPage
+export default Warehouse
