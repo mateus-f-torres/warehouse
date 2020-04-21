@@ -29,9 +29,9 @@ function getConfig(key) {
 
 export default {
   asyncDelay() {
-    return Math.ceil(Math.random() * getConfig('delay')) * 1000
+    return Math.ceil(Math.random() * getConfig('maxDelay')) * 1000
   },
   throwRandomError() {
-    if (Math.random() > getConfig('error')) throw new Error('Oh no!')
+    if (Math.random() > getConfig('successRate')) throw new Error('Oh no!')
   },
 }
