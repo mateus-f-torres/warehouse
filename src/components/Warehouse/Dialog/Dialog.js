@@ -42,7 +42,7 @@ function EnhancedDialog(props) {
     <Dialog fullScreen={isXSScreen} open={props.open} onClose={handleClose}>
       {props.open && (
         <form noValidate onSubmit={handleSubmission}>
-          <DialogHeader detail={props.detail} />
+          <DialogHeader detail={props.detail} onClick={handleClose} />
           <DialogBody detail={props.detail} errors={errors} />
           <DialogFooter detail={props.detail} onDelete={handleDeleteClick} />
         </form>

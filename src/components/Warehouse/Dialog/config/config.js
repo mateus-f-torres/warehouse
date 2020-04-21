@@ -11,6 +11,7 @@ const INPUTS = [
     id: 'product',
     name: 'product',
     required: true,
+    autoFocus: true,
     autoComplete: 'off',
     label: 'Nome do produto',
     onInput: validateProductName,
