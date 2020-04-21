@@ -3,14 +3,17 @@ import Table from '@material-ui/core/Table'
 
 import TableHead from './TableHead/TableHead'
 import TableBody from './TableBody/TableBody'
+import TableSkeleton from './TableSkeleton/TableSkeleton'
+import {AsyncContext} from '../../Warehouse'
 
 function EnhancedTable(props) {
+  const status = React.useContext(AsyncContext)
   return (
     <Table>
       <TableHead sortKey={props.sortKey} onHeaderClick={props.onHeaderClick} />
-      {/* TODO: add loading table skeleton */}
-      {/* TODO: add empty table */}
-      {props.status == 'RESOLVED' && (
+      {status.verb == 'REQUESTING' ? (
+        <TableSkeleton rows={props.list.length} />
+      ) : (
         <TableBody
           list={props.list}
           isFiltered={props.isFiltered}
