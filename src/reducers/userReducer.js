@@ -6,7 +6,7 @@ export const defaultUser = {
 const LOAD_USER = 'warehouse/user/LOAD_USER'
 const UNLOAD_USER = 'warehouse/user/UNLOAD_USER'
 
-export function userReducer(state, action) {
+function userReducer(state, action) {
   switch (action.type) {
     case LOAD_USER:
       return loadUserData(action.payload)
@@ -39,3 +39,5 @@ export function unloadUser() {
     type: UNLOAD_USER,
   }
 }
+
+export default userReducer

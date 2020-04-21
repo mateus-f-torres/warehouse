@@ -1,12 +1,15 @@
 import React from 'react'
+import Box from '@material-ui/core/Box'
 
-import Header from './Header/Header'
 import TableContainer from './TableContainer/TableContainer'
-import Interactions from './Interactions'
+import AppBar from './AppBar/AppBar'
 import Dialog from './Dialog/Dialog'
+import Floaters from './Floaters/Floaters'
 
 import {UserContext} from '../App/App'
-import useDatabase from '../../hooks/useDatabase'
+import useDatabase from '../../hooks/useDatabase/useDatabase'
+
+export const AsyncContext = React.createContext()
 
 function Warehouse(props) {
   const draft = React.useRef()
@@ -38,31 +41,28 @@ function Warehouse(props) {
   }
 
   return (
-    <div className="products">
-      <Header
-        user={user}
-        onLogout={props.onLogout}
-        onClearAllProducts={dispatch.clearAllProducts}
-      />
-      <Interactions
-        status={database.status}
-        request={database.request}
-        handleOnClick={openNewProductDialog}
-      />
-      <TableContainer
-        data={database.list}
-        dataRef={draft}
-        status={database.status}
-        onEdit={openDialogEditMode}
-      />
-      <Dialog
-        open={dialogIsOpen}
-        detail={productDetail}
-        onClose={closeDialog}
-        onDelete={dispatch.removeProduct}
-        onSubmit={handleProductSubmission}
-      />
-    </div>
+    <Box>
+      <AsyncContext.Provider value={database.status}>
+        <AppBar
+          user={user}
+          onLogout={props.onLogout}
+          onClearAllProducts={dispatch.clearAllProducts}
+        />
+        <Floaters handleOnClick={openNewProductDialog} />
+        <TableContainer
+          data={database.list}
+          dataRef={draft}
+          onEdit={openDialogEditMode}
+        />
+        <Dialog
+          open={dialogIsOpen}
+          detail={productDetail}
+          onClose={closeDialog}
+          onDelete={dispatch.removeProduct}
+          onSubmit={handleProductSubmission}
+        />
+      </AsyncContext.Provider>
+    </Box>
   )
 }
 

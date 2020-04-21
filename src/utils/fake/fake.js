@@ -32,6 +32,7 @@ export default {
     return Math.ceil(Math.random() * getConfig('maxDelay')) * 1000
   },
   throwRandomError() {
-    if (Math.random() > getConfig('successRate')) throw new Error('Oh no!')
+    if (Math.random() > getConfig('successRate'))
+      throw new Error('Erro Aleatório!')
   },
 }

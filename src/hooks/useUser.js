@@ -1,7 +1,6 @@
 import React from 'react'
 
-import {
-  userReducer,
+import userReducer, {
   loadUser,
   unloadUser,
   defaultUser,
