@@ -28,7 +28,7 @@ function composeGetAllData(db, store) {
         try {
           fake.throwRandomError()
         } catch (e) {
-          reject(e)
+          return reject(e)
         }
 
         const request = db.transaction(store).objectStore(store).getAll()
@@ -51,7 +51,7 @@ function composeAddData(db, store) {
         try {
           fake.throwRandomError()
         } catch (e) {
-          reject(e)
+          return reject(e)
         }
 
         const request = db
@@ -77,7 +77,7 @@ function composeDeleteData(db, store) {
         try {
           fake.throwRandomError()
         } catch (e) {
-          reject(e)
+          return reject(e)
         }
 
         const request = db
@@ -103,7 +103,7 @@ function composePutData(db, store) {
         try {
           fake.throwRandomError()
         } catch (e) {
-          reject(e)
+          return reject(e)
         }
 
         const transaction = db.transaction(store, 'readwrite')
