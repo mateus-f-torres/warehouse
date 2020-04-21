@@ -89,8 +89,10 @@ function useDatabase(user, draft) {
   useConfigAutosave(saveCurrentOrder)
 
   function saveCurrentOrder() {
-    const newData = draft.current.map((item, index) => ({...item, index}))
-    database.current.updateAll(newData).then(() => {})
+    if (database.current) {
+      const newData = draft.current.map((item, index) => ({...item, index}))
+      database.current.updateAll(newData).then(() => {})
+    }
   }
 
   return [

@@ -5,7 +5,6 @@ const useBannerStyles = makeStyles({
   banner: {
     'grid-area': GRID.banner,
     'align-self': 'end',
-    'width': '100%',
     'height': '100%',
   },
 })
