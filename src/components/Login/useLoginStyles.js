@@ -17,7 +17,6 @@ const useLoginStyles = makeStyles({
     'justify-items': 'center',
   },
   'login-md': {
-    'margin-top': '10vh',
     'grid-template-rows': '380px min-content min-content',
     'grid-row-gap': '2.5rem',
   },
