@@ -1,7 +1,7 @@
 import {makeStyles} from '@material-ui/core/styles'
 import {GRID} from '../useLoginStyles'
 
-const useLoginBannerStyles = makeStyles({
+const useBannerStyles = makeStyles({
   banner: {
     'grid-area': GRID.banner,
     'align-self': 'end',
@@ -10,4 +10,4 @@ const useLoginBannerStyles = makeStyles({
   },
 })
 
-export default useLoginBannerStyles
+export default useBannerStyles

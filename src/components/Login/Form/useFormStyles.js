@@ -1,7 +1,7 @@
 import {makeStyles} from '@material-ui/core/styles'
 import {GRID} from '../useLoginStyles'
 
-const useLoginFormStyles = makeStyles({
+const useFormStyles = makeStyles({
   form: {
     'grid-area': GRID.form,
     'display': 'flex',
@@ -17,4 +17,4 @@ const useLoginFormStyles = makeStyles({
   },
 })
 
-export default useLoginFormStyles
+export default useFormStyles

@@ -1,11 +1,11 @@
 import React from 'react'
 import banner from '../../../assets/images/banner.svg'
 
-import useLoginBannerStyles from './useLoginBannerStyles'
+import useBannerStyles from './useBannerStyles'
 
-function LoginBanner() {
-  const classes = useLoginBannerStyles()
+function Banner() {
+  const classes = useBannerStyles()
   return <img className={classes.banner} src={banner} alt="Warehouse Banner" />
 }
 
-export default LoginBanner
+export default Banner

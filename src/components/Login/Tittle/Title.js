@@ -1,10 +1,10 @@
 import React from 'react'
 import Typography from '@material-ui/core/Typography'
 
-import useLoginTitleStyles from './useLoginTitleStyles'
+import useTitleStyles from './useTitleStyles'
 
-function LoginTitle(props) {
-  const classes = useLoginTitleStyles()
+function Title(props) {
+  const classes = useTitleStyles()
   return (
     <Typography
       component="h1"
@@ -16,4 +16,4 @@ function LoginTitle(props) {
   )
 }
 
-export default LoginTitle
+export default Title

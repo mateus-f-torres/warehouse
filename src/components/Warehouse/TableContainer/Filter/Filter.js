@@ -6,7 +6,7 @@ const useStyle = makeStyles({
   filter: {'margin-top': '5rem', 'margin-bottom': '1rem'},
 })
 
-function TableFilter(props) {
+function Filter(props) {
   const classes = useStyle()
 
   return (
@@ -19,4 +19,4 @@ function TableFilter(props) {
   )
 }
 
-export default TableFilter
+export default Filter

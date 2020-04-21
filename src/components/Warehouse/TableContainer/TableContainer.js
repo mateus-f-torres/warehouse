@@ -2,7 +2,7 @@ import React from 'react'
 import TableContainer from '@material-ui/core/TableContainer'
 
 import Table from './Table/Table'
-import TableFilter from './TableFilter/TableFilter'
+import Filter from './Filter/Filter'
 
 import sortList from './utils/sortList'
 import filterList from './utils/filterList'
@@ -15,7 +15,7 @@ function EnhancedTableContainer(props) {
   const [visibleIndex, setVisibleIndex] = React.useState(null)
 
   React.useEffect(() => {
-    if (props.data) {
+    if (Array.isArray(props.data)) {
       const normalized = normalizeList(props.data)
       const [visible, invisible] = filterList(normalized, filter)
 
@@ -71,7 +71,7 @@ function EnhancedTableContainer(props) {
 
   return (
     <TableContainer>
-      <TableFilter onFilter={handleFilter} />
+      <Filter onFilter={handleFilter} />
       <Table
         list={list}
         sortKey={sort}

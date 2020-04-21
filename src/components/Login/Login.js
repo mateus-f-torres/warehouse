@@ -3,9 +3,9 @@ import Box from '@material-ui/core/Box'
 import {useTheme} from '@material-ui/core/styles'
 import {useMediaQuery} from '@material-ui/core'
 
-import LoginTitle from './LoginTitle/LoginTitle'
-import LoginBanner from './LoginBanner/LoginBanner'
-import LoginForm from './LoginForm/LoginForm'
+import Title from './Tittle/Title'
+import Banner from './Banner/Banner'
+import Form from './Form/Form'
 
 import useLoginStyles from './useLoginStyles'
 
@@ -20,9 +20,9 @@ function Login(props) {
 
   return (
     <Box className={containerClass}>
-      <LoginTitle isSmallScreen={isSmallScreen} />
-      <LoginBanner />
-      <LoginForm onSubmit={props.onLogin} />
+      <Title isSmallScreen={isSmallScreen} />
+      <Banner />
+      <Form onSubmit={props.onLogin} />
     </Box>
   )
 }

@@ -2,10 +2,10 @@ import React from 'react'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 
-import useLoginFormStyles from './useLoginFormStyles'
+import useFormStyles from './useFormStyles'
 
-function LoginForm(props) {
-  const classes = useLoginFormStyles()
+function Form(props) {
+  const classes = useFormStyles()
 
   function handleSubmit(e) {
     e.preventDefault()
@@ -53,4 +53,4 @@ function LoginForm(props) {
   )
 }
 
-export default LoginForm
+export default Form

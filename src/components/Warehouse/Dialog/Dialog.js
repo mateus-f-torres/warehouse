@@ -24,17 +24,22 @@ function EnhancedDialog(props) {
       setErrors(inputs.getErrors())
     } else {
       props.onSubmit(inputs.getData())
-      props.onClose()
+      handleClose()
     }
   }
 
   function handleDeleteClick() {
     props.onDelete(props.detail.id)
+    handleClose()
+  }
+
+  function handleClose() {
+    setErrors({})
     props.onClose()
   }
 
   return (
-    <Dialog fullScreen={isXSScreen} open={props.open} onClose={props.onClose}>
+    <Dialog fullScreen={isXSScreen} open={props.open} onClose={handleClose}>
       {props.open && (
         <form noValidate onSubmit={handleSubmission}>
           <DialogHeader detail={props.detail} />

@@ -23,7 +23,7 @@ const useStyle = makeStyles({
   },
 })
 
-function Header(props) {
+function EnhancedAppBar(props) {
   const [anchor, setAnchor] = React.useState(null)
   const open = Boolean(anchor)
   const classes = useStyle()
@@ -58,4 +58,4 @@ function Header(props) {
   )
 }
 
-export default Header
+export default EnhancedAppBar
