@@ -11,7 +11,7 @@ function Title(props) {
       className={classes.title}
       variant={props.isSmallScreen ? 'h3' : 'h2'}
     >
-      {props.isSmallScreen ? 'Warehouse' : 'Digital Warehouse'}
+      Warehouse
     </Typography>
   )
 }
