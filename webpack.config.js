@@ -23,7 +23,7 @@ const analyzerPlugin = new BundleAnalyzerPlugin({
 const htmlPlugin = new HtmlWebpackPlugin({
   filename: 'index.html',
   template: 'src/index.html',
-  favicon: 'src/assets/images/favicon.ico',
+  favicon: 'src/assets/logo/favicon.ico',
 })
 
 const terser = new TerserPlugin()
