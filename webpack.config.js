@@ -24,10 +24,12 @@ const analyzerPlugin = new BundleAnalyzerPlugin({
 const htmlPlugin = new HtmlWebpackPlugin({
   filename: 'index.html',
   template: 'src/index.html',
-  favicon: 'src/assets/logo/favicon.ico',
 })
 
-const copyPlugin = new CopyPlugin([{from: 'src/assets/fonts', to: 'fonts/'}])
+const copyPlugin = new CopyPlugin([
+  {from: 'src/assets/fonts', to: 'fonts/'},
+  {from: 'src/assets/logo', to: 'logo/'},
+])
 
 const terser = new TerserPlugin()
 
