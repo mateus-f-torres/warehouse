@@ -1,15 +1,13 @@
-describe('Warehouse Login', function () {
-  before(() => cy.clearLocalStorageCache())
+describe('Warehouse should', function () {
+  before(() => cy.clearLocalStorage())
 
-  describe('for new users', function () {
-    after(() => cy.saveLocalStorageCache())
-
-    it('shows login page for new users', function () {
+  describe('for new users:', function () {
+    it('show login page', function () {
       cy.visit('/')
       cy.findByAltText('Warehouse Banner').should('exist')
     })
 
-    it('allows a new user to log in', function () {
+    it('allow a user to log in', function () {
       cy.findByPlaceholderText('Usuário').type('Mateus')
       cy.findByPlaceholderText('Empresa').type('Po.N,T.E')
       cy.findByText('Entrar').click()
@@ -17,25 +15,18 @@ describe('Warehouse Login', function () {
       cy.findByText('Olá Mateus').should('exist')
       cy.findByText('da empresa Po.N,T.E').should('exist')
     })
+
+    after(() => cy.saveLocalStorage())
   })
 
-  describe('for registered users', function () {
-    before(() => cy.restoreLocalStorageCache())
+  describe('for logged users:', function () {
+    before(() => cy.restoreLocalStorage())
 
-    it('shows products page for already logged-in users', function () {
+    it('redirect to products page', function () {
       cy.reload()
 
       cy.findByText('Olá Mateus').should('exist')
       cy.findByText('da empresa Po.N,T.E').should('exist')
-    })
-  })
-
-  describe('with cache cleared', function () {
-    before(() => cy.clearLocalStorageCache())
-
-    it('shows login page if local storage is cleared', function () {
-      cy.reload()
-      cy.findByAltText('Warehouse Banner').should('exist')
     })
   })
 })
