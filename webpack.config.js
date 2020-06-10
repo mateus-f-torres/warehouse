@@ -7,6 +7,7 @@ const {BundleAnalyzerPlugin} = require('webpack-bundle-analyzer')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
 const CompressionPlugin = require('compression-webpack-plugin')
+const CopyPlugin = require('copy-webpack-plugin')
 
 const hotReloadPlugin = new HotModuleReplacementPlugin()
 const cleanUpPlugin = new CleanWebpackPlugin()
@@ -23,8 +24,12 @@ const analyzerPlugin = new BundleAnalyzerPlugin({
 const htmlPlugin = new HtmlWebpackPlugin({
   filename: 'index.html',
   template: 'src/index.html',
-  favicon: 'src/assets/images/favicon.ico',
 })
+
+const copyPlugin = new CopyPlugin([
+  {from: 'src/assets/fonts', to: 'fonts/'},
+  {from: 'src/assets/logo', to: 'logo/'},
+])
 
 const terser = new TerserPlugin()
 
@@ -59,18 +64,6 @@ let configs = {
         ],
       },
       {
-        test: /\.(ttf|eot|woff|woff2)$/,
-        use: [
-          {
-            loader: 'file-loader',
-            options: {
-              name: '[name].[ext]',
-              outputPath: 'fonts/',
-            },
-          },
-        ],
-      },
-      {
         test: /\.(jpg|jpeg|png|gif|svg)$/i,
         use: [
           {
@@ -84,7 +77,13 @@ let configs = {
       },
     ],
   },
-  plugins: [progressPlugin, cleanUpPlugin, htmlPlugin, hotReloadPlugin],
+  plugins: [
+    progressPlugin,
+    cleanUpPlugin,
+    htmlPlugin,
+    copyPlugin,
+    hotReloadPlugin,
+  ],
   devServer: {
     hot: true,
     port: DEFAULT_PORT,
@@ -135,18 +134,6 @@ if (process.env.NODE_ENV === 'production') {
           ],
         },
         {
-          test: /\.(ttf|eot|woff|woff2)$/,
-          use: [
-            {
-              loader: 'file-loader',
-              options: {
-                name: '[name].[hash].[ext]',
-                outputPath: 'fonts/',
-              },
-            },
-          ],
-        },
-        {
           test: /\.(jpg|jpeg|png|svg|gif)$/i,
           use: [
             {
@@ -169,6 +156,7 @@ if (process.env.NODE_ENV === 'production') {
       cleanUpPlugin,
       gzipPlugin,
       htmlPlugin,
+      copyPlugin,
     ],
   })
 }

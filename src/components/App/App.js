@@ -1,27 +1,25 @@
 import React from 'react'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import Container from '@material-ui/core/Container'
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Redirect,
-} from 'react-router-dom'
+import {ThemeProvider} from '@material-ui/core/styles'
+import {BrowserRouter, Switch, Route, Redirect} from 'react-router-dom'
 
-import useUser from '../../hooks/useUser'
 import Login from '../Login/Login'
 import Warehouse from '../Warehouse/Warehouse'
+
+import useUser from '../../hooks/useUser'
+import theme from './theme'
 
 export const UserContext = React.createContext(null)
 
 function App() {
   const [user, {createUser, deleteUser}] = useUser()
   return (
-    <>
+    <ThemeProvider theme={theme}>
       <CssBaseline />
       <Container>
         <UserContext.Provider value={user}>
-          <Router>
+          <BrowserRouter>
             <Switch>
               <Route exact path="/login">
                 {!user.username ? (
@@ -41,10 +39,10 @@ function App() {
                 <Redirect to="/login" />
               </Route>
             </Switch>
-          </Router>
+          </BrowserRouter>
         </UserContext.Provider>
       </Container>
-    </>
+    </ThemeProvider>
   )
 }
 
