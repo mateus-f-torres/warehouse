@@ -1,4 +1,5 @@
 import React from 'react'
+import Box from '@material-ui/core/Box'
 import TableContainer from '@material-ui/core/TableContainer'
 
 import Table from './Table/Table'
@@ -70,19 +71,21 @@ function EnhancedTableContainer(props) {
   }
 
   return (
-    <TableContainer>
+    <Box>
       <Filter onFilter={handleFilter} />
-      <Table
-        list={list}
-        sortKey={sort}
-        status={props.status}
-        isFiltered={Boolean(filter)}
-        visibleIndex={visibleIndex}
-        onEdit={props.onEdit}
-        onHeaderClick={handleSort}
-        onDragAndDrop={handleReorder}
-      />
-    </TableContainer>
+      <TableContainer>
+        <Table
+          list={list}
+          sortKey={sort}
+          status={props.status}
+          isFiltered={Boolean(filter)}
+          visibleIndex={visibleIndex}
+          onEdit={props.onEdit}
+          onHeaderClick={handleSort}
+          onDragAndDrop={handleReorder}
+        />
+      </TableContainer>
+    </Box>
   )
 }
 

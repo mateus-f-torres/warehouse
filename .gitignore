@@ -6,3 +6,4 @@ tags
 .idea
 reports
 package-lock.json
+*.swp
