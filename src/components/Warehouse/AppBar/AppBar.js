@@ -20,6 +20,9 @@ const useStyle = makeStyles({
     'display': 'flex',
     'flex-direction': 'column',
   },
+  moreIcon: {
+    color: '#FFFFFF',
+  },
 })
 
 function EnhancedAppBar(props) {
@@ -45,7 +48,7 @@ function EnhancedAppBar(props) {
             da empresa {props.user.company}
           </Typography>
         </Box>
-        <IconButton onClick={setupAnchor}>
+        <IconButton className={classes.moreIcon} onClick={setupAnchor}>
           <MoreVertIcon />
         </IconButton>
         <Menu anchorEl={anchor} open={open} onClose={teardownAnchor}>
