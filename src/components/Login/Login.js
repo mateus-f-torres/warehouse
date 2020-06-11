@@ -1,7 +1,6 @@
 import React from 'react'
-import Box from '@material-ui/core/Box'
 import {useTheme} from '@material-ui/core/styles'
-import {useMediaQuery} from '@material-ui/core'
+import {Box, useMediaQuery} from '@material-ui/core'
 
 import Title from './Tittle/Title'
 import Banner from './Banner/Banner'
