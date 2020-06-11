@@ -1,9 +1,7 @@
 import React from 'react'
-import DialogTitle from '@material-ui/core/DialogTitle'
-import IconButton from '@material-ui/core/IconButton'
 import CloseIcon from '@material-ui/icons/Close'
-
 import {makeStyles} from '@material-ui/core/styles'
+import {DialogTitle, IconButton} from '@material-ui/core'
 
 const useDialogHeaderStyles = makeStyles({
   close: {

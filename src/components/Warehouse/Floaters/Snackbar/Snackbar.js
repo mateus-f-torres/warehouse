@@ -1,7 +1,5 @@
 import React from 'react'
-import Snackbar from '@material-ui/core/Snackbar'
-import SnackbarContent from '@material-ui/core/SnackbarContent'
-
+import {Snackbar, SnackbarContent} from '@material-ui/core'
 import {AsyncContext} from '../../Warehouse'
 
 function EnhancedSnackbar(props) {

@@ -1,10 +1,8 @@
 import React from 'react'
-
-import Zoom from '@material-ui/core/Zoom'
-import Fab from '@material-ui/core/Fab'
+import {Zoom, Fab} from '@material-ui/core'
 import AddIcon from '@material-ui/icons/Add'
-
 import {makeStyles} from '@material-ui/core/styles'
+
 import {AsyncContext} from '../../Warehouse'
 
 const useStyle = makeStyles({

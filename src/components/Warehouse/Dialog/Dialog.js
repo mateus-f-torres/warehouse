@@ -1,8 +1,7 @@
 import React from 'react'
 
-import Dialog from '@material-ui/core/Dialog'
+import {Dialog, useMediaQuery} from '@material-ui/core'
 import useTheme from '@material-ui/core/styles/useTheme'
-import {useMediaQuery} from '@material-ui/core'
 
 import DialogHeader from './DialogHeader/DialogHeader'
 import DialogBody from './DialogBody/DialogBody'

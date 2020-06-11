@@ -1,8 +1,6 @@
 import React from 'react'
-import TextField from '@material-ui/core/TextField'
-import DialogContent from '@material-ui/core/DialogContent'
-
 import {makeStyles} from '@material-ui/core/styles'
+import {TextField, DialogContent} from '@material-ui/core'
 
 import INPUTS from '../config/config'
 import getDefaultValues from '../utils/getDefaultValues'
