@@ -7,7 +7,7 @@ import {BrowserRouter, Switch, Route, Redirect} from 'react-router-dom'
 import Login from '../Login/Login'
 import Warehouse from '../Warehouse/Warehouse'
 
-import useUser from '../../hooks/useUser'
+import useUser from '../../hooks/useUser/useUser'
 import theme from './theme'
 
 export const UserContext = React.createContext(null)

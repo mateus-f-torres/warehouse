@@ -4,13 +4,13 @@ import userReducer, {
   loadUser,
   unloadUser,
   defaultUser,
-} from '../reducers/userReducer'
+} from '../../reducers/userReducer'
 
 import {
   readFromLocalStorage,
   writeToLocalStorage,
   removeFromLocalStorage,
-} from '../utils/localStorage/localStorage'
+} from '../../utils/localStorage/localStorage'
 
 const USERNAME_KEY = 'username'
 const COMPANY_KEY = 'company'
