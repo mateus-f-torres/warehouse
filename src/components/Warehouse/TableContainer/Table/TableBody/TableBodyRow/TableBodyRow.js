@@ -1,10 +1,7 @@
 import React from 'react'
-
-import TableRow from '@material-ui/core/TableRow'
-import TableCell from '@material-ui/core/TableCell'
-import IconButton from '@material-ui/core/IconButton'
 import EditIcon from '@material-ui/icons/Edit'
 import {makeStyles} from '@material-ui/core/styles'
+import {TableRow, TableCell, IconButton} from '@material-ui/core'
 
 import {Draggable} from 'react-beautiful-dnd'
 

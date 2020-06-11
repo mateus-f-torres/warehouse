@@ -1,5 +1,5 @@
 import React from 'react'
-import Table from '@material-ui/core/Table'
+import {Table} from '@material-ui/core'
 
 import TableHead from './TableHead/TableHead'
 import TableBody from './TableBody/TableBody'

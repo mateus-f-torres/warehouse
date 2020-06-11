@@ -1,8 +1,6 @@
 import React from 'react'
-import TableBody from '@material-ui/core/TableBody'
-import TableRow from '@material-ui/core/TableRow'
-import TableCell from '@material-ui/core/TableCell'
 import Skeleton from '@material-ui/lab/Skeleton'
+import {TableBody, TableRow, TableCell} from '@material-ui/core'
 
 const EMPTY_COLUMNS = [null, null, null, null, null, null]
 

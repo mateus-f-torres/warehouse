@@ -1,6 +1,7 @@
 import React from 'react'
-import TableBody from '@material-ui/core/TableBody'
+import {TableBody} from '@material-ui/core'
 import {DragDropContext, Droppable} from 'react-beautiful-dnd'
+
 import TableBodyRow from './TableBodyRow/TableBodyRow'
 
 function EnhancedTableBody(props) {
