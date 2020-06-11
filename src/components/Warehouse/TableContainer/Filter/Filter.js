@@ -10,12 +10,22 @@ function Filter(props) {
   const classes = useStyle()
 
   return (
-    <TextField
-      fullWidth
-      placeholder="Buscar"
-      onChange={props.onFilter}
-      className={classes.filter}
-    />
+    <form
+      noValidate
+      onSubmit={(e) => {
+        e.preventDefault()
+        e.target.filter.blur()
+      }}
+    >
+      <TextField
+        fullWidth
+        name="filter"
+        autoComplete="off"
+        placeholder="Buscar"
+        onChange={props.onFilter}
+        className={classes.filter}
+      />
+    </form>
   )
 }
 
