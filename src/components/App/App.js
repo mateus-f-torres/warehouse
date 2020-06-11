@@ -1,7 +1,6 @@
 import React from 'react'
-import CssBaseline from '@material-ui/core/CssBaseline'
-import Container from '@material-ui/core/Container'
 import {ThemeProvider} from '@material-ui/core/styles'
+import {Container, CssBaseline} from '@material-ui/core'
 import {BrowserRouter, Switch, Route, Redirect} from 'react-router-dom'
 
 import Login from '../Login/Login'
