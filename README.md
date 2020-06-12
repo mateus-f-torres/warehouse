@@ -33,6 +33,6 @@ Using the [`SubmitEvent`](https://developer.mozilla.org/en-US/docs/Web/API/Submi
 There is no need to control the input _value_ since the validation will occur before submission
 
 ## License
-[MIT License](./LICENSE)
+[MIT License](./LICENSE)  
 Made by [Mateus F Torres](https://github.com/mateus-f-torres)    
 Initial structure from [barefoot](https://github.com/mateus-f-torres/barefoot) template  
