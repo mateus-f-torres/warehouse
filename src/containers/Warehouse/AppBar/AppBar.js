@@ -12,8 +12,11 @@ import MoreVertIcon from '@material-ui/icons/MoreVert'
 
 const useStyle = makeStyles({
   toolbar: {
+    'margin': '0 auto',
     'display': 'flex',
     'justify-content': 'space-between',
+    'width': '100%',
+    'max-width': '1280px',
   },
   title: {
     'text-transform': 'uppercase',
