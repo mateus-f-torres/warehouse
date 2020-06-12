@@ -12,8 +12,7 @@ describe('Warehouse should', function () {
       cy.findByPlaceholderText('Empresa').type('Po.N,T.E')
       cy.findByText('Entrar').click()
 
-      cy.findByText('Olá Mateus').should('exist')
-      cy.findByText('da empresa Po.N,T.E').should('exist')
+      cy.findByPlaceholderText('Buscar').should('exist')
     })
 
     after(() => cy.saveLocalStorage())
@@ -24,9 +23,7 @@ describe('Warehouse should', function () {
 
     it('redirect to products page', function () {
       cy.reload()
-
-      cy.findByText('Olá Mateus').should('exist')
-      cy.findByText('da empresa Po.N,T.E').should('exist')
+      cy.findByPlaceholderText('Buscar').should('exist')
     })
   })
 })

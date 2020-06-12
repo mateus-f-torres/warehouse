@@ -44,7 +44,6 @@ function Warehouse(props) {
     <Box>
       <AsyncContext.Provider value={database.status}>
         <AppBar
-          user={user}
           onLogout={props.onLogout}
           onClearAllProducts={dispatch.clearAllProducts}
         />
