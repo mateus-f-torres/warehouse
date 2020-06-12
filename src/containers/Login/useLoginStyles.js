@@ -11,10 +11,11 @@ const useLoginStyles = makeStyles({
     'margin-top': '1rem',
     'display': 'grid',
     'grid-template-rows': '240px min-content min-content',
-    'grid-template-columns': 'auto',
+    'grid-template-columns': 'max-content',
     'grid-template-areas': `'${GRID.banner}' '${GRID.title}' '${GRID.form}'`,
     'grid-row-gap': '1rem',
     'justify-items': 'center',
+    'justify-content': 'center',
   },
   'login-md': {
     'grid-template-rows': '380px min-content min-content',
