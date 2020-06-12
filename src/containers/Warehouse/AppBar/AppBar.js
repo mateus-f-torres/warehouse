@@ -1,6 +1,5 @@
 import React from 'react'
 import {
-  Box,
   Menu,
   MenuItem,
   AppBar,
@@ -16,12 +15,13 @@ const useStyle = makeStyles({
     'display': 'flex',
     'justify-content': 'space-between',
   },
-  user: {
-    'display': 'flex',
-    'flex-direction': 'column',
+  title: {
+    'text-transform': 'uppercase',
+    'font-family': 'Montserrat Subrayada',
   },
   moreIcon: {
-    color: '#FFFFFF',
+    'color': 'inherit',
+    'margin-bottom': '0.125rem',
   },
 })
 
@@ -40,14 +40,9 @@ function EnhancedAppBar(props) {
   return (
     <AppBar>
       <Toolbar className={classes.toolbar}>
-        <Box className={classes.user}>
-          <Typography variant="h6" component="h2">
-            Olá {props.user.username}
-          </Typography>
-          <Typography variant="subtitle1" component="h3">
-            da empresa {props.user.company}
-          </Typography>
-        </Box>
+        <Typography className={classes.title} variant="h4" component="h2">
+          Warehouse
+        </Typography>
         <IconButton className={classes.moreIcon} onClick={setupAnchor}>
           <MoreVertIcon />
         </IconButton>
