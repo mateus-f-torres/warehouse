@@ -20,14 +20,14 @@ function App() {
         <UserContext.Provider value={user}>
           <BrowserRouter>
             <Switch>
-              <Route exact path="/login">
+              <Route path="/login">
                 {!user.username ? (
                   <Login onLogin={createUser} />
                 ) : (
                   <Redirect to="/app" />
                 )}
               </Route>
-              <Route exact path="/app">
+              <Route path="/app">
                 {user.username ? (
                   <Warehouse onLogout={deleteUser} />
                 ) : (
