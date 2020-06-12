@@ -3,7 +3,6 @@ import {GRID} from '../useLoginStyles'
 
 const useFormStyles = makeStyles({
   form: {
-    'max-width': '90vw',
     'grid-area': GRID.form,
     'display': 'flex',
     'flex-wrap': 'wrap',

@@ -11,14 +11,16 @@ const useLoginStyles = makeStyles({
     'margin-top': '1rem',
     'display': 'grid',
     'grid-template-rows': '240px min-content min-content',
-    'grid-template-columns': 'max-content',
+    'grid-template-columns': '340px',
     'grid-template-areas': `'${GRID.banner}' '${GRID.title}' '${GRID.form}'`,
     'grid-row-gap': '1rem',
     'justify-items': 'center',
     'justify-content': 'center',
   },
   'login-md': {
-    'grid-template-rows': '380px min-content min-content',
+    'margin-top': '6vh',
+    'grid-template-rows': '320px min-content min-content',
+    'grid-template-columns': '416px',
     'grid-row-gap': '2.5rem',
   },
 })
