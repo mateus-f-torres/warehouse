@@ -1,3 +1,5 @@
+[![Netlify Status](https://api.netlify.com/api/v1/badges/4fca18c0-b448-4c4b-95dd-8678d635d4ea/deploy-status)](https://app.netlify.com/sites/warehouse-mft/deploys)
+[![Build Status](https://travis-ci.org/mateus-f-torres/warehouse.svg?branch=master)](https://travis-ci.org/mateus-f-torres/warehouse)
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 [![License MIT](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/mateus-f-torres/barefoot/blob/master/LICENSE)
 
