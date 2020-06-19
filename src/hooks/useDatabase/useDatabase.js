@@ -12,7 +12,7 @@ import databaseReducer, {
   requestReset,
 } from '../../reducers/databaseReducer'
 
-import createDatabase from '../../utils/indexedDB/createDatabase'
+import open from '../../utils/indexedDB/indexedDB'
 
 import useConfigAutosave from './utils/useConfigAutosave'
 
@@ -34,7 +34,7 @@ function useDatabase(user, draft) {
   }
 
   React.useEffect(() => {
-    createDatabase(DATABASE)
+    open(DATABASE)
       .then((result) => (database.current = result))
       .then(() => getAllProducts())
       .catch((e) => console.error(new Error(e)))
@@ -44,7 +44,7 @@ function useDatabase(user, draft) {
     dispatch(notifyRequestStarted(''))
 
     database.current
-      .getAllData()
+      .getAll()
       .then((result) => dispatch(loadDatabase(result)))
       .catch((e) => dispatch(notifyRequestFailed(e)))
   }
@@ -56,7 +56,7 @@ function useDatabase(user, draft) {
     const newProduct = {...product, id}
 
     database.current
-      .addData(newProduct)
+      .add(newProduct)
       .then(() => dispatch(addItem(newProduct)))
       .catch((e) => dispatch(notifyRequestFailed(e)))
       .finally(timedReset)
@@ -66,24 +66,24 @@ function useDatabase(user, draft) {
     dispatch(notifyRequestStarted('Removendo produto...'))
 
     database.current
-      .deleteData(id)
+      .delete(id)
       .then(() => dispatch(deleteItem(id)))
       .catch((e) => dispatch(notifyRequestFailed(e)))
       .finally(timedReset)
   }
 
-  function updateProduct(id, newData) {
+  function updateProduct(id, data) {
     dispatch(notifyRequestStarted('Modificando produto...'))
 
     database.current
-      .putData(id, newData)
+      .put(id, data)
       .then((result) => dispatch(updateItem(result)))
       .catch((e) => dispatch(notifyRequestFailed(e)))
       .finally(timedReset)
   }
 
   function clearAllProducts() {
-    database.current.clearAllData().then(() => dispatch(clearDatabase()))
+    database.current.clearAll().then(() => dispatch(clearDatabase()))
   }
 
   useConfigAutosave(saveCurrentOrder)
@@ -91,7 +91,7 @@ function useDatabase(user, draft) {
   function saveCurrentOrder() {
     if (database.current) {
       const newData = draft.current.map((item, index) => ({...item, index}))
-      database.current.updateAll(newData).then(() => {})
+      database.current.putAll(newData).then(console.log)
     }
   }
 
