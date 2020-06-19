@@ -12,7 +12,7 @@ import databaseReducer, {
   requestReset,
 } from '../../reducers/databaseReducer'
 
-import createDatabase from '../../utils/indexedDB/createDatabase'
+import open from '../../utils/indexedDB/indexedDB'
 
 import useConfigAutosave from './utils/useConfigAutosave'
 
@@ -34,7 +34,7 @@ function useDatabase(user, draft) {
   }
 
   React.useEffect(() => {
-    createDatabase(DATABASE)
+    open(DATABASE)
       .then((result) => (database.current = result))
       .then(() => getAllProducts())
       .catch((e) => console.error(new Error(e)))

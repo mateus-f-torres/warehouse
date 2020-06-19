@@ -1,4 +1,5 @@
 import {openDB} from 'idb'
+import fakeAPI from '../fakeAPI/fakeAPI'
 
 async function createDatabase({name, version, store, key}) {
   const db = await openDB(name, version, {
@@ -8,10 +9,10 @@ async function createDatabase({name, version, store, key}) {
   })
 
   return {
-    add: makeAdd(db, store),
-    put: makePut(db, store),
-    delete: makeDelete(db, store),
-    getAll: makeGetAll(db, store),
+    add: fakeAPI(makeAdd(db, store)),
+    put: fakeAPI(makePut(db, store)),
+    delete: fakeAPI(makeDelete(db, store)),
+    getAll: fakeAPI(makeGetAll(db, store)),
     putAll: makePutAll(db, store),
     clearAll: makeClearAll(db, store),
   }
@@ -57,25 +58,5 @@ function makePutAll(db, store) {
 function makeClearAll(db, store) {
   return () => db.clear(store)
 }
-
-/*
-function delayFor(time) {
-  return new Promise(createTimeout(time))
-}
-
-function createTimeout(time) {
-  return function (done) {
-    window.setTimeout(done, time)
-  }
-}
-
-function makeGetAll(db, store) {
-  return () => {
-    // await delayFor(5000)
-    // fake.throwRandomError()
-    return db.getAll(store)
-  }
-}
-*/
 
 export default createDatabase
