@@ -1,13 +1,13 @@
-export function readFromLocalStorage(keys) {
+export function read(keys) {
   return keys.map((k) => localStorage.getItem(k))
 }
 
-export function writeToLocalStorage(map) {
+export function write(map) {
   for (const [key, value] of Object.entries(map)) {
     localStorage.setItem(key, value)
   }
 }
 
-export function removeFromLocalStorage(keys) {
+export function remove(keys) {
   for (const k of keys) localStorage.removeItem(k)
 }

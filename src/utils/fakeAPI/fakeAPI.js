@@ -18,6 +18,33 @@ const CONFIG = {
   DEFAULT: {maxDelay: 5, successRate: 0.9},
 }
 
+const promisify = (fn) => new Promise(fn)
+
+function fakeAPI(fn) {
+  return async function (...args) {
+    await promisify(randomDelay)
+    await promisify(randomError)
+
+    return fn.apply(null, args)
+  }
+}
+
+function randomDelay(resolve) {
+  window.setTimeout(resolve, timer())
+}
+
+function randomError(resolve, reject) {
+  if (Math.random() > getConfig('successRate')) {
+    reject(new Error('Erro Aleatório!'))
+  } else {
+    resolve()
+  }
+}
+
+function timer() {
+  return Math.ceil(Math.random() * getConfig('maxDelay')) * 1000
+}
+
 function getConfig(key) {
   const name = localStorage.getItem('company')
   if (CONFIG[name]) {
@@ -27,12 +54,4 @@ function getConfig(key) {
   }
 }
 
-export default {
-  asyncDelay() {
-    return Math.ceil(Math.random() * getConfig('maxDelay')) * 1000
-  },
-  throwRandomError() {
-    if (Math.random() > getConfig('successRate'))
-      throw new Error('Erro Aleatório!')
-  },
-}
+export default fakeAPI
