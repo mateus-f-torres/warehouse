@@ -91,23 +91,19 @@ function useDatabase(user, draft) {
   // BUG: disable if getAll failed, else hard crash
   function addSingleRandomProduct() {
     const id = state.nextId
-    const [product] = createRandomProducts()
-    const newProduct = {...product, id}
+    const [product] = createRandomProducts(id)
 
-    database.current
-      .addRandom(newProduct)
-      .then(() => dispatch(addItem(newProduct)))
+    database.current.addRandom(product).then(() => dispatch(addItem(product)))
   }
 
   // BUG: disable if getAll failed, else hard crash
   function addMultipleRandomProducts() {
-    let id = state.nextId
-    const products = createRandomProducts(5)
-    const newProducts = products.map((p) => ({...p, id: id++})).reverse()
+    const id = state.nextId
+    const products = createRandomProducts(id, 5)
 
     database.current
-      .addRandom(newProducts)
-      .then(() => dispatch(addArray(newProducts)))
+      .addRandom(products)
+      .then(() => dispatch(addArray(products)))
   }
 
   useConfigAutosave(saveCurrentOrder)
