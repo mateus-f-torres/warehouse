@@ -46,6 +46,8 @@ function Warehouse(props) {
         <AppBar
           onLogout={props.onLogout}
           onClearAllProducts={dispatch.clearAllProducts}
+          onAddSingleRandomProduct={dispatch.addSingleRandomProduct}
+          onAddMultipleRandomProducts={dispatch.addMultipleRandomProducts}
         />
         <Floaters handleOnClick={openNewProductDialog} />
         <TableContainer

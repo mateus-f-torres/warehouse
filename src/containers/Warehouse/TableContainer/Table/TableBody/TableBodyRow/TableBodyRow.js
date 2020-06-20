@@ -21,6 +21,7 @@ function EnhancedTableBodyRow(props) {
     >
       {(provided) => (
         <TableRow
+          data-testid="item"
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}

@@ -46,12 +46,23 @@ function EnhancedAppBar(props) {
         <Typography className={classes.title} variant="h4" component="h2">
           Warehouse
         </Typography>
-        <IconButton className={classes.moreIcon} onClick={setupAnchor}>
+        <IconButton
+          arai-label="options"
+          data-testid="options"
+          className={classes.moreIcon}
+          onClick={setupAnchor}
+        >
           <MoreVertIcon />
         </IconButton>
         <Menu anchorEl={anchor} open={open} onClose={teardownAnchor}>
           <MenuItem onClick={props.onLogout}>Logout</MenuItem>
-          <MenuItem onClick={props.onClearAllProducts}>Clear DB</MenuItem>
+          <MenuItem onClick={props.onClearAllProducts}>Delete items</MenuItem>
+          <MenuItem onClick={props.onAddSingleRandomProduct}>
+            Add 1 random item
+          </MenuItem>
+          <MenuItem onClick={props.onAddMultipleRandomProducts}>
+            Add 10 random items
+          </MenuItem>
         </Menu>
       </Toolbar>
     </AppBar>
