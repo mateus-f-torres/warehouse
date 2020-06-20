@@ -3,6 +3,7 @@ import React from 'react'
 import databaseReducer, {
   loadDatabase,
   addItem,
+  addArray,
   deleteItem,
   updateItem,
   clearDatabase,
@@ -15,6 +16,7 @@ import databaseReducer, {
 import open from '../../utils/indexedDB/indexedDB'
 
 import useConfigAutosave from './utils/useConfigAutosave'
+import createRandomProducts from './utils/createRandomProducts'
 
 function useDatabase(user, draft) {
   const [state, dispatch] = React.useReducer(databaseReducer, defaultDatabase)
@@ -86,6 +88,24 @@ function useDatabase(user, draft) {
     database.current.clearAll().then(() => dispatch(clearDatabase()))
   }
 
+  // BUG: disable if getAll failed, else hard crash
+  function addSingleRandomProduct() {
+    const id = state.nextId
+    const [product] = createRandomProducts(id)
+
+    database.current.addRandom(product).then(() => dispatch(addItem(product)))
+  }
+
+  // BUG: disable if getAll failed, else hard crash
+  function addMultipleRandomProducts() {
+    const id = state.nextId
+    const products = createRandomProducts(id, 5)
+
+    database.current
+      .addRandom(products)
+      .then(() => dispatch(addArray(products)))
+  }
+
   useConfigAutosave(saveCurrentOrder)
 
   function saveCurrentOrder() {
@@ -105,6 +125,8 @@ function useDatabase(user, draft) {
       removeProduct,
       updateProduct,
       clearAllProducts,
+      addSingleRandomProduct,
+      addMultipleRandomProducts,
     },
   ]
 }
