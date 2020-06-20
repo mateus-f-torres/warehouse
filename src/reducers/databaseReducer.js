@@ -9,6 +9,7 @@ export const defaultDatabase = {
 
 const LOAD_LIST = 'warehouse/database/LOAD_LIST'
 const ADD_ITEM = 'warehouse/database/ADD_ITEM'
+const ADD_ARRAY = 'warehouse/database/ADD_ARRAY'
 const DELETE_ITEM = 'warehouse/database/DELETE_ITEM'
 const UPDATE_ITEM = 'warehouse/database/UPDATE_ITEM'
 const CLEAR_LIST = 'warehouse/database/CLEAR_LIST'
@@ -24,6 +25,9 @@ function databaseReducer(state, action) {
 
     case ADD_ITEM:
       return addItemToDatabase(state, action.payload)
+
+    case ADD_ARRAY:
+      return addArrayOfItemsToDatabase(state, action.payload)
 
     case DELETE_ITEM:
       return deleteItemFromDatabase(state, action.payload)
@@ -74,6 +78,16 @@ function addItemToDatabase(state, newItem) {
   }
 }
 
+function addArrayOfItemsToDatabase(state, array) {
+  const newList = [...array, ...state.list]
+  const nextId = getSpareIdInList(newList)
+  return {
+    ...state,
+    nextId,
+    list: newList,
+  }
+}
+
 function deleteItemFromDatabase(state, id) {
   const filteredList = state.list.filter((item) => item.id !== id)
   const nextId = getSpareIdInList(filteredList)
@@ -104,7 +118,7 @@ function updateItemInDatabase(state, edit) {
 function clearAllItemsInDatabase() {
   return {
     list: [],
-    nextId: 0,
+    nextId: 1,
     status: {
       verb: 'RESOLVED',
       message: '',
@@ -154,6 +168,13 @@ export function addItem(item) {
   return {
     type: ADD_ITEM,
     payload: item,
+  }
+}
+
+export function addArray(array) {
+  return {
+    type: ADD_ARRAY,
+    payload: array,
   }
 }
 

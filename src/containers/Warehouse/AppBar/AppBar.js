@@ -61,7 +61,7 @@ function EnhancedAppBar(props) {
             Add 1 random item
           </MenuItem>
           <MenuItem onClick={props.onAddMultipleRandomProducts}>
-            Add 10 random items
+            Add 5 random items
           </MenuItem>
         </Menu>
       </Toolbar>

@@ -3,6 +3,7 @@ import React from 'react'
 import databaseReducer, {
   loadDatabase,
   addItem,
+  addArray,
   deleteItem,
   updateItem,
   clearDatabase,
@@ -87,23 +88,26 @@ function useDatabase(user, draft) {
     database.current.clearAll().then(() => dispatch(clearDatabase()))
   }
 
-  // BUG: disable if getAll failed, else product id will clash
+  // BUG: disable if getAll failed, else hard crash
   function addSingleRandomProduct() {
+    const id = state.nextId
     const [product] = createRandomProducts()
-    addProduct(product)
+    const newProduct = {...product, id}
+
+    database.current
+      .addRandom(newProduct)
+      .then(() => dispatch(addItem(newProduct)))
   }
 
-  // BUG: disable if getAll failed, else product id will clash
+  // BUG: disable if getAll failed, else hard crash
   function addMultipleRandomProducts() {
-    /*
     let id = state.nextId
-    const products = createRandomProducts(2)
-    const newProducts = products.map((p) => ({...p, id: id++}))
+    const products = createRandomProducts(5)
+    const newProducts = products.map((p) => ({...p, id: id++})).reverse()
 
-    database.current.addAll(newProducts).then((res) => {
-      console.log(res)
-    })
-    */
+    database.current
+      .addRandom(newProducts)
+      .then(() => dispatch(addArray(newProducts)))
   }
 
   useConfigAutosave(saveCurrentOrder)
