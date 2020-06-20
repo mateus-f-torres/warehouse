@@ -2,7 +2,11 @@ import faker from 'faker'
 
 function createRandomProducts(id, quantity = 1) {
   const randoms = []
-  for (let i = 0; i < quantity; i++) randoms.push(randomProduct())
+
+  for (let i = 0; i < quantity; i++) {
+    randoms.push(randomProduct())
+  }
+
   return randoms.map((r) => ({...r, id: id++})).reverse()
 }
 
