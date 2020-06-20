@@ -1,3 +1,5 @@
+import faker from 'faker'
+
 function createRandomProducts(quantity = 1) {
   const randoms = []
   for (let i = 0; i < quantity; i++) randoms.push(randomProduct())
@@ -5,11 +7,14 @@ function createRandomProducts(quantity = 1) {
 }
 
 function randomProduct() {
+  const price = Number(faker.commerce.price() / 100).toFixed(2)
+  const stock = Math.floor(faker.finance.amount() / 10)
+  const total = Number((stock * price).toFixed(2))
   return {
-    product: 'MOCK',
-    stock: 10,
-    price: 10,
-    total: 100,
+    product: faker.commerce.product(),
+    stock,
+    price,
+    total,
   }
 }
 
