@@ -5,23 +5,6 @@ const MOCK_USER = {
   company: 'TEST_COMPANY',
 }
 
-// TODO: use clearAll feature
-beforeEach(() => {
-  const request = window.indexedDB.open('TEST_COMPANY', 1)
-  request.onerror = () => {}
-  request.onupgradeneeded = (e) => {
-    e.target.result.createObjectStore('products', {keyPath: 'id'})
-  }
-  request.onsuccess = (event) => {
-    const clearRequest = event.target.result
-      .transaction('products', 'readwrite')
-      .objectStore('products')
-      .clear()
-    clearRequest.onerror = () => {}
-    clearRequest.onsuccess = () => {}
-  }
-})
-
 let LOCAL_STORAGE_MEMORY = {}
 
 Cypress.Commands.add('saveLocalStorage', () => {
@@ -46,9 +29,13 @@ Cypress.Commands.add('login', function () {
   cy.findByPlaceholderText('Usuário').type(MOCK_USER.username)
   cy.findByPlaceholderText('Empresa').type(MOCK_USER.company)
   cy.findByText('Entrar').click()
+
   // TODO: change to wait for loading table to stop
   /* eslint cypress/no-unnecessary-waiting: 'off' */
   cy.wait(1000)
+
+  cy.findByLabelText('options').click()
+  cy.findByText('Delete items').click().type('{esc}')
 })
 
 Cypress.Commands.add('populateProductListWith', function (MOCK_LIST) {

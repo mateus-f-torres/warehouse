@@ -15,6 +15,7 @@ async function createDatabase({name, version, store, key}) {
     getAll: fakeAPI(makeGetAll(db, store)),
     putAll: makePutAll(db, store),
     clearAll: makeClearAll(db, store),
+    addRandom: makeAddRandom(db, store),
   }
 }
 
@@ -47,9 +48,7 @@ function makePutAll(db, store) {
   return (data) => {
     const tx = db.transaction(store, 'readwrite')
 
-    for (const d of data) {
-      tx.store.put(d)
-    }
+    for (const d of data) tx.store.put(d)
 
     return tx.done
   }
@@ -57,6 +56,20 @@ function makePutAll(db, store) {
 
 function makeClearAll(db, store) {
   return () => db.clear(store)
+}
+
+function makeAddRandom(db, store) {
+  return (data) => {
+    if (Array.isArray(data) === false) {
+      return db.add(store, data)
+    } else {
+      const tx = db.transaction(store, 'readwrite')
+
+      for (const d of data) tx.store.add(d)
+
+      return tx.done
+    }
+  }
 }
 
 export default createDatabase
