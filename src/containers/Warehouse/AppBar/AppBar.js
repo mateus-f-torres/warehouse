@@ -47,8 +47,7 @@ function EnhancedAppBar(props) {
           Warehouse
         </Typography>
         <IconButton
-          arai-label="options"
-          data-testid="options"
+          aria-label="options"
           className={classes.moreIcon}
           onClick={setupAnchor}
         >
