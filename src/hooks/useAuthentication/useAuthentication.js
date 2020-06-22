@@ -1,34 +1,32 @@
 import React from 'react'
 
-import userReducer, {
-  loadUser,
-  unloadUser,
-  defaultUser,
-} from '../../reducers/userReducer'
-
 import * as storage from '../../utils/localStorage/localStorage'
+import authentication, * as actions from './authentication'
+import {initialState} from './authHandlers'
 
 const USERNAME_KEY = 'username'
 const COMPANY_KEY = 'company'
 
-function useUser() {
-  const [state, dispatch] = React.useReducer(userReducer, defaultUser)
+function useAuthentication() {
+  const [state, dispatch] = React.useReducer(authentication, initialState)
 
   React.useLayoutEffect(() => {
     const data = storage.read([USERNAME_KEY, COMPANY_KEY])
-    if (data.every((value) => value !== null)) {
-      dispatch(loadUser(data))
+    const isAuthenticated = data.every((key) => key !== null)
+
+    if (isAuthenticated) {
+      dispatch(actions.loadUser(data))
     }
   }, [])
 
   function createUser([username, company]) {
     storage.write({[USERNAME_KEY]: username, [COMPANY_KEY]: company})
-    dispatch(loadUser([username, company]))
+    dispatch(actions.loadUser([username, company]))
   }
 
   function deleteUser() {
     storage.remove([USERNAME_KEY, COMPANY_KEY])
-    dispatch(unloadUser())
+    dispatch(actions.unloadUser())
   }
 
   return [
@@ -37,4 +35,4 @@ function useUser() {
   ]
 }
 
-export default useUser
+export default useAuthentication

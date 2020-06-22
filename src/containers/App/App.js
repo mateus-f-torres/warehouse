@@ -6,13 +6,13 @@ import {BrowserRouter, Switch, Route, Redirect} from 'react-router-dom'
 import Login from '../Login/Login'
 import Warehouse from '../Warehouse/Warehouse'
 
-import useUser from '../../hooks/useUser/useUser'
+import useAuthentication from '../../hooks/useAuthentication/useAuthentication'
 import theme from './theme'
 
 export const UserContext = React.createContext(null)
 
 function App() {
-  const [user, {createUser, deleteUser}] = useUser()
+  const [user, {createUser, deleteUser}] = useAuthentication()
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
