@@ -1,5 +1,6 @@
 describe('Warehouse', function () {
-  before(() => cy.login())
+  before(cy.setup)
+  after(cy.teardown)
 
   describe('allows a user to add a new product to the list', function () {
     beforeEach(() => cy.findByLabelText('adicionar').click())

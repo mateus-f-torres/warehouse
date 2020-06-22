@@ -24,18 +24,23 @@ Cypress.Commands.add('clearLocalStorage', () => {
   LOCAL_STORAGE_MEMORY = {}
 })
 
-Cypress.Commands.add('login', function () {
+Cypress.Commands.add('setup', function () {
   cy.visit('/')
   cy.findByPlaceholderText('Usuário').type(MOCK_USER.username)
   cy.findByPlaceholderText('Empresa').type(MOCK_USER.company)
   cy.findByText('Entrar').click()
-
   // TODO: change to wait for loading table to stop
   /* eslint cypress/no-unnecessary-waiting: 'off' */
   cy.wait(1000)
+})
 
+Cypress.Commands.add('teardown', function () {
   cy.findByLabelText('options').click()
-  cy.findByText('Delete items').click().type('{esc}')
+  cy.findByText('Delete items').click()
+  // TODO: change to wait for items deletion
+  /* eslint cypress/no-unnecessary-waiting: 'off' */
+  cy.wait(1000)
+  cy.findByText('Logout').click()
 })
 
 Cypress.Commands.add('populateProductListWith', function (MOCK_LIST) {
