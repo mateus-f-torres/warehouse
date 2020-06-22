@@ -7,14 +7,14 @@ import Dialog from './Dialog/Dialog'
 import Floaters from './Floaters/Floaters'
 
 import {UserContext} from '../App/App'
-import useDatabase from '../../hooks/useDatabase/useDatabase'
+import useProductsList from '../../hooks/useProductsList/useProductsList'
 
 export const AsyncContext = React.createContext()
 
 function Warehouse(props) {
   const draft = React.useRef()
   const user = React.useContext(UserContext)
-  const [database, dispatch] = useDatabase(user, draft)
+  const [database, dispatch] = useProductsList(user, draft)
   const [dialogIsOpen, toggleDialog] = React.useState(false)
   const [productDetail, setProductDetail] = React.useState(null)
 

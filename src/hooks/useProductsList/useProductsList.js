@@ -1,25 +1,14 @@
 import React from 'react'
 
-import databaseReducer, {
-  loadDatabase,
-  addItem,
-  addArray,
-  deleteItem,
-  updateItem,
-  clearDatabase,
-  notifyRequestStarted,
-  notifyRequestFailed,
-  defaultDatabase,
-  requestReset,
-} from '../../reducers/databaseReducer'
-
 import open from '../../utils/indexedDB/indexedDB'
+import reducer, * as actions from './reducer'
+import {initialState} from './handlers'
 
 import useConfigAutosave from './utils/useConfigAutosave'
 import createRandomProducts from './utils/createRandomProducts'
 
-function useDatabase(user, draft) {
-  const [state, dispatch] = React.useReducer(databaseReducer, defaultDatabase)
+function useProductsList(user, draft) {
+  const [state, dispatch] = React.useReducer(reducer, initialState)
   const database = React.useRef()
 
   const DATABASE = {
@@ -31,7 +20,7 @@ function useDatabase(user, draft) {
 
   function timedReset() {
     window.setTimeout(function () {
-      dispatch(requestReset())
+      dispatch(actions.requestReset())
     }, 4000)
   }
 
@@ -39,53 +28,53 @@ function useDatabase(user, draft) {
     open(DATABASE)
       .then((result) => (database.current = result))
       .then(() => getAllProducts())
-      .catch((e) => console.error(new Error(e)))
+      .catch(console.error)
   }, [])
 
   function getAllProducts() {
-    dispatch(notifyRequestStarted(''))
+    dispatch(actions.requestStarted(''))
 
     database.current
       .getAll()
-      .then((result) => dispatch(loadDatabase(result)))
-      .catch((e) => dispatch(notifyRequestFailed(e)))
+      .then((result) => dispatch(actions.loadList(result)))
+      .catch((e) => dispatch(actions.requestFailed(e)))
   }
 
   function addProduct(product) {
-    dispatch(notifyRequestStarted('Adicionando novo produto...'))
+    dispatch(actions.requestStarted('Adicionando novo produto...'))
 
     const id = state.nextId
     const newProduct = {...product, id}
 
     database.current
       .add(newProduct)
-      .then(() => dispatch(addItem(newProduct)))
-      .catch((e) => dispatch(notifyRequestFailed(e)))
+      .then(() => dispatch(actions.addItem(newProduct)))
+      .catch((e) => dispatch(actions.requestFailed(e)))
       .finally(timedReset)
   }
 
   function removeProduct(id) {
-    dispatch(notifyRequestStarted('Removendo produto...'))
+    dispatch(actions.requestStarted('Removendo produto...'))
 
     database.current
       .delete(id)
-      .then(() => dispatch(deleteItem(id)))
-      .catch((e) => dispatch(notifyRequestFailed(e)))
+      .then(() => dispatch(actions.deleteItem(id)))
+      .catch((e) => dispatch(actions.requestFailed(e)))
       .finally(timedReset)
   }
 
   function updateProduct(id, data) {
-    dispatch(notifyRequestStarted('Modificando produto...'))
+    dispatch(actions.requestStarted('Modificando produto...'))
 
     database.current
       .put(id, data)
-      .then((result) => dispatch(updateItem(result)))
-      .catch((e) => dispatch(notifyRequestFailed(e)))
+      .then((result) => dispatch(actions.updateItem(result)))
+      .catch((e) => dispatch(actions.requestFailed(e)))
       .finally(timedReset)
   }
 
   function clearAllProducts() {
-    database.current.clearAll().then(() => dispatch(clearDatabase()))
+    database.current.clearAll().then(() => dispatch(actions.clearList()))
   }
 
   // BUG: disable if getAll failed, else hard crash
@@ -93,7 +82,9 @@ function useDatabase(user, draft) {
     const id = state.nextId
     const [product] = createRandomProducts(id)
 
-    database.current.addRandom(product).then(() => dispatch(addItem(product)))
+    database.current
+      .addRandom(product)
+      .then(() => dispatch(actions.addItem(product)))
   }
 
   // BUG: disable if getAll failed, else hard crash
@@ -103,7 +94,7 @@ function useDatabase(user, draft) {
 
     database.current
       .addRandom(products)
-      .then(() => dispatch(addArray(products)))
+      .then(() => dispatch(actions.addArray(products)))
   }
 
   useConfigAutosave(saveCurrentOrder)
@@ -131,4 +122,4 @@ function useDatabase(user, draft) {
   ]
 }
 
-export default useDatabase
+export default useProductsList
