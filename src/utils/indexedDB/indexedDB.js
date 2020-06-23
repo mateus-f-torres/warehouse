@@ -12,7 +12,7 @@ async function createDatabase({name, version, store, key}) {
     add: fakeAPI(makeAdd(db, store)),
     put: fakeAPI(makePut(db, store)),
     delete: fakeAPI(makeDelete(db, store)),
-    getAll: fakeAPI(makeGetAll(db, store)),
+    getAll: makeGetAll(db, store),
     putAll: makePutAll(db, store),
     clearAll: makeClearAll(db, store),
     addRandom: makeAddRandom(db, store),

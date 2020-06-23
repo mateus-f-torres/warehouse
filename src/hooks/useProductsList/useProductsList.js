@@ -34,18 +34,13 @@ function useProductsList(user, draft) {
 
   React.useEffect(() => {
     open(DATABASE)
-      .then((result) => (database.current = result))
+      .then((dbRef) => (database.current = dbRef))
       .then(getAllProducts)
       .catch(console.error)
   }, [])
 
   function getAllProducts() {
-    dispatch(actions.requestStarted(''))
-
-    database.current
-      .getAll()
-      .then(dispatchLoadList)
-      .catch((e) => dispatch(actions.requestFailed(e)))
+    database.current.getAll().then(dispatchLoadList)
   }
 
   function addProduct(product) {
@@ -85,11 +80,9 @@ function useProductsList(user, draft) {
     database.current.clearAll().then(dispatchClearList)
   }
 
-  // BUG: disable if getAll failed, else hard crash
   function addRandomProducts(quantity) {
     const id = state.nextId
     const product = createRandomProducts(id, quantity)
-
     database.current.addRandom(product).then(dispatchAddArray)
   }
 
