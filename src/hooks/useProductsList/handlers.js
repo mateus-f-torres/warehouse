@@ -1,4 +1,4 @@
-export const initialState = {
+const initialState = {
   list: null,
   nextId: 0,
   status: {
@@ -119,3 +119,5 @@ function getSpareIdInList(arr) {
     .sort((a, b) => (a > b ? 1 : -1))
     .reduce((num, nextNumber) => (num == nextNumber ? num + 1 : num), 1)
 }
+
+export default initialState

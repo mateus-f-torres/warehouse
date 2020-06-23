@@ -2,7 +2,7 @@ import React from 'react'
 
 import open from '../../utils/indexedDB/indexedDB'
 import reducer, * as actions from './reducer'
-import {initialState} from './handlers'
+import initialState from './handlers'
 
 import useConfigAutosave from './utils/useConfigAutosave'
 import createRandomProducts from './utils/createRandomProducts'
@@ -18,6 +18,14 @@ function useProductsList(user, draft) {
     key: 'id',
   }
 
+  // NOTE: use of React.useCallback ?
+  const dispatchLoadList = (list) => dispatch(actions.loadList(list))
+  const dispatchAddItem = (item) => dispatch(actions.addItem(item))
+  const dispatchAddArray = (array) => dispatch(actions.addArray(array))
+  const dispatchDeleteItem = (id) => dispatch(actions.deleteItem(id))
+  const dispatchUpdateItem = (update) => dispatch(actions.updateItem(update))
+  const dispatchClearList = () => dispatch(actions.clearList())
+
   function timedReset() {
     window.setTimeout(function () {
       dispatch(actions.requestReset())
@@ -27,7 +35,7 @@ function useProductsList(user, draft) {
   React.useEffect(() => {
     open(DATABASE)
       .then((result) => (database.current = result))
-      .then(() => getAllProducts())
+      .then(getAllProducts)
       .catch(console.error)
   }, [])
 
@@ -36,7 +44,7 @@ function useProductsList(user, draft) {
 
     database.current
       .getAll()
-      .then((result) => dispatch(actions.loadList(result)))
+      .then(dispatchLoadList)
       .catch((e) => dispatch(actions.requestFailed(e)))
   }
 
@@ -48,7 +56,7 @@ function useProductsList(user, draft) {
 
     database.current
       .add(newProduct)
-      .then(() => dispatch(actions.addItem(newProduct)))
+      .then(dispatchAddItem)
       .catch((e) => dispatch(actions.requestFailed(e)))
       .finally(timedReset)
   }
@@ -58,7 +66,7 @@ function useProductsList(user, draft) {
 
     database.current
       .delete(id)
-      .then(() => dispatch(actions.deleteItem(id)))
+      .then(dispatchDeleteItem)
       .catch((e) => dispatch(actions.requestFailed(e)))
       .finally(timedReset)
   }
@@ -68,33 +76,31 @@ function useProductsList(user, draft) {
 
     database.current
       .put(id, data)
-      .then((result) => dispatch(actions.updateItem(result)))
+      .then(dispatchUpdateItem)
       .catch((e) => dispatch(actions.requestFailed(e)))
       .finally(timedReset)
   }
 
   function clearAllProducts() {
-    database.current.clearAll().then(() => dispatch(actions.clearList()))
+    database.current.clearAll().then(dispatchClearList)
   }
 
+  // NOTE: duplicated code here
   // BUG: disable if getAll failed, else hard crash
   function addSingleRandomProduct() {
     const id = state.nextId
-    const [product] = createRandomProducts(id)
+    const product = createRandomProducts(id)
 
-    database.current
-      .addRandom(product)
-      .then(() => dispatch(actions.addItem(product)))
+    database.current.addRandom(product).then(dispatchAddArray)
   }
 
+  // NOTE: duplicated code here
   // BUG: disable if getAll failed, else hard crash
   function addMultipleRandomProducts() {
     const id = state.nextId
     const products = createRandomProducts(id, 5)
 
-    database.current
-      .addRandom(products)
-      .then(() => dispatch(actions.addArray(products)))
+    database.current.addRandom(products).then(dispatchAddArray)
   }
 
   useConfigAutosave(saveCurrentOrder)

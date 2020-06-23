@@ -20,7 +20,7 @@ async function createDatabase({name, version, store, key}) {
 }
 
 function makeAdd(db, store) {
-  return (data) => db.add(store, data)
+  return (data) => db.add(store, data).then(() => data)
 }
 
 function makePut(db, store) {
@@ -37,7 +37,7 @@ function makePut(db, store) {
 }
 
 function makeDelete(db, store) {
-  return (key) => db.delete(store, key)
+  return (key) => db.delete(store, key).then(() => key)
 }
 
 function makeGetAll(db, store) {
@@ -60,15 +60,11 @@ function makeClearAll(db, store) {
 
 function makeAddRandom(db, store) {
   return (data) => {
-    if (Array.isArray(data) === false) {
-      return db.add(store, data)
-    } else {
-      const tx = db.transaction(store, 'readwrite')
+    const tx = db.transaction(store, 'readwrite')
 
-      for (const d of data) tx.store.add(d)
+    for (const d of data) tx.store.add(d)
 
-      return tx.done
-    }
+    return tx.done.then(() => data)
   }
 }
 
