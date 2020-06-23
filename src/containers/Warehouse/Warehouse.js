@@ -36,8 +36,8 @@ function Warehouse(props) {
   function handleProductSubmission(data) {
     const formatted = format(data)
     productDetail === null
-      ? dispatch.addProduct(formatted)
-      : dispatch.updateProduct(productDetail.id, formatted)
+      ? dispatch.addItem(formatted)
+      : dispatch.updateItem(productDetail.id, formatted)
   }
 
   return (
@@ -45,9 +45,9 @@ function Warehouse(props) {
       <AsyncContext.Provider value={products.status}>
         <AppBar
           onLogout={props.onLogout}
-          onClearAllProducts={dispatch.clearAllProducts}
-          onAddSingleRandomProduct={dispatch.addSingleRandomProduct}
-          onAddMultipleRandomProducts={dispatch.addMultipleRandomProducts}
+          onClearAllProducts={dispatch.clearList}
+          onAddSingleRandomProduct={dispatch.addSingleRandomItem}
+          onAddMultipleRandomProducts={dispatch.addMultipleRandomItems}
         />
         <Floaters handleOnClick={openNewProductDialog} />
         <TableContainer
@@ -59,7 +59,7 @@ function Warehouse(props) {
           open={dialogIsOpen}
           detail={productDetail}
           onClose={closeDialog}
-          onDelete={dispatch.removeProduct}
+          onDelete={dispatch.deleteItem}
           onSubmit={handleProductSubmission}
         />
       </AsyncContext.Provider>

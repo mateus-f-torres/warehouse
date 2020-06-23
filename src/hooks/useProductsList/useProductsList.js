@@ -35,15 +35,15 @@ function useProductsList(user, draft) {
   React.useEffect(() => {
     open(DATABASE)
       .then((dbRef) => (database.current = dbRef))
-      .then(getAllProducts)
+      .then(loadList)
       .catch(console.error)
   }, [])
 
-  function getAllProducts() {
+  function loadList() {
     database.current.getAll().then(dispatchLoadList)
   }
 
-  function addProduct(product) {
+  function addItem(product) {
     dispatch(actions.requestStarted('Adicionando novo produto...'))
 
     const id = state.nextId
@@ -56,7 +56,7 @@ function useProductsList(user, draft) {
       .finally(timedReset)
   }
 
-  function removeProduct(id) {
+  function deleteItem(id) {
     dispatch(actions.requestStarted('Removendo produto...'))
 
     database.current
@@ -66,7 +66,7 @@ function useProductsList(user, draft) {
       .finally(timedReset)
   }
 
-  function updateProduct(id, data) {
+  function updateItem(id, data) {
     dispatch(actions.requestStarted('Modificando produto...'))
 
     database.current
@@ -76,11 +76,11 @@ function useProductsList(user, draft) {
       .finally(timedReset)
   }
 
-  function clearAllProducts() {
+  function clearList() {
     database.current.clearAll().then(dispatchClearList)
   }
 
-  function addRandomProducts(quantity) {
+  function addRandomItems(quantity) {
     const id = state.nextId
     const product = createRandomProducts(id, quantity)
     database.current.addRandom(product).then(dispatchAddArray)
@@ -101,12 +101,12 @@ function useProductsList(user, draft) {
       status: state.status,
     },
     {
-      addProduct,
-      removeProduct,
-      updateProduct,
-      clearAllProducts,
-      addSingleRandomProduct: addRandomProducts.bind(null, 1),
-      addMultipleRandomProducts: addRandomProducts.bind(null, 5),
+      addItem,
+      deleteItem,
+      updateItem,
+      clearList,
+      addSingleRandomItem: addRandomItems.bind(null, 1),
+      addMultipleRandomItems: addRandomItems.bind(null, 5),
     },
   ]
 }

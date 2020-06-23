@@ -1,15 +1,15 @@
 import * as handle from './handlers'
 
-const LOAD_LIST = 'warehouse/products/LOAD_LIST'
-const ADD_ITEM = 'warehouse/products/ADD_ITEM'
-const ADD_ARRAY = 'warehouse/products/ADD_ARRAY'
-const DELETE_ITEM = 'warehouse/products/DELETE_ITEM'
-const UPDATE_ITEM = 'warehouse/products/UPDATE_ITEM'
-const CLEAR_LIST = 'warehouse/products/CLEAR_LIST'
+const LOAD_LIST = 'warehouse/products-list/LOAD_LIST'
+const ADD_ITEM = 'warehouse/products-list/ADD_ITEM'
+const ADD_ARRAY = 'warehouse/products-list/ADD_ARRAY'
+const DELETE_ITEM = 'warehouse/products-list/DELETE_ITEM'
+const UPDATE_ITEM = 'warehouse/products-list/UPDATE_ITEM'
+const CLEAR_LIST = 'warehouse/products-list/CLEAR_LIST'
 // move to another reducer
-const REQUEST_RESET = 'warehouse/products/REQUEST_RESET'
-const REQUEST_FAILED = 'warehouse/products/REQUEST_FAILED'
-const REQUEST_STARTED = 'warehouse/products/REQUEST_STARTED'
+const REQUEST_RESET = 'warehouse/products-list/REQUEST_RESET'
+const REQUEST_FAILED = 'warehouse/products-list/REQUEST_FAILED'
+const REQUEST_STARTED = 'warehouse/products-list/REQUEST_STARTED'
 
 function reducer(state, action) {
   switch (action.type) {
