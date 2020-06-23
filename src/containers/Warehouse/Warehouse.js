@@ -7,14 +7,14 @@ import Dialog from './Dialog/Dialog'
 import Floaters from './Floaters/Floaters'
 
 import {UserContext} from '../App/App'
-import useDatabase from '../../hooks/useDatabase/useDatabase'
+import useProductsList from '../../hooks/useProductsList/useProductsList'
 
 export const AsyncContext = React.createContext()
 
 function Warehouse(props) {
   const draft = React.useRef()
   const user = React.useContext(UserContext)
-  const [database, dispatch] = useDatabase(user, draft)
+  const [products, dispatch] = useProductsList(user, draft)
   const [dialogIsOpen, toggleDialog] = React.useState(false)
   const [productDetail, setProductDetail] = React.useState(null)
 
@@ -24,7 +24,7 @@ function Warehouse(props) {
   }
 
   function openDialogEditMode(id) {
-    setProductDetail(database.list.find((item) => item.id === id))
+    setProductDetail(products.list.find((item) => item.id === id))
     toggleDialog(true)
   }
 
@@ -36,22 +36,22 @@ function Warehouse(props) {
   function handleProductSubmission(data) {
     const formatted = format(data)
     productDetail === null
-      ? dispatch.addProduct(formatted)
-      : dispatch.updateProduct(productDetail.id, formatted)
+      ? dispatch.addItem(formatted)
+      : dispatch.updateItem(productDetail.id, formatted)
   }
 
   return (
     <Box>
-      <AsyncContext.Provider value={database.status}>
+      <AsyncContext.Provider value={products.status}>
         <AppBar
           onLogout={props.onLogout}
-          onClearAllProducts={dispatch.clearAllProducts}
-          onAddSingleRandomProduct={dispatch.addSingleRandomProduct}
-          onAddMultipleRandomProducts={dispatch.addMultipleRandomProducts}
+          onClearAllProducts={dispatch.clearList}
+          onAddSingleRandomProduct={dispatch.addSingleRandomItem}
+          onAddMultipleRandomProducts={dispatch.addMultipleRandomItems}
         />
         <Floaters handleOnClick={openNewProductDialog} />
         <TableContainer
-          data={database.list}
+          data={products.list}
           dataRef={draft}
           onEdit={openDialogEditMode}
         />
@@ -59,7 +59,7 @@ function Warehouse(props) {
           open={dialogIsOpen}
           detail={productDetail}
           onClose={closeDialog}
-          onDelete={dispatch.removeProduct}
+          onDelete={dispatch.deleteItem}
           onSubmit={handleProductSubmission}
         />
       </AsyncContext.Provider>
