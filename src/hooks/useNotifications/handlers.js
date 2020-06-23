@@ -1,5 +1,5 @@
 const initialState = {
-  verb: '',
+  verb: 'IDLE',
   message: '',
 }
 
@@ -16,16 +16,20 @@ status: {
   verb: 'RESOLVED',
   message: 'Produto modificado com sucesso!',
 },
+
+  ('Adicionando novo produto...'))
+  ('Removendo produto...'))
+  ('Modificando produto...'))
 */
 
-export function requestStarted(state, motive) {
+export function start(state, motive) {
   return {
     message: motive,
     verb: 'REQUESTING',
   }
 }
 
-export function requestFailed(state, error) {
+export function fail(state, error) {
   console.error(error)
   return {
     verb: 'REJECTED',
@@ -33,7 +37,7 @@ export function requestFailed(state, error) {
   }
 }
 
-export function requestReset(state) {
+export function reset(state) {
   return {
     verb: 'IDLE',
     message: '',

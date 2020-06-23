@@ -1,42 +1,42 @@
 import * as handle from './handlers'
 
-const REQUEST_RESET = 'warehouse/notifications/REQUEST_RESET'
-const REQUEST_FAILED = 'warehouse/notifications/REQUEST_FAILED'
-const REQUEST_STARTED = 'warehouse/notifications/REQUEST_STARTED'
+const START = 'warehouse/notifications/START'
+const RESET = 'warehouse/notifications/RESET'
+const FAILED = 'warehouse/notifications/FAILED'
 
 function reducer(state, action) {
   switch (action.type) {
-    case REQUEST_STARTED:
-      return handle.requestStarted(state, action.payload)
+    case START:
+      return handle.start(state, action.payload)
 
-    case REQUEST_FAILED:
-      return handle.requestFailed(state, action.payload)
+    case FAILED:
+      return handle.fail(state, action.payload)
 
-    case REQUEST_RESET:
-      return handle.requestReset(state)
+    case RESET:
+      return handle.reset(state)
 
     default:
       return state
   }
 }
 
-export function requestStarted(motive) {
+export function start(motive) {
   return {
-    type: REQUEST_STARTED,
+    type: START,
     payload: motive,
   }
 }
 
-export function requestFailed(motive) {
+export function fail(motive) {
   return {
-    type: REQUEST_FAILED,
+    type: FAILED,
     payload: motive,
   }
 }
 
-export function requestReset() {
+export function reset() {
   return {
-    type: REQUEST_RESET,
+    type: RESET,
   }
 }
 

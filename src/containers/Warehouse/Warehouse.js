@@ -8,7 +8,7 @@ import Floaters from './Floaters/Floaters'
 
 import {UserContext} from '../App/App'
 import useProductsList from '../../hooks/useProductsList/useProductsList'
-import useNotification from '../../hooks/useNotification/useNotification'
+import useNotification from '../../hooks/useNotifications/useNotifications'
 
 export const NotificationContext = React.createContext()
 
