@@ -7,7 +7,7 @@ import initialState from './handlers'
 import useConfigAutosave from './utils/useConfigAutosave'
 import createRandomProducts from './utils/createRandomProducts'
 
-function useProductsList(user, draft, notification) {
+function useProductsList(user, draft, notify) {
   const [state, dispatch] = React.useReducer(reducer, initialState)
   const database = React.useRef()
 
@@ -40,7 +40,7 @@ function useProductsList(user, draft, notification) {
   }
 
   function addItem(item) {
-    notification.start('hello world')
+    notify.start('hello world')
 
     const id = state.nextId
     const newItem = {...item, id}
@@ -48,28 +48,28 @@ function useProductsList(user, draft, notification) {
     database.current
       .add(newItem)
       .then(dispatchAddItem)
-      .catch(notification.fail)
-      .finally(notification.reset)
+      .catch(notify.fail)
+      .finally(notify.reset)
   }
 
   function deleteItem(id) {
-    notification.start('hello world')
+    notify.start('hello world')
 
     database.current
       .delete(id)
       .then(dispatchDeleteItem)
-      .catch(notification.fail)
-      .finally(notification.reset)
+      .catch(notify.fail)
+      .finally(notify.reset)
   }
 
   function updateItem(id, data) {
-    notification.start('hello world')
+    notify.start('hello world')
 
     database.current
       .put(id, data)
       .then(dispatchUpdateItem)
-      .catch(notification.fail)
-      .finally(notification.reset)
+      .catch(notify.fail)
+      .finally(notify.reset)
   }
 
   function clearList() {
