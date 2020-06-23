@@ -7,12 +7,12 @@ const initialState = {
   },
 }
 
-export function loadList(items) {
-  items.sort((a, b) => (a.index > b.index ? 1 : -1))
-  const nextId = getSpareIdInList(items)
+export function loadList(list) {
+  list.sort((a, b) => (a.index > b.index ? 1 : -1))
+  const nextId = getSpareIdInList(list)
   return {
+    list,
     nextId,
-    list: items,
     status: {
       verb: 'RESOLVED',
       message: '',
@@ -37,9 +37,12 @@ export function addArray(state, array) {
   const newList = [...array, ...state.list]
   const nextId = getSpareIdInList(newList)
   return {
-    ...state,
     nextId,
     list: newList,
+    status: {
+      verb: 'RESOLVED',
+      message: '',
+    },
   }
 }
 

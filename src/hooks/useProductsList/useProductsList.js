@@ -23,7 +23,7 @@ function useProductsList(user, draft) {
   const dispatchAddItem = (item) => dispatch(actions.addItem(item))
   const dispatchAddArray = (array) => dispatch(actions.addArray(array))
   const dispatchDeleteItem = (id) => dispatch(actions.deleteItem(id))
-  const dispatchUpdateItem = (update) => dispatch(actions.updateItem(update))
+  const dispatchUpdateItem = (edit) => dispatch(actions.updateItem(edit))
   const dispatchClearList = () => dispatch(actions.clearList())
 
   function timedReset() {
@@ -32,25 +32,27 @@ function useProductsList(user, draft) {
     }, 4000)
   }
 
-  React.useEffect(() => {
+  React.useEffect(openDatabase, [])
+
+  function openDatabase() {
     open(DATABASE)
-      .then((dbRef) => (database.current = dbRef))
+      .then((ref) => (database.current = ref))
       .then(loadList)
       .catch(console.error)
-  }, [])
+  }
 
   function loadList() {
     database.current.getAll().then(dispatchLoadList)
   }
 
-  function addItem(product) {
+  function addItem(item) {
     dispatch(actions.requestStarted('Adicionando novo produto...'))
 
     const id = state.nextId
-    const newProduct = {...product, id}
+    const newItem = {...item, id}
 
     database.current
-      .add(newProduct)
+      .add(newItem)
       .then(dispatchAddItem)
       .catch((e) => dispatch(actions.requestFailed(e)))
       .finally(timedReset)
@@ -82,8 +84,8 @@ function useProductsList(user, draft) {
 
   function addRandomItems(quantity) {
     const id = state.nextId
-    const product = createRandomProducts(id, quantity)
-    database.current.addRandom(product).then(dispatchAddArray)
+    const items = createRandomProducts(id, quantity)
+    database.current.addRandom(items).then(dispatchAddArray)
   }
 
   useConfigAutosave(saveCurrentOrder)
