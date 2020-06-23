@@ -14,7 +14,7 @@ export const AsyncContext = React.createContext()
 function Warehouse(props) {
   const draft = React.useRef()
   const user = React.useContext(UserContext)
-  const [database, dispatch] = useProductsList(user, draft)
+  const [products, dispatch] = useProductsList(user, draft)
   const [dialogIsOpen, toggleDialog] = React.useState(false)
   const [productDetail, setProductDetail] = React.useState(null)
 
@@ -24,7 +24,7 @@ function Warehouse(props) {
   }
 
   function openDialogEditMode(id) {
-    setProductDetail(database.list.find((item) => item.id === id))
+    setProductDetail(products.list.find((item) => item.id === id))
     toggleDialog(true)
   }
 
@@ -42,7 +42,7 @@ function Warehouse(props) {
 
   return (
     <Box>
-      <AsyncContext.Provider value={database.status}>
+      <AsyncContext.Provider value={products.status}>
         <AppBar
           onLogout={props.onLogout}
           onClearAllProducts={dispatch.clearAllProducts}
@@ -51,7 +51,7 @@ function Warehouse(props) {
         />
         <Floaters handleOnClick={openNewProductDialog} />
         <TableContainer
-          data={database.list}
+          data={products.list}
           dataRef={draft}
           onEdit={openDialogEditMode}
         />
