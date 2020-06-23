@@ -1,10 +1,10 @@
 import React from 'react'
 import {Snackbar, SnackbarContent} from '@material-ui/core'
-import {AsyncContext} from '../../Warehouse'
+import {NotificationContext} from '../../Warehouse'
 
 function EnhancedSnackbar(props) {
   const [open, setOpen] = React.useState(false)
-  const status = React.useContext(AsyncContext)
+  const status = React.useContext(NotificationContext)
 
   React.useEffect(() => {
     if (status.verb && status.message) {
