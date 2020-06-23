@@ -1,37 +1,39 @@
 import React from 'react'
 
-import * as storage from '../../utils/localStorage/localStorage'
-import authentication, * as actions from './authentication'
-import {initialState} from './authHandlers'
+import * as localStorage from '../../utils/localStorage/localStorage'
+import reducer, * as actions from './reducer'
+import initialState from './handlers'
 
 const USERNAME_KEY = 'username'
 const COMPANY_KEY = 'company'
 
 function useAuthentication() {
-  const [state, dispatch] = React.useReducer(authentication, initialState)
+  const [state, dispatch] = React.useReducer(reducer, initialState)
 
-  React.useLayoutEffect(() => {
-    const data = storage.read([USERNAME_KEY, COMPANY_KEY])
+  const dispatchLoadUser = (data) => dispatch(actions.loadUser(data))
+  const dispatchUnloadUser = () => dispatch(actions.unloadUser())
+
+  React.useLayoutEffect(authenticateUser, [])
+
+  function authenticateUser() {
+    const data = localStorage.read([USERNAME_KEY, COMPANY_KEY])
     const isAuthenticated = data.every((key) => key !== null)
-
-    if (isAuthenticated) {
-      dispatch(actions.loadUser(data))
-    }
-  }, [])
-
-  function createUser([username, company]) {
-    storage.write({[USERNAME_KEY]: username, [COMPANY_KEY]: company})
-    dispatch(actions.loadUser([username, company]))
+    if (isAuthenticated) dispatchLoadUser(data)
   }
 
-  function deleteUser() {
-    storage.remove([USERNAME_KEY, COMPANY_KEY])
-    dispatch(actions.unloadUser())
+  function loadUser([username, company]) {
+    localStorage.write({[USERNAME_KEY]: username, [COMPANY_KEY]: company})
+    dispatchLoadUser([username, company])
+  }
+
+  function unloadUser() {
+    localStorage.remove([USERNAME_KEY, COMPANY_KEY])
+    dispatchUnloadUser()
   }
 
   return [
     {username: state.username, company: state.company},
-    {createUser, deleteUser},
+    {loadUser, unloadUser},
   ]
 }
 

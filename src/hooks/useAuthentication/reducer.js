@@ -1,15 +1,15 @@
-import {loadUserData, unloadUserData} from './authHandlers'
+import * as handle from './handlers'
 
 const LOAD_USER = 'warehouse/authentication/LOAD_USER'
 const UNLOAD_USER = 'warehouse/authentication/UNLOAD_USER'
 
-function authentication(state, action) {
+function reducer(state, action) {
   switch (action.type) {
     case LOAD_USER:
-      return loadUserData(action.payload)
+      return handle.loadUser(action.payload)
 
     case UNLOAD_USER:
-      return unloadUserData()
+      return handle.unloadUser()
 
     default:
       return state
@@ -29,4 +29,4 @@ export function unloadUser() {
   }
 }
 
-export default authentication
+export default reducer

@@ -12,7 +12,7 @@ import theme from './theme'
 export const UserContext = React.createContext(null)
 
 function App() {
-  const [user, {createUser, deleteUser}] = useAuthentication()
+  const [user, {loadUser, unloadUser}] = useAuthentication()
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -22,14 +22,14 @@ function App() {
             <Switch>
               <Route path="/login">
                 {!user.username ? (
-                  <Login onLogin={createUser} />
+                  <Login onLogin={loadUser} />
                 ) : (
                   <Redirect to="/app" />
                 )}
               </Route>
               <Route path="/app">
                 {user.username ? (
-                  <Warehouse onLogout={deleteUser} />
+                  <Warehouse onLogout={unloadUser} />
                 ) : (
                   <Redirect to="/login" />
                 )}
