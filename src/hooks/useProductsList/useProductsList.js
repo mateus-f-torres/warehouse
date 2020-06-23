@@ -85,22 +85,12 @@ function useProductsList(user, draft) {
     database.current.clearAll().then(dispatchClearList)
   }
 
-  // NOTE: duplicated code here
   // BUG: disable if getAll failed, else hard crash
-  function addSingleRandomProduct() {
+  function addRandomProducts(quantity) {
     const id = state.nextId
-    const product = createRandomProducts(id)
+    const product = createRandomProducts(id, quantity)
 
     database.current.addRandom(product).then(dispatchAddArray)
-  }
-
-  // NOTE: duplicated code here
-  // BUG: disable if getAll failed, else hard crash
-  function addMultipleRandomProducts() {
-    const id = state.nextId
-    const products = createRandomProducts(id, 5)
-
-    database.current.addRandom(products).then(dispatchAddArray)
   }
 
   useConfigAutosave(saveCurrentOrder)
@@ -122,8 +112,8 @@ function useProductsList(user, draft) {
       removeProduct,
       updateProduct,
       clearAllProducts,
-      addSingleRandomProduct,
-      addMultipleRandomProducts,
+      addSingleRandomProduct: addRandomProducts.bind(null, 1),
+      addMultipleRandomProducts: addRandomProducts.bind(null, 5),
     },
   ]
 }
