@@ -24,10 +24,10 @@ Cypress.Commands.add('clearLocalStorage', () => {
   LOCAL_STORAGE_MEMORY = {}
 })
 
-Cypress.Commands.add('setup', function () {
+Cypress.Commands.add('setup', function (user = MOCK_USER) {
   cy.visit('/')
-  cy.findByPlaceholderText('Usuário').type(MOCK_USER.username)
-  cy.findByPlaceholderText('Empresa').type(MOCK_USER.company)
+  cy.findByPlaceholderText('Usuário').type(user.username)
+  cy.findByPlaceholderText('Empresa').type(user.company)
   cy.findByText('Entrar').click()
   // TODO: change to wait for loading table to stop
   /* eslint cypress/no-unnecessary-waiting: 'off' */
