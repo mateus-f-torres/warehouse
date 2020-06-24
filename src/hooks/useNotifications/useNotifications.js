@@ -7,6 +7,7 @@ function useNotifications() {
   const [state, dispatch] = React.useReducer(reducer, initialState)
 
   const dispatchStart = (code) => dispatch(action.start(code))
+  const dispatchDone = () => dispatch(action.done())
   const dispatchFail = (e) => dispatch(action.fail(e))
   const dispatchReset = () => dispatch(action.reset())
 
@@ -14,18 +15,11 @@ function useNotifications() {
     state,
     {
       start: dispatchStart,
+      done: dispatchDone,
       fail: dispatchFail,
       reset: dispatchReset,
     },
   ]
 }
-
-/*
-  function timedReset() {
-    window.setTimeout(function () {
-      dispatch(action.requestReset())
-    }, 4000)
-  }
-*/
 
 export default useNotifications

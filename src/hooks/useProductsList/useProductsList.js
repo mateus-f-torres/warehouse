@@ -40,7 +40,7 @@ function useProductsList(user, draft, notify) {
   }
 
   function addItem(item) {
-    notify.start('hello world')
+    notify.start('PRODUCT.ADD')
 
     const id = state.nextId
     const newItem = {...item, id}
@@ -48,28 +48,25 @@ function useProductsList(user, draft, notify) {
     database.current
       .add(newItem)
       .then(dispatchAddItem)
-      .catch(notify.fail)
-      .finally(notify.reset)
+      .then(notify.done, notify.fail)
   }
 
   function deleteItem(id) {
-    notify.start('hello world')
+    notify.start('PRODUCT.DEL')
 
     database.current
       .delete(id)
       .then(dispatchDeleteItem)
-      .catch(notify.fail)
-      .finally(notify.reset)
+      .then(notify.done, notify.fail)
   }
 
   function updateItem(id, data) {
-    notify.start('hello world')
+    notify.start('PRODUCT.PUT')
 
     database.current
       .put(id, data)
       .then(dispatchUpdateItem)
-      .catch(notify.fail)
-      .finally(notify.reset)
+      .then(notify.done, notify.fail)
   }
 
   function clearList() {
