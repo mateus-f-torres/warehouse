@@ -7,7 +7,6 @@ install:
   - yarn cypress verify
   - yarn add --dev wait-on
 script:
-  - yarn lint
   - yarn start & wait-on http://localhost:8080 &
   - yarn test
   - kill $(jobs -p) || true
