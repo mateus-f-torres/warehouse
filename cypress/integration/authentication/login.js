@@ -25,5 +25,11 @@ describe('Warehouse should', function () {
       cy.reload()
       cy.findByPlaceholderText('Buscar').should('exist')
     })
+
+    it('allow a user to logout', function () {
+      cy.findByLabelText('options').click()
+      cy.findByText('Logout').click()
+      cy.findByAltText('Warehouse Banner').should('exist')
+    })
   })
 })

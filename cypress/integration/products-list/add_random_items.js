@@ -1,5 +1,6 @@
 describe('Warehouse should', function () {
-  before(() => cy.login())
+  before(cy.setup)
+  after(cy.teardown)
 
   it('allow users to add a single random item', function () {
     cy.findByLabelText('options').click()

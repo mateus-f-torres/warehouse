@@ -5,8 +5,8 @@ import Snackbar from './Snackbar/Snackbar'
 function Floaters(props) {
   return (
     <>
-      <AddButton onClick={props.handleOnClick} />
-      <Snackbar />
+      <AddButton onClick={props.handleOnAddClick} />
+      <Snackbar onBlur={props.handleSnackbarBlur} />
     </>
   )
 }

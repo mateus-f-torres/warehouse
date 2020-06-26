@@ -14,9 +14,10 @@ const MOCK_PRODUCT_LIST = [
 
 describe('Warehouse', function () {
   before(() => {
-    cy.login()
+    cy.setup()
     cy.populateProductListWith(MOCK_PRODUCT_LIST)
   })
+  after(cy.teardown)
 
   afterEach(() => {
     cy.findByPlaceholderText('Buscar').clear()

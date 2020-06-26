@@ -15,6 +15,9 @@
 
 const CONFIG = {
   TEST_COMPANY: {maxDelay: 0, successRate: 1},
+  TEST_DELAY_COMPANY: {maxDelay: 1, successRate: 1},
+  TEST_SUCCESS_COMPANY: {maxDelay: 0.5, successRate: 1},
+  TEST_FAILURE_COMPANY: {maxDelay: 0.5, successRate: 0},
   DEFAULT: {maxDelay: 5, successRate: 0.9},
 }
 
