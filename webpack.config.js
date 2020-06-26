@@ -37,13 +37,15 @@ const terser = new TerserPlugin({
   sourceMap: true,
 })
 
-// TODO: brotli compression
-const gzipPlugin = new CompressionPlugin({
-  test: /.(js|css|html|svg)$/,
-  filename: '[path].gz[query]',
-  algorithm: 'gzip',
+const brotliPlugin = new CompressionPlugin({
+  test: /\.(js|css|html|svg)$/,
+  filename: '[path].br[query]',
+  algorithm: 'brotliCompress',
   threshold: 0,
   minRatio: 0.8,
+  compressionOptions: {
+    level: 11,
+  },
 })
 
 const DEFAULT_PORT = 8080
@@ -113,7 +115,7 @@ if (process.env.NODE_ENV === 'production') {
     },
     performance: {
       assetFilter: function (assetFilename) {
-        return assetFilename.endsWith('.gz')
+        return assetFilename.endsWith('.br')
       },
     },
     optimization: {
@@ -166,7 +168,7 @@ if (process.env.NODE_ENV === 'production') {
       sourceMapsPlugin,
       analyzerPlugin,
       cleanUpPlugin,
-      gzipPlugin,
+      brotliPlugin,
       htmlPlugin,
       copyPlugin,
     ],
