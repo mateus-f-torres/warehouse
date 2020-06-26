@@ -1,17 +1,13 @@
 import React from 'react'
 import {Snackbar, SnackbarContent} from '@material-ui/core'
-import {AsyncContext} from '../../Warehouse'
+import {NotificationContext} from '../../Warehouse'
 
 function EnhancedSnackbar(props) {
   const [open, setOpen] = React.useState(false)
-  const status = React.useContext(AsyncContext)
+  const status = React.useContext(NotificationContext)
 
   React.useEffect(() => {
-    if (status.verb && status.message) {
-      openSnackbar()
-    } else {
-      closeSnackbar()
-    }
+    status.message ? openSnackbar() : closeSnackbar()
   }, [status.verb])
 
   function openSnackbar() {
@@ -20,10 +16,11 @@ function EnhancedSnackbar(props) {
 
   function closeSnackbar() {
     setOpen(false)
+    props.onBlur()
   }
 
   return (
-    <Snackbar open={open} autoHideDuration={4000} onClose={closeSnackbar}>
+    <Snackbar open={open} autoHideDuration={3000} onClose={closeSnackbar}>
       <SnackbarContent message={status.message} />
     </Snackbar>
   )

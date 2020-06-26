@@ -3,7 +3,7 @@ import {Zoom, Fab} from '@material-ui/core'
 import AddIcon from '@material-ui/icons/Add'
 import {makeStyles} from '@material-ui/core/styles'
 
-import {AsyncContext} from '../../Warehouse'
+import {NotificationContext} from '../../Warehouse'
 
 const useStyle = makeStyles({
   fab: {
@@ -16,10 +16,10 @@ const useStyle = makeStyles({
 
 function AddButton(props) {
   const classes = useStyle()
-  const status = React.useContext(AsyncContext)
+  const status = React.useContext(NotificationContext)
 
   return (
-    <Zoom in={Boolean(status.verb)} timeout={300}>
+    <Zoom in={status.verb == 'IDLE'} timeout={300}>
       <Fab
         color="primary"
         aria-label="adicionar"

@@ -7,7 +7,7 @@ import initialState from './handlers'
 import useConfigAutosave from './utils/useConfigAutosave'
 import createRandomProducts from './utils/createRandomProducts'
 
-function useProductsList(user, draft) {
+function useProductsList(user, draft, notify) {
   const [state, dispatch] = React.useReducer(reducer, initialState)
   const database = React.useRef()
 
@@ -26,12 +26,6 @@ function useProductsList(user, draft) {
   const dispatchUpdateItem = (edit) => dispatch(actions.updateItem(edit))
   const dispatchClearList = () => dispatch(actions.clearList())
 
-  function timedReset() {
-    window.setTimeout(function () {
-      dispatch(actions.requestReset())
-    }, 4000)
-  }
-
   React.useEffect(openDatabase, [])
 
   function openDatabase() {
@@ -46,7 +40,7 @@ function useProductsList(user, draft) {
   }
 
   function addItem(item) {
-    dispatch(actions.requestStarted('Adicionando novo produto...'))
+    notify.start('PRODUCT.ADD')
 
     const id = state.nextId
     const newItem = {...item, id}
@@ -54,28 +48,25 @@ function useProductsList(user, draft) {
     database.current
       .add(newItem)
       .then(dispatchAddItem)
-      .catch((e) => dispatch(actions.requestFailed(e)))
-      .finally(timedReset)
+      .then(notify.done, notify.fail)
   }
 
   function deleteItem(id) {
-    dispatch(actions.requestStarted('Removendo produto...'))
+    notify.start('PRODUCT.DEL')
 
     database.current
       .delete(id)
       .then(dispatchDeleteItem)
-      .catch((e) => dispatch(actions.requestFailed(e)))
-      .finally(timedReset)
+      .then(notify.done, notify.fail)
   }
 
   function updateItem(id, data) {
-    dispatch(actions.requestStarted('Modificando produto...'))
+    notify.start('PRODUCT.PUT')
 
     database.current
       .put(id, data)
       .then(dispatchUpdateItem)
-      .catch((e) => dispatch(actions.requestFailed(e)))
-      .finally(timedReset)
+      .then(notify.done, notify.fail)
   }
 
   function clearList() {

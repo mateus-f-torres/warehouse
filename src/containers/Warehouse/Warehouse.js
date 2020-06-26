@@ -8,48 +8,55 @@ import Floaters from './Floaters/Floaters'
 
 import {UserContext} from '../App/App'
 import useProductsList from '../../hooks/useProductsList/useProductsList'
+import useNotification from '../../hooks/useNotifications/useNotifications'
 
-export const AsyncContext = React.createContext()
+export const NotificationContext = React.createContext()
 
 function Warehouse(props) {
   const draft = React.useRef()
   const user = React.useContext(UserContext)
-  const [products, dispatch] = useProductsList(user, draft)
-  const [dialogIsOpen, toggleDialog] = React.useState(false)
-  const [productDetail, setProductDetail] = React.useState(null)
 
-  function openNewProductDialog() {
-    setProductDetail(null)
+  const [notification, notify] = useNotification()
+  const [products, dispatch] = useProductsList(user, draft, notify)
+
+  const [dialogIsOpen, toggleDialog] = React.useState(false)
+  const [edited, setEdited] = React.useState(null)
+
+  function openDialogNewMode() {
+    setEdited(null)
     toggleDialog(true)
   }
 
   function openDialogEditMode(id) {
-    setProductDetail(products.list.find((item) => item.id === id))
+    setEdited(products.list.find((item) => item.id === id))
     toggleDialog(true)
   }
 
   function closeDialog() {
-    setProductDetail(null)
+    setEdited(null)
     toggleDialog(false)
   }
 
-  function handleProductSubmission(data) {
+  function handleItemSubmission(data) {
     const formatted = format(data)
-    productDetail === null
+    edited === null
       ? dispatch.addItem(formatted)
-      : dispatch.updateItem(productDetail.id, formatted)
+      : dispatch.updateItem(edited.id, formatted)
   }
 
   return (
     <Box>
-      <AsyncContext.Provider value={products.status}>
+      <NotificationContext.Provider value={notification}>
         <AppBar
           onLogout={props.onLogout}
           onClearAllProducts={dispatch.clearList}
           onAddSingleRandomProduct={dispatch.addSingleRandomItem}
           onAddMultipleRandomProducts={dispatch.addMultipleRandomItems}
         />
-        <Floaters handleOnClick={openNewProductDialog} />
+        <Floaters
+          handleOnAddClick={openDialogNewMode}
+          handleSnackbarBlur={notify.reset}
+        />
         <TableContainer
           data={products.list}
           dataRef={draft}
@@ -57,12 +64,12 @@ function Warehouse(props) {
         />
         <Dialog
           open={dialogIsOpen}
-          detail={productDetail}
+          detail={edited}
           onClose={closeDialog}
           onDelete={dispatch.deleteItem}
-          onSubmit={handleProductSubmission}
+          onSubmit={handleItemSubmission}
         />
-      </AsyncContext.Provider>
+      </NotificationContext.Provider>
     </Box>
   )
 }

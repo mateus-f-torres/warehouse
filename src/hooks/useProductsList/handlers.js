@@ -1,10 +1,6 @@
 const initialState = {
   list: null,
   nextId: 0,
-  status: {
-    verb: '',
-    message: '',
-  },
 }
 
 export function loadList(list) {
@@ -13,10 +9,6 @@ export function loadList(list) {
   return {
     list,
     nextId,
-    status: {
-      verb: 'RESOLVED',
-      message: '',
-    },
   }
 }
 
@@ -26,10 +18,6 @@ export function addItem(state, newItem) {
   return {
     nextId,
     list: newList,
-    status: {
-      verb: 'RESOLVED',
-      message: 'Produto adicionado com sucesso!',
-    },
   }
 }
 
@@ -39,10 +27,6 @@ export function addArray(state, array) {
   return {
     nextId,
     list: newList,
-    status: {
-      verb: 'RESOLVED',
-      message: '',
-    },
   }
 }
 
@@ -52,10 +36,6 @@ export function deleteItem(state, id) {
   return {
     nextId,
     list: filteredList,
-    status: {
-      verb: 'RESOLVED',
-      message: 'Produto removido com sucesso!',
-    },
   }
 }
 
@@ -66,10 +46,6 @@ export function updateItem(state, edit) {
   return {
     list: editedList,
     nextId: state.nextId,
-    status: {
-      verb: 'RESOLVED',
-      message: 'Produto modificado com sucesso!',
-    },
   }
 }
 
@@ -77,42 +53,6 @@ export function clearList() {
   return {
     list: [],
     nextId: 1,
-    status: {
-      verb: 'RESOLVED',
-      message: '',
-    },
-  }
-}
-
-// move to another reducer
-export function requestStarted(state, motive) {
-  return {
-    ...state,
-    status: {
-      message: motive,
-      verb: 'REQUESTING',
-    },
-  }
-}
-
-export function requestFailed(state, error) {
-  console.error(error)
-  return {
-    ...state,
-    status: {
-      verb: 'REJECTED',
-      message: error.message,
-    },
-  }
-}
-
-export function requestReset(state) {
-  return {
-    ...state,
-    status: {
-      verb: 'IDLE',
-      message: '',
-    },
   }
 }
 
