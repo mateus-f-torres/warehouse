@@ -19,7 +19,7 @@ function AddButton(props) {
   const status = React.useContext(NotificationContext)
 
   return (
-    <Zoom in={Boolean(status.verb)} timeout={300}>
+    <Zoom in={status.verb == 'IDLE'} timeout={300}>
       <Fab
         color="primary"
         aria-label="adicionar"
