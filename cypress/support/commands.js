@@ -29,17 +29,13 @@ Cypress.Commands.add('setup', function (user = MOCK_USER) {
   cy.findByPlaceholderText('Usuário').type(user.username)
   cy.findByPlaceholderText('Empresa').type(user.company)
   cy.findByText('Entrar').click()
-  // TODO: change to wait for loading table to stop
-  /* eslint cypress/no-unnecessary-waiting: 'off' */
-  cy.wait(1000)
+  cy.findByLabelText('adicionar').should('exist')
 })
 
 Cypress.Commands.add('teardown', function () {
   cy.findByLabelText('options').click()
   cy.findByText('Delete items').click()
-  // TODO: change to wait for items deletion
-  /* eslint cypress/no-unnecessary-waiting: 'off' */
-  cy.wait(1000)
+  cy.findAllByTestId('item').should('have.length', 0)
   cy.findByText('Logout').click()
 })
 
