@@ -1,6 +1,5 @@
 # Warehouse Project Notes
 
-cypress commands.js
 specs naming/wording
 createMuiTheme & ThemeProvider
 
@@ -16,11 +15,11 @@ It mainly focus on keeping the reducer and actions type|creators in the same fil
 So maybe I can keep the initialState and action handlers in another file
 
 But should every file and function have a unique name (quite hard)
-Or maybe adopt a generalized approuch that depends on the folder context
-e.g.
+Or maybe adopt a generalized approuch that depends on the directory context
+```javascript
  // file naming
- store/todos/reducer.js
- store/todos/handlers.js
+ // store/todos/reducer.js
+ // store/todos/handlers.js or handler.js
  
  // same basic structure (even name)
  function reducer(state = initialState, action) {}
@@ -36,6 +35,7 @@ e.g.
  // action dispatcher
  <form onSubmit={addTodo}>
 
+```
 
 ### Web Fonts
 https://fonts.google.com/
@@ -134,7 +134,7 @@ I argue that you should always contraint yourself within a minimun and maximun s
 Otherwise designers and developers with waste time defining layouts to viewports that arent even used by your customers
 
 ### Functional Trap
-```
+```javascript
 const promisify = (fn) => new Promise(fn)
 
 function fakeAPI(fn) {
