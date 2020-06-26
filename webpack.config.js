@@ -7,6 +7,7 @@ const TerserPlugin = require('terser-webpack-plugin')
 const CompressionPlugin = require('compression-webpack-plugin')
 const CopyPlugin = require('copy-webpack-plugin')
 const {SourceMapDevToolPlugin} = require('webpack')
+const {InjectManifest} = require('workbox-webpack-plugin')
 
 const cleanUpPlugin = new CleanWebpackPlugin()
 
@@ -26,11 +27,12 @@ const htmlPlugin = new HtmlWebpackPlugin({
 const copyPlugin = new CopyPlugin([
   {from: 'src/assets/fonts', to: 'fonts/'},
   {from: 'src/assets/logo', to: 'logo/'},
+  {from: 'src/assets/manifest.json', to: '[name].[ext]'},
 ])
 
 const sourceMapsPlugin = new SourceMapDevToolPlugin({
   filename: 'sourcemaps/[file].map',
-  exclude: [/runtime\.*\.*/, /vendors\.*\.*/],
+  exclude: ['sw.js', /runtime\.*\.*/, /vendors\.*\.*/],
 })
 
 const terser = new TerserPlugin({
@@ -43,9 +45,16 @@ const brotliPlugin = new CompressionPlugin({
   algorithm: 'brotliCompress',
   threshold: 0,
   minRatio: 0.8,
+  exclude: 'sw.js',
   compressionOptions: {
     level: 11,
   },
+})
+
+const swPlugin = new InjectManifest({
+  swSrc: './src/sw/sw.js',
+  exclude: [/\.(br|map)$/],
+  dontCacheBustURLsMatching: /\.(js|woff2|woff|png|ico|txt)$/,
 })
 
 const DEFAULT_PORT = 8080
@@ -171,6 +180,7 @@ if (process.env.NODE_ENV === 'production') {
       brotliPlugin,
       htmlPlugin,
       copyPlugin,
+      swPlugin,
     ],
     stats: {
       assets: true,
