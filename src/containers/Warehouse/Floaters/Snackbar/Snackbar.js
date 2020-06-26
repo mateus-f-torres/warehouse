@@ -7,11 +7,7 @@ function EnhancedSnackbar(props) {
   const status = React.useContext(NotificationContext)
 
   React.useEffect(() => {
-    if (status.verb && status.message) {
-      openSnackbar()
-    } else {
-      closeSnackbar()
-    }
+    status.message ? openSnackbar() : closeSnackbar()
   }, [status.verb])
 
   function openSnackbar() {
@@ -20,10 +16,11 @@ function EnhancedSnackbar(props) {
 
   function closeSnackbar() {
     setOpen(false)
+    props.onBlur()
   }
 
   return (
-    <Snackbar open={open} autoHideDuration={4000} onClose={closeSnackbar}>
+    <Snackbar open={open} autoHideDuration={3000} onClose={closeSnackbar}>
       <SnackbarContent message={status.message} />
     </Snackbar>
   )

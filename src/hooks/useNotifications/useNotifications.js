@@ -11,13 +11,21 @@ function useNotifications() {
   const dispatchFail = (e) => dispatch(action.fail(e))
   const dispatchReset = () => dispatch(action.reset())
 
+  function reset() {
+    if (notificationsCanResetSafely()) dispatchReset()
+  }
+
+  function notificationsCanResetSafely() {
+    return state.verb == 'RESOLVED' || state.verb == 'REJECTED'
+  }
+
   return [
     state,
     {
+      reset,
       start: dispatchStart,
       done: dispatchDone,
       fail: dispatchFail,
-      reset: dispatchReset,
     },
   ]
 }

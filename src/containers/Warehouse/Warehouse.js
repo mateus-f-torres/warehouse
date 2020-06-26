@@ -53,7 +53,10 @@ function Warehouse(props) {
           onAddSingleRandomProduct={dispatch.addSingleRandomItem}
           onAddMultipleRandomProducts={dispatch.addMultipleRandomItems}
         />
-        <Floaters handleOnClick={openDialogNewMode} />
+        <Floaters
+          handleOnAddClick={openDialogNewMode}
+          handleSnackbarBlur={notify.reset}
+        />
         <TableContainer
           data={products.list}
           dataRef={draft}
