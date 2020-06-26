@@ -66,7 +66,6 @@
     "image-webpack-loader": "6.0.0",
     "lint-staged": "^10.0.7",
     "prettier": "2.0.2",
-    "simple-progress-webpack-plugin": "1.1.2",
     "terser-webpack-plugin": "2.3.5",
     "url-loader": "3.0.0",
     "webpack": "4.42.0",
