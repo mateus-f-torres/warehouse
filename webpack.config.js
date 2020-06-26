@@ -1,24 +1,21 @@
 /* eslint import/newline-after-import: 'off' */
 const path = require('path')
-const {HotModuleReplacementPlugin} = require('webpack')
 const {CleanWebpackPlugin} = require('clean-webpack-plugin')
-const SimpleProgressWebpackPlugin = require('simple-progress-webpack-plugin')
 const {BundleAnalyzerPlugin} = require('webpack-bundle-analyzer')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
 const CompressionPlugin = require('compression-webpack-plugin')
 const CopyPlugin = require('copy-webpack-plugin')
+const {SourceMapDevToolPlugin} = require('webpack')
 
-const hotReloadPlugin = new HotModuleReplacementPlugin()
 const cleanUpPlugin = new CleanWebpackPlugin()
-const progressPlugin = new SimpleProgressWebpackPlugin({format: 'compact'})
 
 const analyzerPlugin = new BundleAnalyzerPlugin({
   openAnalyzer: false,
   analyzerMode: 'static',
-  generateStatsFile: false,
-  reportFilename: '../reports/bundle_report.html',
-  statsFilename: '../reports/bundle_stats.json',
+  generateStatsFile: true,
+  reportFilename: '../reports/report.html',
+  statsFilename: '../reports/stats.json',
 })
 
 const htmlPlugin = new HtmlWebpackPlugin({
@@ -31,10 +28,18 @@ const copyPlugin = new CopyPlugin([
   {from: 'src/assets/logo', to: 'logo/'},
 ])
 
-const terser = new TerserPlugin()
+const sourceMapsPlugin = new SourceMapDevToolPlugin({
+  filename: 'sourcemaps/[file].map',
+  exclude: [/runtime\.*\.*/, /vendors\.*\.*/],
+})
 
+const terser = new TerserPlugin({
+  sourceMap: true,
+})
+
+// TODO: brotli compression
 const gzipPlugin = new CompressionPlugin({
-  test: /.(js|css|html|svg|ttf)$/,
+  test: /.(js|css|html|svg)$/,
   filename: '[path].gz[query]',
   algorithm: 'gzip',
   threshold: 0,
@@ -42,15 +47,16 @@ const gzipPlugin = new CompressionPlugin({
 })
 
 const DEFAULT_PORT = 8080
+const DEFAULT_PATH = '/'
 
 let configs = {
   target: 'web',
   mode: 'development',
-  devtool: 'inline-source-map',
+  devtool: 'eval-source-map',
   entry: path.resolve(__dirname, 'src/index.js'),
   output: {
-    path: path.resolve(__dirname, 'dist'),
-    filename: '[name].[hash].js',
+    filename: '[name].js',
+    chunkFilename: '[name].js',
   },
   module: {
     rules: [
@@ -77,47 +83,53 @@ let configs = {
       },
     ],
   },
-  plugins: [
-    progressPlugin,
-    cleanUpPlugin,
-    htmlPlugin,
-    copyPlugin,
-    hotReloadPlugin,
-  ],
+  plugins: [cleanUpPlugin, htmlPlugin, copyPlugin],
   devServer: {
     hot: true,
+    compress: true,
     port: DEFAULT_PORT,
-    publicPath: '/',
-    contentBase: path.resolve(__dirname, 'dist'),
-    watchContentBase: true,
+    publicPath: DEFAULT_PATH,
     historyApiFallback: true,
     proxy: {
       '/api': {target: 'http://localhost:3000'},
     },
+  },
+  stats: {
+    assets: true,
+    modules: false,
+    children: false,
+    entrypoints: false,
   },
 }
 
 if (process.env.NODE_ENV === 'production') {
   configs = Object.assign({}, configs, {
     mode: 'production',
-    devtool: 'source-map',
+    devtool: false,
     output: {
       path: path.resolve(__dirname, 'dist'),
       filename: '[name].[contenthash].js',
-      chunkFilename: '[name].[chunkhash].js',
+      chunkFilename: '[name].[contenthash].js',
+    },
+    performance: {
+      assetFilter: function (assetFilename) {
+        return assetFilename.endsWith('.gz')
+      },
     },
     optimization: {
+      minimize: true,
+      minimizer: [terser],
+      runtimeChunk: 'single',
       splitChunks: {
         cacheGroups: {
-          common: {
+          commons: {
             test: /[\\/]node_modules[\\/]/,
             chunks: 'all',
+            enforce: true,
             name: 'vendors',
           },
         },
       },
-      minimize: true,
-      minimizer: [terser],
     },
     module: {
       rules: [
@@ -141,7 +153,7 @@ if (process.env.NODE_ENV === 'production') {
               options: {
                 limit: 5 * 1024,
                 fallback: 'file-loader',
-                name: '[name].[hash].[ext]',
+                name: '[name].[ext]',
                 outputPath: 'images/',
               },
             },
@@ -151,13 +163,19 @@ if (process.env.NODE_ENV === 'production') {
       ],
     },
     plugins: [
-      progressPlugin,
+      sourceMapsPlugin,
       analyzerPlugin,
       cleanUpPlugin,
       gzipPlugin,
       htmlPlugin,
       copyPlugin,
     ],
+    stats: {
+      assets: true,
+      modules: false,
+      children: false,
+      entrypoints: false,
+    },
   })
 }
 
