@@ -1,4 +1,4 @@
-# Warehouse Project Notes
+# Warehouse Learning Notes
 
 specs naming/wording
 createMuiTheme & ThemeProvider
