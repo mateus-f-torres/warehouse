@@ -1,15 +1,23 @@
 # Warehouse Learning Notes
 
-specs naming/wording
-createMuiTheme & ThemeProvider
+## The Cost of a UI Framework
+Let's say you want to create a quick project, maybe to try out a library or for the coding part of a work application.  
+If the UI behind this project is not a core aspect but just something that looks good and is easy/quick to build, sure, go for it, they are short-lived projects, and you know it.  
+No need to create everything from scratch, just pick up some UI framework and code away.
 
-use jest to test Dialog and Validation Constraints  
-make cypress only test the main features  
+Every library or framework has a cost that you must pay at some point.  
+The problem with UI frameworks is that only feel the cost **after the first version**.  
+Maybe you want to change some utility library, improve the build process or add a new feature the application.  
+The longer you stay away from that code the longer it takes to recall how that framework functions and that for me is the real cost.  
 
-`#saveCurrentOrder` could be used by sw notifications
+I can write CSS | LESS | SCSS | Stylus | Styled-Components  
+I can write SMACSS | BEM | ITCSS | ABEM | Functional CSS  
+I can build a UI from the top-down or from the bottom-up  
+But none of that matters when there is a UI framework in the project, because I must follow the framework's guidelines.  
 
-## Learning
-### Reducer Organization
+> It's easy to see the benefits of an idea, but it's very hard to measure subtle negatives chained to it
+
+## Reducer Organization
 I finally get the ducks pattern
 It mainly focus on keeping the reducer and actions type|creators in the same file
 So maybe I can keep the initialState and action handlers in another file
@@ -37,7 +45,7 @@ Or maybe adopt a generalized approuch that depends on the directory context
 
 ```
 
-### Web Fonts
+## Web Fonts
 https://fonts.google.com/
 https://google-webfonts-helper.herokuapp.com/fonts
 https://caniuse.com/
@@ -104,7 +112,7 @@ You can also apply CSS to SVG documents, and the @font-face rule can be applied 
 Embedded OpenType Fonts (EOT)
 EOT fonts are a compact form of OpenType fonts designed by Microsoft for use as embedded fonts on web pages.
 
-### Mobile Keyboard
+## Mobile Keyboard
 When a `<input>` is given _focus_ a virtual keyboard takes a chunk of the viewport  
 How can we lower it after the user has acted ?  
 
@@ -119,7 +127,7 @@ But to think of a more sophisticated approach would take time;
 One such approach could be to know the viewport height;
 If during input focus that value drops = virtual keyboard;
 
-### Controlled Layout
+## Controlled Layout
 Is it always bad to use pixel measures in layouts ?  
 Even if we know how many pixels a element will take on small or larger screens ?  
 If we know how the content behaves at the viewport breaks I belive its quite possible  
@@ -133,7 +141,7 @@ Is there a point where the travel distance for the eyes is tiresome ?
 I argue that you should always contraint yourself within a minimun and maximun screen size  
 Otherwise designers and developers with waste time defining layouts to viewports that arent even used by your customers
 
-### Functional Trap
+## Functional Trap
 ```javascript
 const promisify = (fn) => new Promise(fn)
 
@@ -146,3 +154,9 @@ function fakeAPI(fn) {
   }
 }
 ```
+specs naming/wording
+
+use jest to test Dialog and Validation Constraints  
+make cypress only test the main features  
+
+`#saveCurrentOrder` could be used by sw notifications
