@@ -1,19 +1,11 @@
 # Warehouse Learning Notes
 
 ## The Cost of a UI Framework
-Let's say you want to create a quick project, maybe to try out a library or for the coding part of a work application.  
-If the UI behind this project is not a core aspect but just something that looks good and is easy/quick to build, sure, go for it, they are short-lived projects, and you know it.  
-No need to create everything from scratch, just pick up some UI framework and code away.
+Let's say you want to create a quick project, maybe to try out a library or for the coding part of a work application. The UI behind this project is not a core aspect but just something that looks good and is easy/quick to build. No need to create everything from scratch, just pick up some UI framework and code away, after all, they are short-lived projects, and you know it.  
 
-Every library or framework has a cost that you must pay at some point.  
-The problem with UI frameworks is that only feel the cost **after the first version**.  
-Maybe you want to change some utility library, improve the build process or add a new feature the application.  
-The longer you stay away from that code the longer it takes to recall how that framework functions and that for me is the real cost.  
+Every library or framework has a cost that you must pay at some point. The problem with UI frameworks is that only feel the cost **after the first version**. Maybe you want to change some utility library, improve the build process or add a new feature to the application, but the longer you stay away from that code the longer it takes to recall how that framework functions and that for me is the real cost.  
 
-I can write CSS | LESS | SCSS | Stylus | Styled-Components  
-I can write SMACSS | BEM | ITCSS | ABEM | Functional CSS  
-I can build a UI from the top-down or from the bottom-up  
-But none of that matters when there is a UI framework in the project, because I must follow the framework's guidelines.  
+I can write CSS, LESS , SCSS, Stylus or Styled-Components. I can write SMACSS, BEM, ITCSS, ABEM or Functional CSS. I can build a UI from the top-down or from the bottom-up, but none of that matters when there is a UI framework in the project, because I must follow the framework's guidelines. You can't easily transfer you existing knowledge to this codebase, and you also can't easily transfer your knowledge of this framework to other codebase.
 
 > It's easy to see the benefits of an idea, but it's very hard to measure subtle negatives chained to it
 
@@ -116,16 +108,20 @@ EOT fonts are a compact form of OpenType fonts designed by Microsoft for use as 
 When a `<input>` is given _focus_ a virtual keyboard takes a chunk of the viewport  
 How can we lower it after the user has acted ?  
 
-We could watch for each keypress but that is unnecessary;
-By placing inside a form we use onSubmit and watch for that;
-On mobile devices the virtual keyboard responds to focus/blur events;
+We could watch for each keypress but that is unnecessary;  
+By placing inside a form we use onSubmit and watch for that;  
+On mobile devices the virtual keyboard responds to focus/blur events;  
 So we can programmatically lower the keyboard this way;
 
-This is somewhat strange when on devices with a dedicated keyboard;
+This is somewhat strange when on devices with a dedicated keyboard;  
 But to think of a more sophisticated approach would take time;
 
-One such approach could be to know the viewport height;
+One such approach could be to know the viewport height;  
 If during input focus that value drops = virtual keyboard;
+
+Last `<input/>` inside a form will dispatch a `ENTER` _keypress_ on mobile devices  
+We can't just prevent submission on `ENTER` because it will make for a worse UX on desktop  
+Maybe we could add an invisible extra `<input/>` that will _blur_ `onfocus` just for mobile.
 
 ## Controlled Layout
 Is it always bad to use pixel measures in layouts ?  
