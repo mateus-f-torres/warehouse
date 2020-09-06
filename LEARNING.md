@@ -9,8 +9,15 @@ I can write CSS, LESS , SCSS, Stylus or Styled-Components. I can write SMACSS, B
 
 > It's easy to see the benefits of an idea, but it's very hard to measure subtle negatives chained to it
 
-## Reducer Organization
-I finally get the ducks pattern
+## State Managment
+[**Redux**](https://redux.js.org) is an awesome library for state management, you can actually produce predictable state and write complex applications with it, however it's not all sunshine and roses. **Redux** comes with a lot of boilerplate code and if you follow the intended organization you could end up with different files for **action constants**, **action creators**, **initial state**, **reducers**, **handlers**, **connectors**, etc, and even then these files could all be separated by domain inside a folder or maybe all allocated inside a type specific folder. All of this is overkill for most projects, and most likely will ramp up the cognitive load inside the codebase.  
+
+While working in this project I read a lot about state management organization and like most things in programming...there is no clear right or wrong answer. My suggestion is to **K.I.S.S.** your state management and experiment with different approaches while you try to find the one you and your team agrees that is just right for the codebase, that sweet spot between the being organized enough, so I know where to find stuff and flexible enough, so I can change it at a low cost if needed. 
+
+For **Warehouse** I chose the following structure because it felt right at the time:
+
+---
+
 It mainly focus on keeping the reducer and actions type|creators in the same file
 So maybe I can keep the initialState and action handlers in another file
 
@@ -36,6 +43,8 @@ Or maybe adopt a generalized approuch that depends on the directory context
  <form onSubmit={addTodo}>
 
 ```
+
+---
 
 ## Web Fonts
 https://fonts.google.com/
