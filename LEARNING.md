@@ -23,48 +23,78 @@ For **Warehouse** I chose the following structure because it felt right at the t
 ```
 ├── hooks
 │   ├── useAuthentication
-│   │   ├── handlers.js
+│   │   ├── handler.js
 │   │   ├── reducer.js
 │   │   └── useAuthentication.js
 │   ├── useNotifications
-│   │   ├── handlers.js
+│   │   ├── handler.js
 │   │   ├── reducer.js
 │   │   └── useNotifications.js
 │   └── useProductsList
-│       ├── handlers.js
+│       ├── handler.js
 │       ├── reducer.js
 │       ├── useProductsList.js
 ```
 
 As you can see, this structure always has at least 3 files for each major domain of the application. Minor local state should just stay inside the relative component and be kept as simple as possible. You may be asking yourself: "why not use `index.js` as the name for the `useCustomHook.js` file ?". Because it makes it easier to know just by reading the name that the default export is a _custom hook_, also, because **I hate `index.js`**, as this name has no meaning whatsoever, at least with `handlers.js` or `reducer.js` I know what to expect from that file even if I am still dependent on the directory context. My only `index.js` is the main entry point for `webpack.config.js`.
 
-It mainly focus on keeping the reducer and actions type|creators in the same file
-So maybe I can keep the initialState and action handlers in another file
-
-But should every file and function have a unique name (quite hard)
-Or maybe adopt a generalized approuch that depends on the directory context
 ```javascript
- // file naming
- // store/todos/reducer.js
- // store/todos/handlers.js or handler.js
- 
- // same basic structure (even name)
- function reducer(state = initialState, action) {}
+/* ========= handler.js ========= */
+const initialState = {}
 
- // function naming, same name for type|handler|creator|dispatcher
- // action type
- const ADD_TODO = 'app/todos/ADD_TODO'
- // action handler
- case ADD_TODO:
-   return handle.addTodo(action.payload)
- // action creator
- dispatch(addTodo(todo))
- // action dispatcher
- <form onSubmit={addTodo}>
+export function addTodo(state, newTodo) {
+    return // new modified state
+}
 
+export default initialState
+
+/* ========= reducer.js ========= */
+import * as handle from './handler.js'
+
+const ADD_TODO = 'warehouse/todos/ADD_TODO'
+
+function reducer(state, action) {
+  switch (action.type) {
+    case ADD_TODO:
+      return handle.addTodo(state, action.payload)
+  }
+}
+
+export function addTodo(newTodo) {
+  return {
+    type: ADD_TODO,
+    payload: newTodo,
+  }
+}
+
+export default reducer
+
+/* ========= useTodos.js ========= */
+import React from 'react'
+
+import reducer, * as actions from './reducer'
+import initialState from './handler'
+
+function useTodos() {
+  const [state, dispatch] = React.useReducer(reducer, initialState)
+
+  const dispatchAddTodo = (newTodo) => dispatch(actions.addTodo(newTodo))
+
+  /* some React.useEffect or React.useLayoutEffect */
+
+  function addTodo(newTodo) {
+    /* call an endpoint or do someother side-effect */
+
+    dispatchAddTodo(newTodo)
+  }
+
+  return [state.todos, {addTodo}]
+}
+
+export default useTodos
 ```
 
----
+Depending on how complex your reducer is you may not need the third dedicated `useCustomHook.js` file, after all, in this project I need it as a way to separate React code from the pure reducer code, think of it as the `connect` in **React-Redux**. It may also seem strange to name everything the same, though the alternative would be to add a suffix to everyone of those cases: `addTodoHandler`, `ADD_TODO_ACTION`, `addTodoActionCreator`, `addTodoActionDispatcher` and so forth. I don't really see this as a problem as long as the file context is respected, and it sure helps not to have to think of a different name for each context, plus, you can follow along the whole process by grepping for just this one name.
 
 ## Web Fonts
 https://fonts.google.com/
