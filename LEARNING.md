@@ -9,14 +9,34 @@ I can write CSS, LESS , SCSS, Stylus or Styled-Components. I can write SMACSS, B
 
 > It's easy to see the benefits of an idea, but it's very hard to measure subtle negatives chained to it
 
-## State Managment
+## State Management
 [**Redux**](https://redux.js.org) is an awesome library for state management, you can actually produce predictable state and write complex applications with it, however it's not all sunshine and roses. **Redux** comes with a lot of boilerplate code and if you follow the intended organization you could end up with different files for **action constants**, **action creators**, **initial state**, **reducers**, **handlers**, **connectors**, etc, and even then these files could all be separated by domain inside a folder or maybe all allocated inside a type specific folder. All of this is overkill for most projects, and most likely will ramp up the cognitive load inside the codebase.  
 
-While working in this project I read a lot about state management organization and like most things in programming...there is no clear right or wrong answer. My suggestion is to **K.I.S.S.** your state management and experiment with different approaches while you try to find the one you and your team agrees that is just right for the codebase, that sweet spot between the being organized enough, so I know where to find stuff and flexible enough, so I can change it at a low cost if needed. 
+While working in this project I read a lot about state management organization and like most things in programming...there is no clear right or wrong answer. My suggestion is to **K.I.S.S.** your state management and experiment with different approaches while you try to find the one you and your team agrees that is just right for the codebase, that sweet spot between the being organized enough, so I know where to find stuff and flexible enough, so I can change it at an acceptable cost if needed. 
 
 For **Warehouse** I chose the following structure because it felt right at the time:
+- with the challenge of not using any extra library
+- inspired by different versions of the **Redux Ducks** pattern
+- knowing that naming things is very hard 
+- employing context awareness and co-location
+    
+```
+├── hooks
+│   ├── useAuthentication
+│   │   ├── handlers.js
+│   │   ├── reducer.js
+│   │   └── useAuthentication.js
+│   ├── useNotifications
+│   │   ├── handlers.js
+│   │   ├── reducer.js
+│   │   └── useNotifications.js
+│   └── useProductsList
+│       ├── handlers.js
+│       ├── reducer.js
+│       ├── useProductsList.js
+```
 
----
+As you can see, this structure always has at least 3 files for each major domain of the application. Minor local state should just stay inside the relative component and be kept as simple as possible. You may be asking yourself: "why not use `index.js` as the name for the `useCustomHook.js` file ?". Because it makes it easier to know just by reading the name that the default export is a _custom hook_, also, because **I hate `index.js`**, as this name has no meaning whatsoever, at least with `handlers.js` or `reducer.js` I know what to expect from that file even if I am still dependent on the directory context. My only `index.js` is the main entry point for `webpack.config.js`.
 
 It mainly focus on keeping the reducer and actions type|creators in the same file
 So maybe I can keep the initialState and action handlers in another file
