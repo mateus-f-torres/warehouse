@@ -36,7 +36,7 @@ For **Warehouse** I chose the following structure because it felt right at the t
 │       ├── useProductsList.js
 ```
 
-As you can see, this structure always has at least 3 files for each major domain of the application. Minor local state should just stay inside the relative component and be kept as simple as possible. You may be asking yourself: "why not use `index.js` as the name for the `useCustomHook.js` file ?". Because it makes it easier to know just by reading the name that the default export is a _custom hook_, also, because **I hate `index.js`**, as this name has no meaning whatsoever, at least with `handlers.js` or `reducer.js` I know what to expect from that file even if I am still dependent on the directory context. My only `index.js` is the main entry point for `webpack.config.js`.
+As you can see, this structure always has at least 3 files for each major domain of the application. Minor local state should just stay inside the relative component and be kept as simple as possible. You may be asking yourself: "why not use `index.js` as the name for the `useCustomHook.js` file ?". Because it makes it easier to know just by reading the name that the default export is a _custom hook_, also, because **I hate `index.js`**, as this name has no meaning whatsoever, at least with `handler.js` or `reducer.js` I know what to expect from that file even if I am still dependent on the directory context. My only `index.js` is the main entry point for `webpack.config.js`.
 
 ```javascript
 /* ========= handler.js ========= */
@@ -95,6 +95,37 @@ export default useTodos
 ```
 
 Depending on how complex your reducer is you may not need the third dedicated `useCustomHook.js` file, after all, in this project I need it as a way to separate React code from the pure reducer code, think of it as the `connect` in **React-Redux**. It may also seem strange to name everything the same, though the alternative would be to add a suffix to everyone of those cases: `addTodoHandler`, `ADD_TODO_ACTION`, `addTodoActionCreator`, `addTodoActionDispatcher` and so forth. I don't really see this as a problem as long as the file context is respected, and it sure helps not to have to think of a different name for each context, plus, you can follow along the whole process by grepping for just this one name.
+
+
+## Browser Storage
+Most of the usage will be centered around `Cookies`, `Web Storage`, `IndexedDB` and `Cache`;  
+They all share the same global/group storage quota and default to temporary data;  
+Temporary data is evicted by LRU policy (Least Recently Used *origin*) when limits are reached;   
+
+Very rarely is data automatically cleared by the browsers;  
+Most of the time users choose to explicitly clear cookies and data;  
+Only persistent data is spared when this happens;  
+
+Some APIs are better for small short-lived data, while others are excellent for caching full files;  
+A tl;dr approuch would be `Cache` for files, `IndexedDB` for most data and `Web Storage` for very small strings  
+Below are links to the resources used.  
+
+**PS**: `IndexedDB` is pretty low-level for most projects, I suggest using a library.  
+
+https://dexie.org/  
+https://pouchdb.com/  
+https://npmjs.com/package/idb/  
+https://google.github.io/lovefield/  
+
+
+https://web.dev/storage-for-the-web/  
+https://web.dev/persistent-storage/  
+
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies  
+https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API  
+https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API  
+https://developer.mozilla.org/en-US/docs/Web/API/Cache  
+https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API/Browser_storage_limits_and_eviction_criteria  
 
 ## Web Fonts
 https://fonts.google.com/
