@@ -98,34 +98,14 @@ Depending on how complex your reducer is you may not need the third dedicated `u
 
 
 ## Browser Storage
-Most of the usage will be centered around `Cookies`, `Web Storage`, `IndexedDB` and `Cache`;  
-They all share the same global/group storage quota and default to temporary data;  
-Temporary data is evicted by LRU policy (Least Recently Used *origin*) when limits are reached;   
+Most of the usage will be centered around `Cookies`, `Web Storage`, `IndexedDB` and `Cache`. They all share the same global/group storage quota and default to temporary data, that is evicted by LRU policy when limits are reached (Least Recently Used **origin**). Most of the time users choose to explicitly clear cookies and data, very rarely is data automatically cleared by the browsers, only persistent data is spared when this happens.
 
-Very rarely is data automatically cleared by the browsers;  
-Most of the time users choose to explicitly clear cookies and data;  
-Only persistent data is spared when this happens;  
+Some APIs are better for small short-lived data, while others are excellent for caching full files. A **tl;dr** approach would be `Cache` for files, `IndexedDB` for most data and `Web Storage` for very small strings, although `IndexedDB` is pretty low-level for most projects, so I suggest using a library.
 
-Some APIs are better for small short-lived data, while others are excellent for caching full files;  
-A tl;dr approuch would be `Cache` for files, `IndexedDB` for most data and `Web Storage` for very small strings  
-Below are links to the resources used.  
-
-**PS**: `IndexedDB` is pretty low-level for most projects, I suggest using a library.  
-
-https://dexie.org/  
-https://pouchdb.com/  
-https://npmjs.com/package/idb/  
-https://google.github.io/lovefield/  
-
-
-https://web.dev/storage-for-the-web/  
-https://web.dev/persistent-storage/  
-
-https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies  
-https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API  
-https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API  
-https://developer.mozilla.org/en-US/docs/Web/API/Cache  
-https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API/Browser_storage_limits_and_eviction_criteria  
+- [idb](https://npmjs.com/package/idb/), IndexedDB with improved usability
+- [Dexie](https://dexie.org/), a Minimalistic Wrapper for IndexedDB
+- [PouchDB](https://pouchdb.com/), Apache CouchDB inspired wrapper
+- [Lovefield](https://google.github.io/lovefield/), relational database for web apps
 
 ## Web Fonts
 https://fonts.google.com/
