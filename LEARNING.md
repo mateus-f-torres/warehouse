@@ -119,71 +119,14 @@ Some APIs are better for small short-lived data, while others are excellent for 
 ¹. Least Recently Used **origin**
 
 ## Web Fonts
-https://fonts.google.com/
-https://google-webfonts-helper.herokuapp.com/fonts
-https://caniuse.com/
+Use only `.woff2` and `.woff` formats, as they are compressed by default, with **brotli** and **gzip** respectively, and supported by all current browsers. Whenever possible use `rel="preload"` with `font-display: swap` for better UX, but beware that you must make a [**CORS** fetch](https://www.w3.org/TR/css-fonts-4/#font-fetching-requirements) for font loading. Pay attention to [`font-display`](https://www.w3.org/TR/css-fonts-4/#font-display-desc) and [`font properties`](https://www.w3.org/TR/css-fonts-4/#font-prop-desc) when writing `@font-family`, as `font-display` is responsible for **FOIT**¹, **FOUT**² and **FOFT**³, and `font properties` is responsible for **synthesized font faces**. Font files are possibly one of the more static assets inside a project, therefore, for better caching, you probably shouldn't _hash_ them as most will already be versioned.  
 
-@font-face {
-  font-family: 'Roboto';
-  font-style: normal;
-  font-weight: 400;
-  font-display: optional;
-  src: local('Roboto'), local('Roboto-Regular'),
-       url('~./assets/fonts/roboto-v20-latin-regular.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
-       url('~./assets/fonts/roboto-v20-latin-regular.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
-}
+https://fonts.google.com/  
+https://google-webfonts-helper.herokuapp.com/fonts  
 
-- Change file type to `.woff2` with `.woff` as fallback
-- Use `rel="preload"` with `font-display: swap;` for better UX  
-- Dont _hash_ font files (better caching)
-- ~~Instead of `file-loader` use `copy-webpack-plugin`~~
-- ~~Instruct `css-loader` **not** to import `url()` files during bundle~~
-
-
-- [x] ~~**Compress** fonts~~
-  - https://en.wikipedia.org/wiki/Zopfli
-  - https://github.com/webpack-contrib/compression-webpack-plugin
-- [x] See that there are no **synthetic faces**
-  - https://www.w3.org/TR/css-fonts-4/#font-synthesis-intro
-  - https://developer.mozilla.org/en-US/docs/Web/CSS/font-synthesis
-- [x] Study the desired **font-display** strategy
-  - https://drafts.csswg.org/css-fonts-4/#font-display-desc
-  - https://www.w3.org/TR/css-font-loading/
-
-When using a custom web font is good to remeber:
-
-1. Better to serve `.woff2` or `.woff` formats
-    - `.woff2` is already **brotli** compressed
-    - `.woff` is already **gzip** compressed
-2. If possible and necessary try to `rel="preload"` the main fonts
-    - browsers must make a [**CORS** fetch](https://www.w3.org/TR/css-fonts-4/#font-fetching-requirements) for font loading
-3. When writing `@font-family` always be careful with [`font-display`](https://www.w3.org/TR/css-fonts-4/#font-display-desc) and [`font properties`](https://www.w3.org/TR/css-fonts-4/#font-prop-desc)
-    - `font-display` is responsible for **FOIT**, **FOUT** and **FOFT**
-    - `font properties` is responsible for **synthesized font faces**
-4. Remember to declare some web safe fallback fonts
-
-
-
-TrueType Fonts (TTF)
-TrueType is a font standard developed in the late 1980s, by Apple and Microsoft. TrueType is the most common font format for both the Mac OS and Microsoft Windows operating systems.
-
-OpenType Fonts (OTF)
-OpenType is a format for scalable computer fonts. It was built on TrueType, and is a registered trademark of Microsoft. OpenType fonts are used commonly today on the major computer platforms.
-
-The Web Open Font Format (WOFF)
-WOFF is a font format for use in web pages. It was developed in 2009, and is now a W3C Recommendation.
-WOFF is essentially OpenType or TrueType with compression and additional metadata. The goal is to support font distribution from a server to a client over a network with bandwidth constraints.
-
-The Web Open Font Format (WOFF 2.0)
-TrueType/OpenType font that provides better compression than WOFF 1.0.
-
-SVG Fonts/Shapes
-SVG fonts allow SVG to be used as glyphs when displaying text.
-The SVG 1.1 specification define a font module that allows the creation of fonts within an SVG document.
-You can also apply CSS to SVG documents, and the @font-face rule can be applied to text in SVG documents.
-
-Embedded OpenType Fonts (EOT)
-EOT fonts are a compact form of OpenType fonts designed by Microsoft for use as embedded fonts on web pages.
+¹. Flash of Invisible Text  
+². Flash of Unstyled Text  
+³. Flash of Faux Text
 
 ## Mobile Keyboard
 When a `<input>` is given _focus_ a virtual keyboard takes a chunk of the viewport  
