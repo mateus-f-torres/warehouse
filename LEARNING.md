@@ -1,16 +1,18 @@
 # Warehouse Learning Notes
 
 ## The Cost of a UI Framework
-Let's say you want to create a quick project, maybe to try out a library or for the coding part of a work application. The UI behind this project is not a core aspect but just something that looks good and is easy/quick to build. No need to create everything from scratch, just pick up some UI framework and code away, after all, they are short-lived projects, and you know it.  
+Let's say you want to create a quick project, maybe to try out a library or for the coding part of a work application. The UI is not a core aspect of this project but just something that needs to look good and should be easy/quick to build. No need to create everything from scratch, just pick up some UI framework and code away, after all, they are short-lived projects, and you know it.  
 
-Every library or framework has a cost that you must pay at some point. The problem with UI frameworks is that only feel the cost **after the first version**. Maybe you want to change some utility library, improve the build process or add a new feature to the application, but the longer you stay away from that code the longer it takes to recall how that framework functions and that for me is the real cost.  
+Every library or framework has a cost that you must pay at some point. The problem with UI frameworks is that only feel the cost **after the first release**. Maybe you want to change some utility library, improve the build process or add a new feature to the application, but the longer you stay away from that code the longer it takes to recall how that framework functions and that for me is the real cost.  
 
 I can write CSS, LESS , SCSS, Stylus or Styled-Components. I can write SMACSS, BEM, ITCSS, ABEM or Functional CSS. I can build a UI from the top-down or from the bottom-up, but none of that matters when there is a UI framework in the project, because I must follow the framework's guidelines. You can't easily transfer you existing knowledge to this codebase, and you also can't easily transfer your knowledge of this framework to other codebase.
 
 > It's easy to see the benefits of an idea, but it's very hard to measure subtle negatives chained to it
+>
+> -- <cite>Jonathan Blow</cite>
 
 ## State Management
-[**Redux**](https://redux.js.org) is an awesome library for state management, you can actually produce predictable state and write complex applications with it, however it's not all sunshine and roses. **Redux** comes with a lot of boilerplate code and if you follow the intended organization you could end up with different files for **action constants**, **action creators**, **initial state**, **reducers**, **handlers**, **connectors**, etc, and even then these files could all be separated by domain inside a folder or maybe all allocated inside a type specific folder. All of this is overkill for most projects, and most likely will ramp up the cognitive load inside the codebase.  
+[**Redux**](https://redux.js.org) is an awesome library for state management, you can actually produce predictable state and write complex applications with it, however, it's not all sunshine and roses. **Redux** comes with a lot of boilerplate code and if you follow the intended organization you could end up with different files for **action constants**, **action creators**, **initial state**, **reducers**, **handlers**, **connectors**, etc, and, even then these files could all be separated by domain inside a folder or maybe all allocated inside a type specific folder. All of this is overkill for most projects, and most likely will ramp up the cognitive load inside the codebase.  
 
 While working in this project I read a lot about state management organization and like most things in programming...there is no clear right or wrong answer. My suggestion is to **K.I.S.S.** your state management and experiment with different approaches while you try to find the one you and your team agrees that is just right for the codebase, that sweet spot between the being organized enough, so I know where to find stuff and flexible enough, so I can change it at an acceptable cost if needed. 
 
@@ -36,7 +38,7 @@ For **Warehouse** I chose the following structure because it felt right at the t
 │       ├── useProductsList.js
 ```
 
-As you can see, this structure always has at least 3 files for each major domain of the application. Minor local state should just stay inside the relative component and be kept as simple as possible. You may be asking yourself: "why not use `index.js` as the name for the `useCustomHook.js` file ?". Because it makes it easier to know just by reading the name that the default export is a _custom hook_, also, because **I hate `index.js`**, as this name has no meaning whatsoever, at least with `handler.js` or `reducer.js` I know what to expect from that file even if I am still dependent on the directory context. My only `index.js` is the main entry point for `webpack.config.js`.
+As you can see, this structure always has at least 3 files for each major domain of the application. Minor local state should just stay inside the relative component and be kept as simple as possible. You may be asking yourself: "why not use `index.js` as the name for the `useCustomHook.js` file ?". Firstly, because it makes it easier to know just by reading the name that the default export is a _custom hook_, secondly, because **I hate naming more than one file `index.js`**, as this name has no meaning whatsoever when diluted across the codebase, at least with `handler.js` or `reducer.js` I know what to expect from that file even if I am still dependent on the directory context. My only `index.js` is the main entry point for `webpack.config.js`.
 
 ```javascript
 /* ========= handler.js ========= */
@@ -57,6 +59,9 @@ function reducer(state, action) {
   switch (action.type) {
     case ADD_TODO:
       return handle.addTodo(state, action.payload)
+
+    default:
+        return state
   }
 }
 
@@ -80,10 +85,10 @@ function useTodos() {
 
   const dispatchAddTodo = (newTodo) => dispatch(actions.addTodo(newTodo))
 
-  /* some React.useEffect or React.useLayoutEffect */
+  /* some React.useEffect or React.useLayoutEffect, if needed */
 
   function addTodo(newTodo) {
-    /* call an endpoint or do someother side-effect */
+    /* call an endpoint or do someother side-effect, if needed */
 
     dispatchAddTodo(newTodo)
   }
@@ -96,9 +101,13 @@ export default useTodos
 
 Depending on how complex your reducer is you may not need the third dedicated `useCustomHook.js` file, after all, in this project I need it as a way to separate React code from the pure reducer code, think of it as the `connect` in **React-Redux**. It may also seem strange to name everything the same, though the alternative would be to add a suffix to everyone of those cases: `addTodoHandler`, `ADD_TODO_ACTION`, `addTodoActionCreator`, `addTodoActionDispatcher` and so forth. I don't really see this as a problem as long as the file context is respected, and it sure helps not to have to think of a different name for each context, plus, you can follow along the whole process by grepping for just this one name.
 
+> There are only two hard things in Computer Science: cache invalidation and naming things.
+> 
+> -- <cite>Phil Karlton</cite>
+
 
 ## Browser Storage
-Most of the usage will be centered around `Cookies`, `Web Storage`, `IndexedDB` and `Cache`. They all share the same global/group storage quota and default to temporary data, that is evicted by LRU policy when limits are reached (Least Recently Used **origin**). Most of the time users choose to explicitly clear cookies and data, very rarely is data automatically cleared by the browsers, only persistent data is spared when this happens.
+Most of the usage will be centered around `Cookies`, `Web Storage`, `IndexedDB` and `Cache`. They all share the same global/group storage quota and default to temporary data, that is evicted by LRU policy ¹ when limits are reached. Most of the time users choose to explicitly clear cookies and data, very rarely is data automatically cleared by the browsers.
 
 Some APIs are better for small short-lived data, while others are excellent for caching full files. A **tl;dr** approach would be `Cache` for files, `IndexedDB` for most data and `Web Storage` for very small strings, although `IndexedDB` is pretty low-level for most projects, so I suggest using a library.
 
@@ -106,6 +115,8 @@ Some APIs are better for small short-lived data, while others are excellent for 
 - [Dexie](https://dexie.org/), a Minimalistic Wrapper for IndexedDB
 - [PouchDB](https://pouchdb.com/), Apache CouchDB inspired wrapper
 - [Lovefield](https://google.github.io/lovefield/), relational database for web apps
+
+¹. Least Recently Used **origin**
 
 ## Web Fonts
 https://fonts.google.com/
