@@ -107,7 +107,7 @@ Depending on how complex your reducer is you may not need the third dedicated `u
 
 
 ## Browser Storage
-Most of the usage will be centered around `Cookies`, `Web Storage`, `IndexedDB` and `Cache`. They all share the same global/group storage quota and default to temporary data, that is evicted by LRU policy ¹ when limits are reached. Most of the time users choose to explicitly clear cookies and data, very rarely is data automatically cleared by the browsers.
+Most of the usage will be centered around `Cookies`, `Web Storage`, `IndexedDB` and `Cache`. They all share the same global/group storage quota and default to temporary data, that is evicted by LRU policy¹ when limits are reached. Most of the time users choose to explicitly clear cookies and data, very rarely is data automatically cleared by the browsers.
 
 Some APIs are better for small short-lived data, while others are excellent for caching full files. A **tl;dr** approach would be `Cache` for files, `IndexedDB` for most data and `Web Storage` for very small strings, although `IndexedDB` is pretty low-level for most projects, so I suggest using a library.
 
@@ -128,6 +128,11 @@ https://google-webfonts-helper.herokuapp.com/fonts
 ². Flash of Unstyled Text  
 ³. Flash of Faux Text
 
+## Controlled Layout
+Is it always bad to use pixel measures in layouts? Even if we know how many pixels an element will take on small or larger screens? If we know how the content behaves as the viewport breaks I believe it's not a bad practice. Of course this approach is NOT RESPONSIVE if the content is dynamic and, therefore, can change, so we are talking about specific cases where the copy doesn't change nor does the font-size, like a brand name.
+
+Another case for pixel measures, and controlled layouts by extension, is to be more future-friendly. It's common place to design layouts with a mobile-first approach and then define breaks as the screen grows. But what if your app is displayed on an ever larger screen? Is there a point where the travel distance for the eyes is tiresome? I argue that you should always constraint yourself within a minimum and maximum screen size, otherwise, designers and developers with waste time defining layouts to viewports that aren't even used by your customers.
+
 ## Mobile Keyboard
 When a `<input>` is given _focus_ a virtual keyboard takes a chunk of the viewport  
 How can we lower it after the user has acted ?  
@@ -147,19 +152,6 @@ Last `<input/>` inside a form will dispatch a `ENTER` _keypress_ on mobile devic
 We can't just prevent submission on `ENTER` because it will make for a worse UX on desktop  
 Maybe we could add an invisible extra `<input/>` that will _blur_ `onfocus` just for mobile.
 
-## Controlled Layout
-Is it always bad to use pixel measures in layouts ?  
-Even if we know how many pixels a element will take on small or larger screens ?  
-If we know how the content behaves at the viewport breaks I belive its quite possible  
-Of course this approach is NOT RESPONSIVE if the content can change  
-So we are talking about a very specific case
-
-Another case for pixel meaures is to be more future-friendly  
-Its common place to design layouts with a mobile-first approuch and then define breaks  
-But what if your app is displayed on an ever larger screen ?  
-Is there a point where the travel distance for the eyes is tiresome ?  
-I argue that you should always contraint yourself within a minimun and maximun screen size  
-Otherwise designers and developers with waste time defining layouts to viewports that arent even used by your customers
 
 ## Functional Trap
 ```javascript
