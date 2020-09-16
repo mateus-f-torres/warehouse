@@ -126,9 +126,14 @@ Use only `.woff2` and `.woff` formats, as they are compressed by default, with *
 ³. Flash of Faux Text
 
 ## Controlled Layout
-Is it always bad to use pixel measures in layouts? Even if we know how many pixels an element will take on small or larger screens? If we know how the content behaves as the viewport breaks I believe it's not a bad practice. Of course this approach is NOT RESPONSIVE if the content is dynamic and, therefore, can change, so we are talking about specific cases where the copy doesn't change nor does the font-size, like a brand name.
+\- Is it always bad to use pixel measures in layouts?  
+ \- Even if we know how many pixels an element will take on small or larger screens?  
+ 
+ If we know how the content behaves as the viewport breaks I believe it's not a bad practice. Of course this approach is NOT RESPONSIVE if the content is dynamic and, therefore, can change, so we are talking about specific cases where the copy doesn't change and changes to the browser's font-size won't affect this content, like a brand name.
 
-Another case for pixel measures, and controlled layouts by extension, is to be more future-friendly. It's common place to design layouts with a mobile-first approach and then define breaks as the screen grows. But what if your app is displayed on an ever larger screen? Is there a point where the travel distance for the eyes is tiresome? I argue that you should always constraint yourself within a minimum and maximum screen size, otherwise, designers and developers with waste time defining layouts to viewports that aren't even used by your customers.
+Another case for pixel measures, and controlled layouts by extension, is to be more future-friendly as it's common place to design layouts with a mobile-first approach and then define breaks as the screen grows. But what if your app is displayed on an ever larger screen? Is there a point where the travel distance for the eyes is tiresome? I argue that you should **always constraint yourself within a minimum and maximum screen size**, otherwise, designers and developers with waste time defining layouts to viewports that aren't even used by your customers.
+
+Just like your product should have a primary target audience, so should your layout have a primary target device. From this primary target device you then expand to your secondary or tertiary devices and the rest should be considered extra scope. We always have limited time and resources in software development, and as much as I like to sometimes just drown in pixel paranoia, this can ultimately mean nothing for the end user. Weight the pros and cons of trying to increase supported devices, viewports, orientations, browsers, systems, etc.
 
 ## Mobile Keyboard
 When a `<input>` is given _focus_ a virtual keyboard takes a chunk of the viewport  
