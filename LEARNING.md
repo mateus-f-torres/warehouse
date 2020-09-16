@@ -99,7 +99,7 @@ function useTodos() {
 export default useTodos
 ```
 
-Depending on how complex your reducer is you may not need the third dedicated `useCustomHook.js` file, after all, in this project I need it as a way to separate React code from the pure reducer code, think of it as the `connect` in **React-Redux**. It may also seem strange to name everything the same, though the alternative would be to add a suffix to everyone of those cases: `addTodoHandler`, `ADD_TODO_ACTION`, `addTodoActionCreator`, `addTodoActionDispatcher` and so forth. I don't really see this as a problem as long as the file context is respected, and it sure helps not to have to think of a different name for each context, plus, you can follow along the whole process by grepping for just this one name.
+Depending on how complex your reducer is you may not need the third dedicated `useCustomHook.js` file. In this project I need it as a way to separate React code from the pure reducer code, you could think of it as the `connect` in **React-Redux**. It may also seem strange to name everything the `addTodo`, though the alternative would be to add a suffix to everyone of those cases: `addTodoHandler`, `ADD_TODO_ACTION`, `addTodoActionCreator`, `addTodoActionDispatcher` and so forth. I don't really see this as a problem as long as the file context is respected, and it sure helps not to have to think of a different name for each context, plus, you can follow along the whole process by grepping for just this one name.
 
 > There are only two hard things in Computer Science: cache invalidation and naming things.
 > 
@@ -107,7 +107,7 @@ Depending on how complex your reducer is you may not need the third dedicated `u
 
 
 ## Browser Storage
-Most of the usage will be centered around `Cookies`, `Web Storage`, `IndexedDB` and `Cache`. They all share the same global/group storage quota and default to temporary data, that is evicted by LRU policy¹ when limits are reached. Most of the time users choose to explicitly clear cookies and data, very rarely is data automatically cleared by the browsers.
+Most of the usage will be centered around `Cookies`, `Web Storage`, `IndexedDB` and `Cache`. They all share the same global/group storage quota and default to temporary data, that is evicted by LRU policy¹ when limits are reached. Most of the time users choose to explicitly clear cookies and data, so very rarely is data automatically cleared by the browsers.
 
 Some APIs are better for small short-lived data, while others are excellent for caching full files. A **tl;dr** approach would be `Cache` for files, `IndexedDB` for most data and `Web Storage` for very small strings, although `IndexedDB` is pretty low-level for most projects, so I suggest using a library.
 
@@ -120,9 +120,6 @@ Some APIs are better for small short-lived data, while others are excellent for 
 
 ## Web Fonts
 Use only `.woff2` and `.woff` formats, as they are compressed by default, with **brotli** and **gzip** respectively, and supported by all current browsers. Whenever possible use `rel="preload"` with `font-display: swap` for better UX, but beware that you must make a [**CORS** fetch](https://www.w3.org/TR/css-fonts-4/#font-fetching-requirements) for font loading. Pay attention to [`font-display`](https://www.w3.org/TR/css-fonts-4/#font-display-desc) and [`font properties`](https://www.w3.org/TR/css-fonts-4/#font-prop-desc) when writing `@font-family`, as `font-display` is responsible for **FOIT**¹, **FOUT**² and **FOFT**³, and `font properties` is responsible for **synthesized font faces**. Font files are possibly one of the more static assets inside a project, therefore, for better caching, you probably shouldn't _hash_ them as most will already be versioned.  
-
-https://fonts.google.com/  
-https://google-webfonts-helper.herokuapp.com/fonts  
 
 ¹. Flash of Invisible Text  
 ². Flash of Unstyled Text  
