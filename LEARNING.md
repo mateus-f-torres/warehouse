@@ -99,7 +99,7 @@ function useTodos() {
 export default useTodos
 ```
 
-Depending on how complex your reducer is you may not need the third dedicated `useCustomHook.js` file. In this project I need it as a way to separate React code from the pure reducer code, you could think of it as the `connect` in **React-Redux**. It may also seem strange to name everything the `addTodo`, though the alternative would be to add a suffix to everyone of those cases: `addTodoHandler`, `ADD_TODO_ACTION`, `addTodoActionCreator`, `addTodoActionDispatcher` and so forth. I don't really see this as a problem as long as the file context is respected, and it sure helps not to have to think of a different name for each context, plus, you can follow along the whole process by grepping for just this one name.
+Depending on how complex your reducer is you may not need the third dedicated `useCustomHook.js` file. In this project I need it as a way to separate React code from the pure reducer code, you could think of it as the `connect` in **React-Redux**. It may also seem strange to name everything `addTodo`, though the alternative would be to add a suffix to everyone of those cases: `addTodoHandler`, `ADD_TODO_ACTION`, `addTodoActionCreator`, `addTodoActionDispatcher` and so forth. I don't really see this as a problem as long as the file context is respected, and it sure helps not to have to think of a different name for each context, plus, you can follow along the whole process by grepping for just this one name.
 
 > There are only two hard things in Computer Science: cache invalidation and naming things.
 > 
@@ -136,24 +136,12 @@ Another case for pixel measures, and controlled layouts by extension, is to be m
 Just like your product should have a primary target audience, so should your layout have a primary target device. From this primary target device you then expand to your secondary or tertiary devices and the rest should be considered extra scope. We always have limited time and resources in software development, and as much as I like to sometimes just drown in pixel paranoia, this can ultimately mean nothing for the end user. Weight the pros and cons of trying to increase supported devices, viewports, orientations, browsers, systems, etc.
 
 ## Mobile Keyboard
-When a `<input>` is given _focus_ a virtual keyboard takes a chunk of the viewport  
-How can we lower it after the user has acted ?  
+When a `<input>` is given _focus_ on a mobile device a virtual keyboard takes a chunk of the viewport.  
+\- How can we lower it after the user has acted ?  
 
-We could watch for each keypress but that is unnecessary;  
-By placing inside a form we use onSubmit and watch for that;  
-On mobile devices the virtual keyboard responds to focus/blur events;  
-So we can programmatically lower the keyboard this way;
+We could watch for each keypress but that is unnecessary; place it inside a `<form>` and respond to the `submit` event. The virtual keyboard responds to `focus` and `blur` events, so we can programmatically lower the keyboard by explicitly calling for `blur`. Another thing to consider is that the last `<input/>` inside a form will dispatch a `ENTER` _keypress_ on mobile devices, instead of the usual `TAB`, but we can't just prevent submission on `ENTER` because it will make for a worse UX on desktop. Maybe we could add an invisible extra `<input/>` that will _blur_ `onfocus` just for mobile.
 
-This is somewhat strange when on devices with a dedicated keyboard;  
-But to think of a more sophisticated approach would take time;
-
-One such approach could be to know the viewport height;  
-If during input focus that value drops = virtual keyboard;
-
-Last `<input/>` inside a form will dispatch a `ENTER` _keypress_ on mobile devices  
-We can't just prevent submission on `ENTER` because it will make for a worse UX on desktop  
-Maybe we could add an invisible extra `<input/>` that will _blur_ `onfocus` just for mobile.
-
+All of this is only important if it matters to you that all the content moves up once the virtual keyboard shows. This problem became apparent in the **modal component**, that uses `position` and `z-index`, and it became a chore to handle because of the UI framework being used in this project. Another issue was that I wanted to have only the buttons submitting the form and therefore I wanted to lower the keyboard after the last `<input>` was filled. I was probably being too stubborn to see other alternatives to the layout and flow, but it was nice to learn a bit about the virtual keyboard on mobile devices.
 
 ## Functional Trap
 ```javascript
