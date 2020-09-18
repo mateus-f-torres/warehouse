@@ -2,7 +2,7 @@ import React from 'react'
 
 import open from '../../utils/indexedDB/indexedDB'
 import reducer, * as actions from './reducer'
-import initialState from './handlers'
+import initialState from './handler'
 
 import useConfigAutosave from './utils/useConfigAutosave'
 import createRandomProducts from './utils/createRandomProducts'

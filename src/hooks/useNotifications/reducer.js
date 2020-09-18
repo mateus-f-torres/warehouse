@@ -1,4 +1,4 @@
-import * as handle from './handlers'
+import * as handle from './handler'
 
 const START = 'warehouse/notifications/START'
 const DONE = 'warehouse/notifications/DONE'
