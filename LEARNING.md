@@ -156,9 +156,3 @@ function fakeAPI(fn) {
   }
 }
 ```
-specs naming/wording
-
-use jest to test Dialog and Validation Constraints  
-make cypress only test the main features  
-
-`#saveCurrentOrder` could be used by sw notifications
