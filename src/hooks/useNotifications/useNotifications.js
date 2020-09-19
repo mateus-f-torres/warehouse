@@ -1,7 +1,7 @@
 import React from 'react'
 
 import reducer, * as action from './reducer'
-import initialState from './handlers'
+import initialState from './handler'
 
 function useNotifications() {
   const [state, dispatch] = React.useReducer(reducer, initialState)

@@ -1,4 +1,4 @@
-import * as handle from './handlers'
+import * as handle from './handler'
 
 const LOAD_LIST = 'warehouse/products-list/LOAD_LIST'
 const ADD_ITEM = 'warehouse/products-list/ADD_ITEM'

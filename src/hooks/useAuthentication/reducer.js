@@ -1,4 +1,4 @@
-import * as handle from './handlers'
+import * as handle from './handler'
 
 const LOAD_USER = 'warehouse/authentication/LOAD_USER'
 const UNLOAD_USER = 'warehouse/authentication/UNLOAD_USER'

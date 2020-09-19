@@ -9,24 +9,18 @@ function getInputs(form) {
   }
 }
 
-function allInputsAreValid(inputArray) {
-  return inputArray.every((input) => input.validity.valid === true)
+function allInputsAreValid(inputsArray) {
+  return inputsArray.every((input) => input.validity.valid === true)
 }
 
-function getInputsValue(inputArray) {
-  const obj = {}
-  for (const input of inputArray) {
-    obj[input.name] = input.value
-  }
-  return obj
+function getInputsValue(inputsArray) {
+  return Object.fromEntries(inputsArray.map((i) => [i.name, i.value]))
 }
 
-function getInputsErrorMessage(inputArray) {
-  const obj = {}
-  for (const input of inputArray) {
-    obj[input.name] = input.validationMessage
-  }
-  return obj
+function getInputsErrorMessage(inputsArray) {
+  return Object.fromEntries(
+    inputsArray.map((i) => [i.name, i.validationMessage]),
+  )
 }
 
 export default getInputs

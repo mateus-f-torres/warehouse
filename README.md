@@ -8,7 +8,9 @@ A practice project focused on **React** and **Web Storage**.
 Main practice points:
 - [**React Hooks**](https://reactjs.org/docs/hooks-intro.html), new API for better React development 
 - [**IndexedDB**](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API), low-level Web API for client-side storage.
-- [**Constraint Validation**](https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5/Constraint_validation), HTML5 feature for simple form validation.
+- [**Constraint Validation**](https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5/Constraint_validation), native HTML5 feature for form validation.
+
+If you would like to read more about what I learned with this project please see the [Learning](https://github.com/mateus-f-torres/warehouse/blob/master/LEARNING.md) document.  
 
 PS: since I'm from Brazil the expected currency format is the Brazilian real
 
@@ -17,17 +19,17 @@ PS: since I'm from Brazil the expected currency format is the Brazilian real
 #### Auto-Login
 Use **LocalStorage** to read/write current user  
 Share that information with React **useContext** hook  
-If user was already logged, redirect to App, else show Login  
+Redirect logged users to main app, else show login page
 
 #### Local Database
-Whenever a user adds/edits/deletes a product that change is saved in the **IndexedDB**  
-To fake a external API interaction theses actions are wrapped inside a `setTimeout`  
-The same database will be used for the same company, even if the username is different  
+Whenever a user adds/edits/deletes a product, save that change in the **IndexedDB**  
+Fake an external API interaction by placing these actions inside a delay/error trap  
+Use the same database for the same company, even if the username is different  
 
 #### Super-Custom-Hook-Reducer
-It would be a lot easier to just use **Redux** and call it a day  
-But this is a practice project so no state management library is used  
-Combine **useState**, **useEffect** and **useReducer** to create a **Custom Hook**
+Instead of using a state management library, do it yourself to feel the pain  
+Combine **useState**, **useEffect** and **useReducer** to create a dedicated **Custom Hook**  
+Realize the different types of state that are needed on an application
 
 #### Controlled-Components... why ?
 While learning to use the **Constraint Validation** interface I came upon this question  
