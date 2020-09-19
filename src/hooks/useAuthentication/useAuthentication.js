@@ -2,7 +2,7 @@ import React from 'react'
 
 import * as localStorage from '../../utils/localStorage/localStorage'
 import reducer, * as actions from './reducer'
-import initialState from './handlers'
+import initialState from './handler'
 
 const USERNAME_KEY = 'username'
 const COMPANY_KEY = 'company'

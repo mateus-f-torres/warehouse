@@ -3,7 +3,7 @@ cache: yarn
 node_js:
   - "10.16.0"
 install:
-  - yarn install
+  - yarn install --force
   - yarn cypress verify
   - yarn add --dev wait-on
 script:
